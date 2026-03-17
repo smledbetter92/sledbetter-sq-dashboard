@@ -1,0 +1,103 @@
+.confirm-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: standardModalFadeIn 0.2s ease;
+}
+
+.confirm-dialog-overlay.closing {
+  animation: standardModalFadeOut 0.2s ease forwards;
+}
+
+.confirm-dialog {
+  background: #FFFFFF;
+  border-radius: 28px;
+  padding: 32px;
+  width: 464px;
+  max-width: 90vw;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.16);
+  animation: standardModalSlideUp 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.confirm-dialog.closing {
+  animation: standardModalSlideDown 0.2s ease forwards;
+}
+
+.confirm-dialog-title {
+  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 32px;
+  color: #101010;
+  margin: 0;
+}
+
+.confirm-dialog-body {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #101010;
+}
+
+.confirm-dialog-body p {
+  margin: 0;
+}
+
+.confirm-dialog-body p + p {
+  margin-top: 8px;
+}
+
+.confirm-dialog-body strong {
+  color: #101010;
+  font-weight: 600;
+}
+
+.confirm-dialog-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.confirm-dialog-cancel,
+.confirm-dialog-confirm {
+  flex: 1;
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10000px;
+  padding: 14px 20px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.confirm-dialog-cancel {
+  color: #101010;
+  background: #F0F0F0;
+}
+
+.confirm-dialog-cancel:hover {
+  background: #E5E5E5;
+}
+
+.confirm-dialog-confirm {
+  color: #FFFFFF;
+  background: #101010;
+}
+
+.confirm-dialog-confirm:hover {
+  background: #2A2A2A;
+}
+
+.confirm-dialog-confirm:active,
+.confirm-dialog-cancel:active {
+  transform: scale(0.98);
+}

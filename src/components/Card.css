@@ -1,0 +1,228 @@
+/* Shared card: 32px rounded corners, border. ALIGNMENT. */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 32px;
+  overflow: hidden;
+}
+
+.card--padding .card-header {
+  padding: 24px 24px 0;
+}
+
+.card--padding .card-body,
+.card--padding > .card-divider:first-of-type {
+  margin-top: 0;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding-bottom: 16px;
+}
+
+.card-header-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-title {
+  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  color: var(--text-primary);
+  margin: 0 0 4px 0;
+}
+
+.card-subtitle {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.card-header-btn {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  height: 40px;
+  border-radius: 10000px;
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s ease;
+}
+
+.card-header-btn--primary {
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
+}
+
+.card-header-btn--primary:hover {
+  background: var(--button-primary-hover);
+}
+
+.card-header-btn--secondary {
+  background: var(--button-secondary-bg);
+  color: var(--text-primary);
+}
+
+.card-header-btn--secondary:hover {
+  background: var(--button-secondary-hover);
+}
+
+/* Divider: 16px above/below per ALIGNMENT */
+.card-divider {
+  border: none;
+  height: 1px;
+  background: var(--card-border);
+  margin: 16px 24px;
+}
+
+.card-divider:first-child {
+  margin-top: 0;
+}
+
+/* Row: icon box, title, side text, pill, chevron */
+.card-row-wrapper {
+  margin: 0 24px;
+}
+
+.card-row-wrapper:first-child {
+  margin-top: 16px;
+}
+
+.card-row-wrapper:last-child .card-divider {
+  display: none;
+}
+
+.card-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  min-height: 56px;
+}
+
+.card-row--clickable {
+  cursor: pointer;
+}
+
+.card-row--clickable:hover {
+  opacity: 0.9;
+}
+
+.card-row-icon-box {
+  width: 48px;
+  height: 60px;
+  border-radius: 12px;
+  background: var(--button-secondary-bg);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.card-row-icon-box--wide {
+  width: 84px;
+  height: 40px;
+  border-radius: 12px;
+}
+
+.card-row-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.card-row-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.card-row-title {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.card-row-subtitle {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.card-row-side-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-left: auto;
+}
+
+.card-row-pill {
+  padding: 4px 10px;
+  border-radius: 10000px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.card-row-pill.live {
+  background: var(--pill-live-bg);
+  color: var(--pill-live-text);
+}
+
+.card-row-pill.gray {
+  background: var(--pill-gray-bg);
+  color: var(--pill-gray-text);
+}
+
+.card-row-chevron {
+  display: flex;
+  align-items: center;
+  color: var(--text-secondary);
+}
+
+/* Thumbnails below row (e.g. Website Pages) */
+.card-row-thumbnails {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-bottom: 16px;
+}
+
+.card-thumbnail {
+  width: 80px;
+  height: 48px;
+  border-radius: 8px;
+  background: var(--button-secondary-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.card-thumbnail:hover {
+  background: var(--button-secondary-hover);
+}
+
+.thumbnail-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}

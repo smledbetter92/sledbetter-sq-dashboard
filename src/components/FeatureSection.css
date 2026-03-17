@@ -1,0 +1,199 @@
+/* FeatureSection Component Styles */
+
+.feature-section {
+  width: 100%;
+}
+
+/* State 1: Configure - Grey Cards */
+.feature-configure-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.feature-grey-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 20px;
+  background: #F5F5F5;
+  border-radius: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.feature-grey-card:hover {
+  background: #ECECEC;
+}
+
+.feature-grey-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.feature-grey-card-title {
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.feature-grey-card-edit-button {
+  background: transparent;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 10000px;
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #666666;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.feature-grey-card:hover .feature-grey-card-edit-button {
+  opacity: 1;
+}
+
+.feature-grey-card-edit-button:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.feature-grey-card-edit-button:active {
+  transform: scale(0.96);
+}
+
+.feature-grey-card-detail {
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.feature-grey-card-detail.black {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.feature-grey-card-details-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* State 2: Completed - Summary Card */
+.feature-completed-card {
+  padding: 24px 32px 56px;
+  background: #FAFAFA;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.feature-completed-card:hover {
+  background: #F0F0F0;
+}
+
+.feature-completed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px;
+}
+
+.feature-completed-label-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.feature-completed-checkmark {
+  width: 18px;
+  height: 18px;
+  filter: brightness(0);
+}
+
+.feature-completed-label {
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.feature-completed-edit-button {
+  background: transparent;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 10000px;
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #666666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.feature-completed-card:hover .feature-completed-edit-button {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.feature-completed-edit-button:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.feature-completed-edit-button:active {
+  transform: scale(0.96);
+}
+
+/* State 3: Expanded - Full Settings */
+.feature-expanded-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+}
+
+.feature-expanded-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.feature-expanded-section-title {
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 24px;
+  color: rgba(0, 0, 0, 0.9);
+  margin: 0;
+}
+
+/* Animation Classes */
+.feature-section.transitioning {
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.feature-section.transitioning-in {
+  animation: featureFadeIn 0.4s ease forwards;
+}
+
+@keyframes featureFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

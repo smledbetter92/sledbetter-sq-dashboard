@@ -1,0 +1,1275 @@
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: var(--app-bg);
+}
+
+.dashboard.dashboard--onboarding {
+  align-items: center;
+  justify-content: center;
+}
+
+.onboarding-fullscreen {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  box-sizing: border-box;
+  background: var(--app-bg, #fff);
+  overflow: hidden;
+  position: relative;
+}
+
+.onboarding-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 480px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: top 0.9s cubic-bezier(0.4, 0, 0.2, 1), transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.onboarding-logo-btn {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1), height 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.onboarding-logo-btn:hover { opacity: 0.9; }
+
+.onboarding-logo-btn--small {
+  width: 40px;
+  height: 40px;
+  align-self: flex-start;
+  margin-bottom: 24px;
+}
+
+/* ======================================================
+   Keyframes — logo morph
+   ====================================================== */
+@keyframes onb-fluid-bounce {
+  0%   { transform: scale(0.3); }
+  40%  { transform: scale(1.04); }
+  60%  { transform: scale(0.92); }
+  78%  { transform: scale(1.01); }
+  100% { transform: scale(1); }
+}
+
+@keyframes onb-logo-life {
+  0%   { opacity: 0; }
+  20%  { opacity: 1; }
+  50%  { opacity: 1; }
+  65%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@keyframes onb-blink-life {
+  0%   { opacity: 0; }
+  48%  { opacity: 0; }
+  66%  { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+@keyframes onb-eyes-life {
+  0%        { opacity: 0; transform: scaleY(1); }
+  52%       { opacity: 0; transform: scaleY(1); }
+  60%       { opacity: 1; transform: scaleY(1); }
+  82%       { opacity: 1; transform: scaleY(1); }
+  92%       { opacity: 1; transform: scaleY(0.1); }
+  99%       { opacity: 1; transform: scaleY(1); }
+  100%      { opacity: 1; transform: scaleY(1); }
+}
+
+@keyframes onb-mouth-life {
+  0%   { opacity: 0; }
+  56%  { opacity: 0; }
+  70%  { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+@keyframes onb-welcome-pop {
+  0%, 55% { opacity: 0; transform: translateY(12px); }
+  80%     { opacity: 1; transform: translateY(0); }
+  100%    { opacity: 1; transform: translateY(0); }
+}
+
+.onboarding-square-logo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--text-primary, #101010);
+  opacity: 0;
+}
+
+.onboarding-blink-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.onboarding-blink-body { fill: var(--text-primary, #101010); }
+.onboarding-blink-svg .blink-eye { fill: var(--app-bg, #fff); opacity: 0; transform-box: fill-box; transform-origin: center; }
+.onboarding-blink-svg .blink-mouth { fill: none; stroke: var(--app-bg, #fff); stroke-width: 1.2; opacity: 0; }
+
+/* Welcome text container */
+.onboarding-welcome-text {
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+  pointer-events: none;
+  margin-top: 40px;
+}
+
+.onboarding-title {
+  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 36px;
+  color: var(--text-primary, #101010);
+  margin: 0 0 8px 0;
+  transition: font-size 0.7s ease, line-height 0.7s ease, color 0.7s ease;
+}
+
+.onboarding-title--shrunk {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: var(--text-secondary, #666666);
+  margin: 0 0 4px 0;
+}
+
+.onboarding-heading-typed {
+  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 36px;
+  color: var(--text-primary, #101010);
+  margin: 0;
+  min-height: 36px;
+}
+
+@keyframes onb-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.onboarding-cursor {
+  font-weight: 300;
+  color: var(--text-secondary, #999);
+  animation: onb-cursor-blink 1s step-end infinite;
+}
+
+/* ========================
+   Phase: intro
+   ======================== */
+.onboarding-phase-intro .onboarding-logo-btn {
+  animation: onb-fluid-bounce 1.3s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+.onboarding-phase-intro .onboarding-square-logo { animation: onb-logo-life 1.3s ease both; }
+.onboarding-phase-intro .onboarding-blink-svg { animation: onb-blink-life 1.3s ease both; }
+.onboarding-phase-intro .onboarding-blink-svg .blink-eye { animation: onb-eyes-life 1.3s ease both; }
+.onboarding-phase-intro .onboarding-blink-svg .blink-mouth { animation: onb-mouth-life 1.3s ease both; }
+
+.onboarding-phase-intro .onboarding-welcome-text {
+  animation: onb-welcome-pop 1.3s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+  pointer-events: none;
+}
+
+/* ========================
+   Phase: move-up
+   Slides up, icon shrinks, welcome shrinks to subtext, typewriter starts
+   ======================== */
+.onboarding-phase-move-up .onboarding-square-logo { opacity: 0; }
+.onboarding-phase-move-up .onboarding-blink-svg { opacity: 1; }
+.onboarding-phase-move-up .onboarding-blink-svg .blink-eye { opacity: 1; }
+.onboarding-phase-move-up .onboarding-blink-svg .blink-mouth { opacity: 1; }
+
+.onboarding-phase-move-up { top: 15%; transform: translate(-50%, 0); }
+.onboarding-phase-move-up .onboarding-logo-btn { width: 40px; height: 40px; }
+.onboarding-phase-move-up .onboarding-welcome-text {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ========================
+   Phase: input-ready
+   Same position as move-up, input field visible
+   ======================== */
+.onboarding-phase-input-ready .onboarding-square-logo { opacity: 0; }
+.onboarding-phase-input-ready .onboarding-blink-svg { opacity: 1; }
+.onboarding-phase-input-ready .onboarding-blink-svg .blink-eye { opacity: 1; }
+.onboarding-phase-input-ready .onboarding-blink-svg .blink-mouth { opacity: 1; }
+
+.onboarding-phase-input-ready { top: 15%; transform: translate(-50%, 0); }
+.onboarding-phase-input-ready .onboarding-logo-btn { width: 40px; height: 40px; }
+.onboarding-phase-input-ready .onboarding-welcome-text {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ======================================================
+   Input area
+   ====================================================== */
+.onboarding-input-area {
+  width: 100%;
+  margin-top: 32px;
+  animation: onb-fade-up 0.5s ease both;
+}
+
+@keyframes onb-fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.onboarding-field-wrapper {
+  display: flex;
+  align-items: center;
+  border-bottom: 1.5px solid var(--border-color, #E0E0E0);
+  padding: 12px 0;
+  position: relative;
+  transition: border-color 0.2s ease;
+}
+
+.onboarding-field-wrapper:focus-within {
+  border-color: var(--text-primary, #101010);
+}
+
+.onboarding-field-label {
+  position: absolute;
+  top: -4px;
+  left: 0;
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  color: var(--text-secondary, #999);
+  pointer-events: none;
+}
+
+.onboarding-name-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: none;
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--text-primary, #101010);
+  padding: 0;
+}
+
+.onboarding-name-input::placeholder {
+  color: var(--text-secondary, #999);
+}
+
+.onboarding-submit-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-color, #E0E0E0);
+  background: none;
+  color: var(--text-secondary, #999);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.onboarding-submit-btn.active {
+  background: var(--text-primary, #101010);
+  border-color: var(--text-primary, #101010);
+  color: var(--app-bg, #fff);
+}
+
+/* ======================================================
+   Searching state
+   ====================================================== */
+.onboarding-searching {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  animation: onb-fade-up 0.3s ease both;
+}
+
+.onboarding-searching span {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  color: var(--text-secondary, #999);
+}
+
+.onboarding-search-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(0, 0, 0, 0.12);
+  border-top-color: var(--text-primary, #101010);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+[data-theme="dark"] .onboarding-search-spinner {
+  border-color: rgba(255, 255, 255, 0.15);
+  border-top-color: #fff;
+}
+
+/* ======================================================
+   Business results
+   ====================================================== */
+.onboarding-results {
+  margin-top: 20px;
+}
+
+.onboarding-results-label {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary, #666);
+  margin: 0 0 8px 0;
+}
+
+.onboarding-result-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border: none;
+  border-bottom: 1px solid var(--border-color, #F0F0F0);
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  animation: onb-fade-up 0.35s ease both;
+  transition: background 0.15s ease;
+}
+
+.onboarding-result-row:hover {
+  background: var(--hover-bg, rgba(0,0,0,0.03));
+  border-radius: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.onboarding-result-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.onboarding-result-name {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary, #101010);
+}
+
+.onboarding-result-address {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  color: var(--text-secondary, #666);
+}
+
+.onboarding-result-arrow {
+  flex-shrink: 0;
+  color: var(--text-secondary, #999);
+}
+
+/* ======================================================
+   Brand step — split layout
+   ====================================================== */
+.onboarding-brand-step {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  animation: onb-brand-slide-in 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes onb-brand-slide-in {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.onboarding-brand-left {
+  width: 50%;
+  padding: 48px 48px 32px 48px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.onboarding-brand-right {
+  width: 50%;
+  position: relative;
+  overflow: hidden;
+  animation: onb-map-slide-in 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+}
+
+@keyframes onb-map-slide-in {
+  from { opacity: 0; transform: translateX(60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.onboarding-brand-map {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.onboarding-brand-map canvas,
+.onboarding-brand-map > div:first-child {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.onboarding-brand-map-pin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+  animation: onb-pin-drop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s both;
+}
+
+@keyframes onb-pin-drop {
+  from { opacity: 0; transform: translate(-50%, -100%) translateY(-40px) scale(0.6); }
+  to { opacity: 1; transform: translate(-50%, -100%) translateY(0) scale(1); }
+}
+
+.onboarding-map-brand-card {
+  width: 64px;
+  height: 80px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+
+.onboarding-map-monogram {
+  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.onboarding-map-logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.onboarding-map-pin-tail {
+  margin-top: -2px;
+}
+
+/* Business summary */
+.onboarding-biz-summary {
+  margin-bottom: 20px;
+}
+
+.onboarding-biz-summary-label {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  color: var(--text-secondary, #999);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.onboarding-biz-summary-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.onboarding-biz-summary-details {
+  flex: 1;
+}
+
+.onboarding-biz-detail-main {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary, #101010);
+  margin: 0 0 4px 0;
+}
+
+.onboarding-biz-detail-sub {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  color: var(--text-secondary, #666);
+  margin: 0 0 2px 0;
+}
+
+.onboarding-edit-btn {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary, #101010);
+  background: none;
+  border: 1.5px solid var(--border-color, #E0E0E0);
+  border-radius: 20px;
+  padding: 6px 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.onboarding-synced-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  color: var(--text-secondary, #999);
+}
+
+.onboarding-brand-divider {
+  height: 1px;
+  background: var(--border-color, #E8E8E8);
+  margin: 20px 0;
+}
+
+/* Brand card creation */
+.onboarding-brand-card-section {
+  flex: 1;
+}
+
+.onboarding-brand-heading {
+  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  color: var(--text-primary, #101010);
+  margin: 0 0 24px 0;
+}
+
+.onboarding-brand-label {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary, #101010);
+  display: block;
+  margin-bottom: 12px;
+}
+
+.onboarding-brand-logo-section {
+  margin-bottom: 28px;
+}
+
+.onboarding-logo-options {
+  display: flex;
+  gap: 12px;
+}
+
+.onboarding-logo-option {
+  width: 56px;
+  height: 70px;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s ease;
+}
+
+.onboarding-logo-option.selected {
+  border-color: var(--text-primary, #101010);
+}
+
+.onboarding-logo-option-inner {
+  width: 48px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.onboarding-logo-option-add-inner {
+  background: var(--bg-secondary, #F5F5F5) !important;
+  color: var(--text-secondary, #999);
+}
+
+.onboarding-logo-monogram {
+  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.onboarding-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Color options */
+.onboarding-brand-color-section {
+  margin-bottom: 28px;
+}
+
+.onboarding-color-options {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.onboarding-color-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s ease;
+}
+
+.onboarding-color-btn.selected {
+  border-color: var(--text-primary, #101010);
+}
+
+.onboarding-color-inner {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.onboarding-color-add-inner {
+  background: var(--bg-secondary, #F5F5F5) !important;
+  color: var(--text-secondary, #999);
+}
+
+/* Back / Next buttons */
+.onboarding-brand-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding-top: 16px;
+  margin-top: auto;
+}
+
+.onboarding-back-btn {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary, #101010);
+  background: none;
+  border: 1.5px solid var(--border-color, #E0E0E0);
+  border-radius: 20px;
+  padding: 8px 24px;
+  cursor: pointer;
+}
+
+.onboarding-next-btn {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  background: var(--text-primary, #101010);
+  border: none;
+  border-radius: 20px;
+  padding: 8px 24px;
+  cursor: pointer;
+}
+
+/* Account Blade */
+.account-blade-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.account-blade-overlay.closing {
+  animation: fadeOut 0.3s ease-out forwards;
+}
+
+.account-blade {
+  width: 400px;
+  height: 100%;
+  background: #fff;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  box-sizing: border-box;
+  animation: slideInFromRight 0.3s ease-out;
+}
+
+.account-blade > * {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.account-blade.closing {
+  animation: slideOutToRight 0.3s ease-out forwards;
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Blade Header */
+.account-blade-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.blade-add-business-btn {
+  width: auto !important;
+  min-width: auto !important;
+  padding: 8px 12px 8px 16px !important;
+  gap: 4px !important;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: 0;
+}
+
+/* Use modal-close styles (48x48) - override absolute positioning from global style */
+.account-blade .modal-close {
+  position: static;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  gap: 8px;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  min-height: 48px;
+  background: #F0F0F0;
+  border-radius: 10000px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.account-blade .modal-close:hover {
+  background: #E0E0E0;
+}
+
+.account-blade .modal-close:active {
+  transform: scale(0.98);
+}
+
+/* Brand selector - right under divider, hugs content, no scroll */
+.account-blade-brand-container {
+  padding: 0;
+  margin: 0;
+  margin-top: 24px;
+  width: 100%;
+}
+
+.account-blade-brand-title-wrap {
+  padding: 0 12px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.account-blade-brand-title {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
+  color: #101010;
+  margin: 0;
+}
+
+.account-blade-start-business-btn {
+  padding: 6px 12px;
+  height: auto;
+  min-height: 0;
+  background: var(--button-secondary-bg, #F0F0F0);
+  color: #101010;
+  border: none;
+  border-radius: 10000px;
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  flex-shrink: 0;
+}
+
+.account-blade-start-business-btn:hover {
+  background: var(--button-secondary-hover, #E0E0E0);
+}
+
+.account-blade-start-business-btn:active {
+  transform: scale(0.98);
+}
+
+.account-blade-brand-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.account-blade-brand-list .switch-business-item {
+  border-radius: 12px;
+  align-items: center;
+}
+
+.account-blade-brand-list .switch-business-item-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  flex: 1;
+}
+
+/* Scale down brand cards in blade to 32×40 */
+.account-blade-brand-list .switch-business-item-icon {
+  width: 32px;
+  height: 40px;
+}
+
+.account-blade-brand-list .switch-business-item-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.account-blade-brand-list .switch-business-item-icon-all {
+  width: 32px;
+  height: 40px;
+  min-width: 32px;
+  min-height: 40px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F5F5F5;
+}
+
+.account-blade-brand-list .switch-business-item-icon-all img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.account-blade-brand-list .switch-business-item-monogram {
+  width: 32px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.account-blade-brand-list .switch-business-monogram-text {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+/* Cash tag in selector: same size and style as Owner in avatar */
+.account-blade-brand-list .switch-business-item-handle {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #666666;
+}
+
+/* Business name in selector: same font as My businesses title */
+.account-blade-brand-list .switch-business-item-name {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
+  color: #101010;
+}
+
+.account-blade-brand-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.account-blade-logo-container {
+  width: 48px;
+  height: 60px;
+}
+
+.account-blade-logo {
+  width: 48px;
+  height: 60px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.account-blade-logo.account-blade-logo-monogram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.account-blade-monogram-text {
+  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 24px;
+  color: #fff;
+}
+
+/* Use location-edit-button styles - matching ProfileLocationsPage */
+.account-blade .location-edit-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px;
+  gap: 8px;
+  height: 40px;
+  min-height: 40px;
+  background: #F0F0F0;
+  border-radius: 10000px;
+  border: none;
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 22px;
+  color: #101010;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.account-blade .location-edit-button:hover {
+  background: #E0E0E0;
+}
+
+.account-blade .location-edit-button:active {
+  transform: scale(0.98);
+}
+
+.account-blade-brand-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #101010;
+  margin: 16px 0 4px 0;
+}
+
+.account-blade-brand-handle {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #666666;
+  margin: 0;
+}
+
+/* Menu Items - full width, buttons grouped with tight gap (no flex-grow so My businesses sits under divider) */
+.account-blade-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.account-blade-menu .nav-item {
+  margin-bottom: 2px;
+}
+
+.account-blade-menu .nav-item:last-of-type {
+  margin-bottom: 0;
+}
+
+.account-blade-menu .nav-item {
+  padding: 0 12px;
+  height: 48px;
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 600;
+  color: #101010;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+  cursor: pointer;
+  background: transparent;
+  border-radius: 12px;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+  text-align: left;
+  width: 100%;
+}
+
+.account-blade-menu .nav-item:hover {
+  background: #F0F0F0;
+}
+
+.account-blade-menu .nav-item:active {
+  transform: scale(0.98);
+}
+
+/* Blade dividers - same as sidebar: container with padding, 16px height, 1px line */
+.account-blade-divider-wrap {
+  height: 16px;
+  padding: 0 12px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  margin-bottom: 16px;
+}
+
+.account-blade-divider-wrap .nav-divider {
+  height: 1px;
+  background: #F0F0F0;
+  flex: 1;
+}
+
+.account-blade-section-divider {
+  margin-top: 24px;
+}
+
+.account-blade-menu .nav-divider-container {
+  height: 16px;
+  padding: 0 12px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.account-blade-menu .nav-divider {
+  height: 1px;
+  background: #F0F0F0;
+  flex: 1;
+}
+
+/* Space between divider and first button (Roadmap) */
+.account-blade-menu > .nav-divider-container:first-child {
+  margin-bottom: 8px;
+}
+
+/* Space between last button and divider above My businesses */
+.account-blade-menu > .nav-divider-container:last-child {
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+/* Account header block */
+.account-blade-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  width: 100%;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+.account-blade-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.account-blade-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #101010;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.account-blade-avatar-initials {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.account-blade-avatar-status {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 12px;
+  height: 12px;
+  background: #00D26A;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.account-blade-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.account-blade-user-name {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 600;
+  color: #101010;
+}
+
+.account-blade-user-role {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  color: #666666;
+}
+
+.account-blade-more-wrap {
+  position: relative;
+}
+
+.account-blade-more {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #F0F0F0;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #101010;
+  transition: background 0.15s ease;
+}
+
+.account-blade-more:hover {
+  background: #E0E0E0;
+}
+
+.account-blade-more:active {
+  transform: scale(0.98);
+}
+
+.account-blade-more-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 160px;
+  padding: 4px 0;
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+.account-blade-more-dropdown-item {
+  width: 100%;
+  padding: 10px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+  color: #101010;
+  text-align: left;
+  transition: background 0.15s ease;
+  border-radius: 0;
+}
+
+.account-blade-more-dropdown-item:hover {
+  background: #F5F5F5;
+}
+
+.account-blade-more-dropdown-item-signout {
+  color: #B91C1C;
+}
+
+.account-blade-more-dropdown-item-signout:hover {
+  background: #FEF2F2;
+}

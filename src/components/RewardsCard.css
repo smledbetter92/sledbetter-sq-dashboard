@@ -1,0 +1,97 @@
+.rewards-card-v3 .rewards-card-body {
+  padding: 0;
+}
+
+.rewards-card-subtext {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 19px;
+  line-height: 26px;
+  font-weight: 400;
+}
+
+.rewards-icon-box {
+  width: 32px;
+  height: 40px;
+  border-radius: 8px;
+  background: #101010;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rewards-icon-box img {
+  width: 24px;
+  height: 24px;
+}
+
+.rewards-metric-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.rewards-card-body-text {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  line-height: 21px;
+  font-weight: 400;
+  color: var(--text-primary);
+  flex: 1;
+  min-width: 0;
+}
+
+.rewards-metric-value-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.rewards-metric-value {
+  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 32px;
+  color: var(--text-primary);
+}
+
+.rewards-na-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 10000px;
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.rewards-pill-green {
+  background: #E5FFEE;
+  color: #007D2A;
+}
+
+.rewards-na-pill .trend-triangle-up {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  order: 0;
+}
+
+.rewards-na-pill span {
+  order: 1;
+}
+
+[data-theme="dark"] .rewards-icon-box {
+  background: #2a2a2a;
+}
+
+[data-theme="dark"] .rewards-pill-green {
+  background: var(--pill-live-bg, #E5FFEE);
+  color: var(--pill-live-text, #007D2A);
+}

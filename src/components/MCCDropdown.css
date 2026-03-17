@@ -1,0 +1,165 @@
+.mcc-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.mcc-dropdown-trigger {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+.mcc-dropdown-trigger.focused {
+  border-color: #101010;
+}
+
+.mcc-dropdown-value {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.mcc-dropdown-value .form-input-text {
+  pointer-events: none;
+}
+
+.mcc-dropdown-chevron {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mcc-dropdown-chevron.open {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.mcc-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #FFFFFF;
+  border: 1px solid #E2E2E2;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: 100;
+  padding: 4px 0;
+}
+
+.mcc-dropdown-search-wrap {
+  padding: 16px 16px 8px 16px;
+}
+
+.mcc-dropdown-search-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border: 1px solid #DADADA;
+  border-radius: 10000px;
+  transition: border-color 0.15s ease;
+}
+
+.mcc-dropdown-search-field:focus-within {
+  border-color: #101010;
+}
+
+.mcc-dropdown-search-icon {
+  flex-shrink: 0;
+}
+
+.mcc-dropdown-search {
+  width: 100%;
+  padding: 10px 0;
+  border: none;
+  background: transparent;
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  line-height: 22px;
+  color: #101010;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.mcc-dropdown-search:focus {
+  border-color: #101010;
+}
+
+.mcc-dropdown-search::placeholder {
+  color: #666666;
+}
+
+.mcc-dropdown-list {
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 4px 8px;
+}
+
+.mcc-dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 8px;
+  height: 40px;
+  border: none;
+  background: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.1s ease;
+  gap: 12px;
+  box-sizing: border-box;
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #101010;
+}
+
+.mcc-dropdown-item {
+  border-bottom: 1px solid #F0F0F0;
+}
+
+.mcc-dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.mcc-dropdown-item:hover {
+  background: #F7F7F7;
+}
+
+.mcc-dropdown-item.selected {
+  background: #F0F0F0;
+}
+
+.mcc-dropdown-item-label {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 500;
+  color: #101010;
+}
+
+.mcc-dropdown-item.selected .mcc-dropdown-item-label {
+  font-weight: 600;
+}
+
+.mcc-dropdown-item-code {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  line-height: 18px;
+  color: #999999;
+  flex-shrink: 0;
+}
+
+.mcc-dropdown-empty {
+  padding: 16px;
+  text-align: center;
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  color: #999999;
+}

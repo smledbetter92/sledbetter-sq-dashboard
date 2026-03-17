@@ -1,0 +1,157 @@
+.neighborhoods-guides {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 12px 0;
+  gap: 24px;
+  width: 800px;
+  flex: none;
+  flex-grow: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.neighborhoods-guide-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: guideAppear 0.5s ease forwards;
+}
+
+.neighborhoods-guide-item:nth-child(1) { animation-delay: 2.0s; }
+.neighborhoods-guide-item:nth-child(2) { animation-delay: 2.1s; }
+.neighborhoods-guide-item:nth-child(3) { animation-delay: 2.2s; }
+.neighborhoods-guide-item:nth-child(4) { animation-delay: 2.3s; }
+
+@keyframes guideAppear {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.neighborhoods-guide-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 16px;
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+  height: 240px;
+  border-radius: 24px;
+  flex: none;
+  align-self: stretch;
+  flex-grow: 0;
+  box-sizing: border-box;
+}
+
+.neighborhoods-guide-box-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.neighborhoods-guide-img {
+  max-width: 150px;
+  max-height: 168px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.neighborhoods-guide-avatars {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0;
+}
+
+.neighborhoods-guide-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 3px solid #FFFFFF;
+  object-fit: cover;
+  box-sizing: border-box;
+  margin-left: -16px;
+}
+
+.neighborhoods-guide-avatar:first-child {
+  margin-left: 0;
+}
+
+.neighborhoods-guide-pos-placeholder {
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.neighborhoods-guide-add {
+  flex-shrink: 0;
+  transition: opacity 0.15s ease;
+  cursor: pointer;
+}
+
+.neighborhoods-guide-box:hover .neighborhoods-guide-add {
+  opacity: 0.6;
+}
+
+.neighborhoods-guide-box:active .neighborhoods-guide-add {
+  transform: scale(0.92);
+}
+
+.neighborhoods-guide-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0 12px;
+  gap: 4px;
+  width: 100%;
+  flex: none;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.neighborhoods-guide-title {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  color: #101010;
+  align-self: stretch;
+}
+
+.neighborhoods-guide-description {
+  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #959595;
+  align-self: stretch;
+}
+
+[data-theme="dark"] .neighborhoods-guide-title {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .neighborhoods-guide-description {
+  color: var(--text-secondary);
+}

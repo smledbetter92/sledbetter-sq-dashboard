@@ -1,0 +1,1045 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Default selection style */
+::selection {
+  background: #B9B9FF;
+  color: #000000;
+}
+
+::-moz-selection {
+  background: #B9B9FF;
+  color: #000000;
+}
+
+/* Joy Bakeshop - Light Blue theme */
+[data-brand="joy-bakeshop"] ::selection {
+  background: #B9B9FF;
+  color: #000000;
+}
+
+[data-brand="joy-bakeshop"] ::-moz-selection {
+  background: #B9B9FF;
+  color: #000000;
+}
+
+/* Brooklyn French Bakers - Peach/Dark theme */
+[data-brand="brooklyn-french-bakers"] ::selection {
+  background: #FFCD7B;
+  color: #222222;
+}
+
+[data-brand="brooklyn-french-bakers"] ::-moz-selection {
+  background: #FFCD7B;
+  color: #222222;
+}
+
+/* Keva Juice - Coral/Dark theme */
+[data-brand="keva-juice"] ::selection {
+  background: #FFB39B;
+  color: #222222;
+}
+
+[data-brand="keva-juice"] ::-moz-selection {
+  background: #FFB39B;
+  color: #222222;
+}
+
+/* Spot of Tea - Pink/Blue theme */
+[data-brand="spot-of-tea"] ::selection {
+  background: #EFD2DC;
+  color: #2A67B0;
+}
+
+[data-brand="spot-of-tea"] ::-moz-selection {
+  background: #EFD2DC;
+  color: #2A67B0;
+}
+
+/* Vanilla Cafe - Cream/Green theme */
+[data-brand="vanilla-cafe"] ::selection {
+  background: #F7F3EA;
+  color: #4D6242;
+}
+
+[data-brand="vanilla-cafe"] ::-moz-selection {
+  background: #F7F3EA;
+  color: #4D6242;
+}
+
+/* Tea Monks - Cream/Orange theme */
+[data-brand="tea-monks"] ::selection {
+  background: #E9E0D3;
+  color: #A66800;
+}
+
+[data-brand="tea-monks"] ::-moz-selection {
+  background: #E9E0D3;
+  color: #A66800;
+}
+
+/* Paper Son Coffee - Mint/Teal theme */
+[data-brand="paper-son-coffee"] ::selection {
+  background: #8FFBEB;
+  color: #2B6058;
+}
+
+[data-brand="paper-son-coffee"] ::-moz-selection {
+  background: #8FFBEB;
+  color: #2B6058;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--app-bg);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* ========== Theme variables ========== */
+:root,
+[data-theme="light"] {
+  --app-bg: #ffffff;
+  --surface: #ffffff;
+  --surface-elevated: #ffffff;
+  --sidebar-bg: #FAFAFA;
+  --sidebar-border: #e5e7eb;
+  --text-primary: #101010;
+  --text-secondary: #666666;
+  --text-muted: rgba(0, 0, 0, 0.55);
+  --border: #F0F0F0;
+  --border-strong: #e5e7eb;
+  --button-secondary-bg: #F0F0F0;
+  --button-secondary-hover: #E0E0E0;
+  --button-secondary-active: #E5E5E5;
+  --nav-hover: #F0F0F0;
+  --card-bg: #FFFFFF;
+  --card-border: #F0F0F0;
+  --input-bg: #FFFFFF;
+  --shadow-color: rgba(0, 0, 0, 0.08);
+  --overlay-bg: rgba(0, 0, 0, 0.4);
+  --overlay-loading: rgba(255, 255, 255, 0.8);
+  /* Primary = dark button, Secondary = grey button; use these vars for all buttons */
+  --button-primary-bg: #101010;
+  --button-primary-hover: #2a2a2a;
+  --button-primary-text: #FFFFFF;
+  --pill-live-bg: #E5FFEE;
+  --pill-live-text: #007D2A;
+  --pill-live-dot: #007D2A;
+  --pill-gray-bg: #F0F0F0;
+  --pill-gray-text: #666666;
+  --pill-action-bg: #E5F3FF;
+  --pill-action-text: #006AFF;
+  --pill-connected-bg: #E5F3FF;
+  --pill-connected-text: #006AFF;
+  --switch-business-item-active-bg: #E8E8E8;
+  --avatar-bg: #101010;
+  --avatar-text: #FFFFFF;
+}
+
+[data-theme="dark"] {
+  --app-bg: #161616;
+  --surface: #1A1A1A;
+  --surface-elevated: #242424;
+  --sidebar-bg: #161616;
+  --sidebar-border: #2A2A2A;
+  --text-primary: #F5F5F5;
+  --text-secondary: #A3A3A3;
+  --text-muted: #888888;
+  --border: #2A2A2A;
+  --border-strong: #333333;
+  --button-secondary-bg: #2A2A2A;
+  --button-secondary-hover: #3A3A3A;
+  --button-secondary-active: #404040;
+  --nav-hover: #2A2A2A;
+  --card-bg: #1A1A1A;
+  --card-border: #2A2A2A;
+  --input-bg: #1A1A1A;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --overlay-bg: rgba(0, 0, 0, 0.6);
+  --overlay-loading: rgba(0, 0, 0, 0.6);
+  --button-primary-bg: #FFFFFF;
+  --button-primary-hover: #E8E8E8;
+  --button-primary-text: #101010;
+  --pill-live-bg: #1B3D24;
+  --pill-live-text: #5CDB84;
+  --pill-live-dot: #5CDB84;
+  --pill-gray-bg: #2A2A2A;
+  --pill-gray-text: #A3A3A3;
+  --pill-action-bg: #1A2F4A;
+  --pill-action-text: #6BB3FF;
+  --pill-connected-bg: #1A2F4A;
+  --pill-connected-text: #6BB3FF;
+  --switch-business-item-active-bg: #3A3A3A;
+  --avatar-bg: #FFFFFF;
+  --avatar-text: #101010;
+}
+
+/* Dark mode: sidebar – text white, dividers, hover */
+[data-theme="dark"] .sidebar .brand-name,
+[data-theme="dark"] .sidebar .nav-item,
+[data-theme="dark"] .sidebar .brand-handle,
+[data-theme="dark"] .sidebar .brand-handle-hover,
+[data-theme="dark"] .sidebar .submenu-title,
+[data-theme="dark"] .sidebar-account-nav .account-blade-user-name {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .sidebar .nav-item:hover:not(.active),
+[data-theme="dark"] .sidebar .nav-item.active {
+  background: var(--button-secondary-bg);
+}
+[data-theme="dark"] .sidebar .nav-icon-blink-home {
+  color: var(--text-primary) !important;
+  filter: none !important;
+}
+[data-theme="dark"] .sidebar .nav-icon-blink-home svg {
+  color: var(--text-primary) !important;
+}
+[data-theme="dark"] .sidebar .nav-icon-blink-home rect {
+  fill: none !important;
+  stroke: var(--text-primary) !important;
+}
+[data-theme="dark"] .sidebar .nav-icon-blink-home path {
+  fill: var(--text-primary) !important;
+  stroke: var(--text-primary) !important;
+}
+[data-theme="dark"] .sidebar .nav-divider {
+  background: var(--border);
+}
+[data-theme="dark"] .sidebar .nav-item img.nav-icon,
+[data-theme="dark"] .sidebar .nav-item .nav-icon {
+  filter: invert(1);
+}
+[data-theme="dark"] .sidebar .footer-icon:hover,
+[data-theme="dark"] .sidebar .version-toggle:hover {
+  background: var(--button-secondary-bg);
+}
+[data-theme="dark"] .sidebar .footer-icon img {
+  filter: invert(1);
+}
+[data-theme="dark"] .avatar-monogram {
+  background: var(--avatar-bg);
+  color: var(--avatar-text);
+}
+[data-theme="dark"] .avatar-status {
+  border-color: var(--sidebar-bg);
+}
+[data-theme="dark"] .sidebar .nav-back-btn {
+  background: var(--button-secondary-bg);
+}
+[data-theme="dark"] .sidebar .submenu-header:hover .nav-back-btn {
+  background: var(--button-secondary-hover);
+}
+[data-theme="dark"] .sidebar .nav-back-btn svg,
+[data-theme="dark"] .sidebar .submenu-header svg {
+  filter: invert(1) !important;
+}
+[data-theme="dark"] .dashboard .v3-chevron,
+[data-theme="dark"] .dashboard .v3-icon-container img {
+  filter: invert(1);
+}
+[data-theme="dark"] .card .card-row-chevron img {
+  filter: invert(1);
+}
+/* Icon box images: show original, never invert */
+[data-theme="dark"] .card .card-row-icon-box img {
+  filter: none !important;
+}
+[data-theme="dark"] .dashboard .card-row--google .v3-icon-container img {
+  filter: none;
+}
+[data-theme="dark"] .dashboard .v3-capitola-row .v3-icon-container img {
+  filter: none;
+}
+[data-theme="dark"] .main-content .page-title-container img,
+[data-theme="dark"] .main-content .page-title-container svg {
+  filter: invert(1);
+}
+[data-theme="dark"] .modal-close svg,
+[data-theme="dark"] .upgrade-modal-close svg,
+[data-theme="dark"] .guide-modal-close svg {
+  filter: invert(1);
+}
+/* Website editor modal: close icon stays white (no invert) */
+[data-theme="dark"] .modal-container.website-modal .modal-close.website-modal-close svg {
+  filter: none !important;
+}
+[data-theme="dark"] .switch-business-modal-close svg {
+  filter: invert(1);
+}
+[data-theme="dark"] .messages-card-v3 .messages-icon-wrap svg path {
+  fill: #FFFFFF;
+}
+
+/* Dark mode: images never invert – stay as-is. Only icons (targeted below) turn white. */
+[data-theme="dark"] img {
+  filter: none !important;
+}
+
+/* Orders card product thumbnails stay as uploaded */
+[data-theme="dark"] .dashboard .orders-product-icon--no-invert img {
+  filter: none !important;
+}
+
+/* Dark mode: only these icon areas get white icons (invert) – not images */
+[data-theme="dark"] .sidebar .nav-item img.nav-icon,
+[data-theme="dark"] .sidebar .nav-item .nav-icon:not(.nav-icon-blink-home) {
+  filter: invert(1) !important;
+}
+[data-theme="dark"] .sidebar .footer-icon img {
+  filter: invert(1) !important;
+}
+[data-theme="dark"] .sidebar .nav-back-btn svg,
+[data-theme="dark"] .sidebar .submenu-header svg {
+  filter: invert(1) !important;
+}
+[data-theme="dark"] .dashboard .v3-chevron,
+[data-theme="dark"] .dashboard .v3-icon-container img,
+[data-theme="dark"] .main-content .v3-chevron {
+  filter: invert(1) !important;
+}
+[data-theme="dark"] .card .card-row-chevron img {
+  filter: invert(1) !important;
+}
+[data-theme="dark"] .main-content .page-title-container img,
+[data-theme="dark"] .main-content .page-title-container svg {
+  filter: invert(1) !important;
+}
+[data-theme="dark"] .main-content .page-title-container .v4-more-btn svg,
+[data-theme="dark"] .main-content .page-title-container .v4-countdown-btn img {
+  filter: none !important;
+}
+[data-theme="dark"] .main-content .ordering-header-btn img {
+  filter: invert(1) !important;
+}
+[data-theme="dark"] .main-content .popover-menu img,
+[data-theme="dark"] .main-content .popover-menu svg {
+  filter: invert(1) !important;
+}
+[data-theme="dark"] .account-blade .modal-close svg {
+  filter: invert(1) !important;
+}
+[data-theme="dark"] .account-blade .card-action img {
+  filter: invert(1) !important;
+}
+[data-theme="dark"] .card-action:not(.card-action--dark) img {
+  filter: invert(1) !important;
+}
+[data-theme="dark"] .guide-modal-close svg {
+  filter: invert(1) !important;
+}
+
+/* Brand card / brand logo + connection & message images: never invert – show original */
+[data-theme="dark"] .sidebar .sidebar-brand-card .logo,
+[data-theme="dark"] .sidebar .sidebar-brand-card-logo img,
+[data-theme="dark"] .v3-icon-container .v3-icon-brand,
+[data-theme="dark"] .main-content .brand-card-icon img,
+[data-theme="dark"] .service-icon.brand-mini-card img,
+[data-theme="dark"] .dashboard .v3-capitola-row .v3-icon-container img,
+[data-theme="dark"] .dashboard .card-row--google .v3-icon-container img,
+[data-theme="dark"] .v3-icon-container.messages-icon-wrap img,
+[data-theme="dark"] .v4-mini-brand-card img,
+[data-theme="dark"] .dashboard .v3-icon-container .v4-mini-brand-card img {
+  filter: none !important;
+}
+[data-theme="dark"] .card-action--dark img {
+  filter: none !important;
+}
+/* Switch business header: dark icon on light btn in dark mode */
+[data-theme="dark"] .switch-business-header-btn .switch-business-icon,
+[data-theme="dark"] .switch-business-header-btn img.switch-business-icon {
+  filter: brightness(0) !important;
+}
+
+/* Dark mode: Sidebar Blink "Ask anything" icon - white body, dark eyes/mouth */
+[data-theme="dark"] .sidebar .search-bot-icon rect {
+  fill: #FFFFFF;
+}
+[data-theme="dark"] .sidebar .search-bot-icon .bot-eye {
+  fill: #0F0F0F;
+}
+[data-theme="dark"] .sidebar .search-bot-icon .bot-mouth {
+  stroke: #0F0F0F;
+}
+[data-theme="dark"] .sidebar .search-bot-icon .bot-mouth-open {
+  fill: #0F0F0F;
+}
+
+/* Dark mode: Account blade - use theme surfaces and text */
+[data-theme="dark"] .account-blade-overlay {
+  background: var(--overlay-bg);
+}
+[data-theme="dark"] .account-blade {
+  background: var(--surface-elevated);
+  border-color: var(--border-strong);
+}
+[data-theme="dark"] .account-blade-header,
+[data-theme="dark"] .account-blade-brand-name,
+[data-theme="dark"] .account-blade-menu .nav-item,
+[data-theme="dark"] .account-blade-user-name,
+[data-theme="dark"] .account-blade-user-role {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .account-blade-brand-handle,
+[data-theme="dark"] .account-blade-rewards {
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .account-blade-brand-container,
+[data-theme="dark"] .account-blade-menu .nav-divider {
+  border-color: var(--border);
+}
+[data-theme="dark"] .account-blade-menu .nav-item:hover {
+  background: var(--button-secondary-bg);
+}
+[data-theme="dark"] .account-blade .modal-close {
+  background: transparent;
+  color: var(--text-primary);
+}
+[data-theme="dark"] .account-blade .modal-close:hover {
+  background: var(--button-secondary-hover);
+}
+[data-theme="dark"] .account-blade-brand-title {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .account-blade-start-business-btn {
+  background: var(--button-secondary-bg);
+  color: var(--text-primary);
+}
+[data-theme="dark"] .account-blade-start-business-btn:hover {
+  background: var(--button-secondary-hover);
+}
+[data-theme="dark"] .account-blade-divider-wrap .nav-divider,
+[data-theme="dark"] .account-blade-menu .nav-divider {
+  background: var(--border);
+}
+[data-theme="dark"] .account-blade-more-dropdown {
+  background: var(--surface-elevated);
+  border-color: var(--border-strong);
+}
+[data-theme="dark"] .account-blade-more-dropdown-item {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .account-blade-more-dropdown-item:hover {
+  background: var(--button-secondary-hover);
+}
+[data-theme="dark"] .account-blade-more-dropdown-item-signout {
+  color: #F87171;
+}
+[data-theme="dark"] .account-blade-more-dropdown-item-signout:hover {
+  background: #3F1F1F;
+}
+
+/* Dark mode: Blade – My businesses / Linked profile text and hover/active */
+[data-theme="dark"] .account-blade-brand-list .switch-business-item-name {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .account-blade-brand-list .switch-business-item-handle {
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .account-blade-brand-list .switch-business-item:hover {
+  background: var(--button-secondary-bg);
+}
+[data-theme="dark"] .account-blade-brand-list .switch-business-item.active {
+  background: var(--switch-business-item-active-bg);
+}
+[data-theme="dark"] .account-blade-brand-list .switch-business-item-check img {
+  filter: invert(1) !important;
+}
+
+/* Dark mode: Switch business modal – text and item hover/active */
+[data-theme="dark"] .switch-business-modal-title {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .switch-business-modal-subtitle {
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .switch-business-modal-list .switch-business-item-name {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .switch-business-modal-list .switch-business-item-handle {
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .switch-business-modal-list .switch-business-item:hover {
+  background: var(--button-secondary-bg);
+}
+[data-theme="dark"] .switch-business-modal-list .switch-business-item.active {
+  background: var(--switch-business-item-active-bg);
+}
+[data-theme="dark"] .switch-business-modal-close:hover {
+  background: var(--button-secondary-hover);
+}
+[data-theme="dark"] .switch-business-modal .switch-business-item-check img {
+  filter: invert(1) !important;
+}
+
+/* Dark mode: Full-page modals (Analytics, Customer directory) – same bg for header, content, footer; icons and text */
+[data-theme="dark"] .modal-overlay:not([data-theme]) {
+  background: var(--overlay-bg);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-container:not(.website-modal) {
+  background: var(--surface-elevated);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-header,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-content,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-footer,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-footer-inner {
+  background: var(--surface-elevated);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-close {
+  background: var(--button-secondary-bg);
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-close:hover {
+  background: var(--button-secondary-hover);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-close svg,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-close img {
+  filter: invert(1);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-close svg path {
+  stroke: var(--text-primary);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-title,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-description,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-section-title,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-label-text,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-label-value,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-breakdown-text,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-breakdown-value,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-legend-text,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-legend-value {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-section {
+  background: var(--surface-elevated);
+  border-color: var(--border-strong);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-section-title {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.3) 32.5%, transparent 32.5%, transparent 100%);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-bar-container,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-breakdown-bar-container {
+  background: var(--button-secondary-bg);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-footer-inner {
+  border-color: var(--border-strong);
+  box-shadow: 0 0 2px var(--shadow-color);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-footer-inner:hover,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-footer-inner:focus-within {
+  border-color: var(--text-muted);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .prompt-input {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .prompt-input::placeholder {
+  color: var(--text-muted);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-cancel {
+  background: var(--button-secondary-bg);
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-cancel:hover {
+  background: var(--button-secondary-hover);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-send {
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .modal-send:hover {
+  background: var(--button-primary-hover);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .prompt-plus-button svg,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .prompt-plus-button img,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .prompt-send-button svg,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .prompt-send-button img {
+  filter: invert(1);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .summary-label,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .summary-value {
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .summary-value {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .metric-percentage {
+  color: var(--pill-live-text);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .legend-text {
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .chart-tooltip {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-strong);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .tooltip-header,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .tooltip-label {
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .modal-overlay:not([data-theme]) .tooltip-date,
+[data-theme="dark"] .modal-overlay:not([data-theme]) .tooltip-amount {
+  color: var(--text-primary);
+}
+
+/* Dark mode: Guide modal (smaller modal) – same bg, text, X button */
+[data-theme="dark"] .guide-modal-overlay {
+  background: var(--overlay-bg);
+}
+[data-theme="dark"] .guide-modal {
+  background: var(--surface-elevated);
+}
+[data-theme="dark"] .guide-modal-header {
+  background: transparent;
+}
+[data-theme="dark"] .guide-modal-close {
+  background: var(--button-secondary-bg);
+  color: var(--text-primary);
+}
+[data-theme="dark"] .guide-modal-close:hover {
+  background: var(--button-secondary-hover);
+}
+[data-theme="dark"] .guide-modal-close svg {
+  filter: invert(1);
+}
+[data-theme="dark"] .guide-modal-subtitle,
+[data-theme="dark"] .guide-modal-title,
+[data-theme="dark"] .guide-modal-description {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .guide-modal-body,
+[data-theme="dark"] .guide-modal-text-section,
+[data-theme="dark"] .guide-modal-footer {
+  background: transparent;
+}
+[data-theme="dark"] .guide-modal-image-container {
+  background: var(--button-secondary-bg);
+}
+[data-theme="dark"] .guide-modal-progress-bar {
+  border-color: var(--border-strong);
+}
+[data-theme="dark"] .guide-modal-progress-bar.active {
+  background: var(--text-primary);
+}
+[data-theme="dark"] .guide-modal-progress-bar.inactive {
+  background: var(--button-secondary-bg);
+}
+[data-theme="dark"] .guide-modal-learn-more {
+  background: var(--button-secondary-bg);
+  color: var(--text-primary);
+}
+[data-theme="dark"] .guide-modal-learn-more:hover {
+  background: var(--button-secondary-hover);
+}
+[data-theme="dark"] .guide-modal-learn-more span {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .guide-modal-next {
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
+}
+[data-theme="dark"] .guide-modal-next:hover {
+  background: var(--button-primary-hover);
+}
+[data-theme="dark"] .guide-modal-next span {
+  color: var(--button-primary-text);
+}
+
+/* Dark mode: Modal with sidebar (e.g. edit modal) – same bg as content */
+[data-theme="dark"] .modal-sidebar {
+  background: var(--surface-elevated);
+  border-right-color: var(--border);
+}
+[data-theme="dark"] .modal-sidebar-header {
+  border-bottom-color: var(--border);
+}
+[data-theme="dark"] .modal-sidebar-header h3 {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-sidebar-nav a {
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .modal-sidebar-nav a:hover {
+  background: var(--button-secondary-bg);
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-sidebar-nav a.active {
+  background: var(--button-secondary-hover);
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-container:not(.website-modal) .modal-main-content {
+  background: var(--surface-elevated);
+}
+[data-theme="dark"] .modal-container:not(.website-modal) .edit-section h2,
+[data-theme="dark"] .modal-container:not(.website-modal) .edit-section .section-description {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-container:not(.website-modal) .edit-section .section-description {
+  color: var(--text-secondary);
+}
+
+/* Dark mode: Location modal sidebar (same bg as content) */
+[data-theme="dark"] .location-modal-sidebar {
+  background: var(--surface-elevated);
+}
+[data-theme="dark"] .location-sidebar-item:hover,
+[data-theme="dark"] .location-sidebar-item.active {
+  background: var(--button-secondary-bg);
+}
+[data-theme="dark"] .location-sidebar-item .sidebar-item-title {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .location-sidebar-item .sidebar-item-subtitle,
+[data-theme="dark"] .location-sidebar-item.add-more-item .sidebar-item-title {
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .location-sidebar-item .sidebar-item-icon img {
+  filter: none !important;
+}
+[data-theme="dark"] .location-sidebar-item .sidebar-item-icon svg {
+  filter: invert(1);
+}
+[data-theme="dark"] .v3-business-edit-sidebar {
+  background: var(--surface-elevated);
+}
+[data-theme="dark"] .v3-business-edit-nav-item:hover:not(.active),
+[data-theme="dark"] .v3-business-edit-nav-item.active {
+  background: var(--button-secondary-bg);
+}
+[data-theme="dark"] .v3-business-edit-nav-item {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .v3-business-edit-nav-item .v3-business-edit-nav-icon img {
+  filter: none !important;
+}
+[data-theme="dark"] .v3-business-edit-nav-item .v3-business-edit-nav-icon svg {
+  filter: invert(1);
+}
+[data-theme="dark"] .v3-edit-section h2,
+[data-theme="dark"] .v3-edit-section .v3-edit-section-subtitle {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .v3-edit-section .v3-edit-section-subtitle {
+  color: var(--text-secondary);
+}
+
+/* Dark mode: My Business Edit modal – same card bg, white icons (no image invert), form fields, Save/Cancel */
+[data-theme="dark"] .modal-container.business-edit-modal,
+[data-theme="dark"] .modal-container.business-edit-modal .modal-header,
+[data-theme="dark"] .modal-container.business-edit-modal .location-modal-body,
+[data-theme="dark"] .modal-container.business-edit-modal .location-modal-sidebar,
+[data-theme="dark"] .modal-container.business-edit-modal .modal-content,
+[data-theme="dark"] .modal-container.business-edit-modal .card.card-modal {
+  background: var(--card-bg);
+  border-color: var(--card-border);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .modal-title {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .modal-close {
+  background: var(--button-secondary-bg);
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .modal-close:hover {
+  background: var(--button-secondary-hover);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .modal-close svg {
+  filter: none;
+}
+[data-theme="dark"] .modal-container.business-edit-modal .modal-close svg path {
+  stroke: var(--text-primary);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .modal-cancel {
+  background: var(--button-secondary-bg);
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .modal-cancel:hover {
+  background: var(--button-secondary-hover);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .modal-send {
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .modal-send:hover {
+  background: var(--button-primary-hover);
+}
+[data-theme="dark"] .modal-container.business-edit-modal img {
+  filter: none !important;
+}
+/* Sidebar nav icons (img) in modal: invert so they show white in dark mode */
+[data-theme="dark"] .modal-container.business-edit-modal .v3-business-edit-nav-icon img {
+  filter: invert(1) !important;
+}
+[data-theme="dark"] .modal-container.business-edit-modal .v3-business-edit-nav-icon svg {
+  filter: none;
+}
+[data-theme="dark"] .modal-container.business-edit-modal .v3-business-edit-nav-item {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .location-modal-sidebar.v3-business-edit-sidebar {
+  background: var(--card-bg);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .card-title,
+[data-theme="dark"] .modal-container.business-edit-modal .card-subtitle {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .card-subtitle {
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .form-label {
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .form-input-container.has-value .form-label,
+[data-theme="dark"] .modal-container.business-edit-modal .form-input-container:focus-within .form-label {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .form-input-container:not(.has-value):not(:focus-within) .form-label {
+  color: var(--text-muted);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .form-input-container {
+  background: var(--input-bg);
+  border-color: var(--border-strong);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .form-input-container:hover {
+  border-color: var(--text-muted);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .form-input-container:focus-within {
+  border-color: var(--text-primary);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .form-input-text {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .form-input-text::placeholder {
+  color: var(--text-muted);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .v3-edit-section-subtitle {
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .setting-title {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .setting-details {
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .card-action {
+  background: var(--button-secondary-bg);
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .card-action:hover {
+  background: var(--button-secondary-hover);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .setting-edit-button {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .v3-brand-card-preview {
+  background: var(--button-secondary-bg);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .v3-form-fields .image-preview {
+  background: var(--button-secondary-bg);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .v3-form-fields .image-upload-button svg path {
+  fill: var(--text-primary);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .v3-color-swatch-large {
+  border-color: var(--border-strong);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .v3-member-avatar {
+  background: var(--button-secondary-bg);
+  color: var(--text-primary);
+}
+[data-theme="dark"] .modal-container.business-edit-modal .v3-connection-description {
+  color: var(--text-secondary);
+}
+
+/* Avatar: dark circle → light circle, initials dark text */
+[data-theme="dark"] .account-blade-avatar {
+  background: var(--avatar-bg);
+}
+[data-theme="dark"] .account-blade-avatar-initials {
+  color: var(--avatar-text);
+}
+[data-theme="dark"] .account-blade .modal-close svg {
+  stroke: var(--text-primary);
+}
+
+/* Dark mode: Sidebar search input */
+[data-theme="dark"] .sidebar .search-input {
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+[data-theme="dark"] .sidebar .search-input::placeholder {
+  color: var(--text-muted);
+}
+[data-theme="dark"] .sidebar .search-input:focus {
+  border-color: var(--text-muted);
+}
+
+/* Dark mode: main content cards (Followers, Orders, Messages, location cards) */
+[data-theme="dark"] .main-content .followers-section,
+[data-theme="dark"] .main-content .card,
+[data-theme="dark"] .main-content .card,
+[data-theme="dark"] .main-content .brand-card-start,
+[data-theme="dark"] .main-content .location-card-start {
+  background: var(--card-bg);
+  border-color: var(--card-border);
+}
+[data-theme="dark"] .main-content .section-title,
+[data-theme="dark"] .main-content .service-title,
+[data-theme="dark"] .main-content .card-title,
+[data-theme="dark"] .main-content .brand-card-title-text,
+[data-theme="dark"] .main-content .location-card-title-text {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .main-content .card-subtitle,
+[data-theme="dark"] .main-content .brand-card-header-description,
+[data-theme="dark"] .main-content .location-card-header-description,
+[data-theme="dark"] .main-content .v3-service-subtitle,
+[data-theme="dark"] .main-content .v3-page-subtitle {
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .main-content .pill-button-text {
+  color: var(--text-primary);
+}
+
+/* Dark mode: Status pills – use theme pill vars */
+[data-theme="dark"] .status-pill.live {
+  background: var(--pill-live-bg);
+  color: var(--pill-live-text);
+}
+[data-theme="dark"] .status-pill.live::before {
+  background: radial-gradient(circle, var(--pill-live-dot) 4px, transparent 4px);
+}
+[data-theme="dark"] .status-pill.gray {
+  background: var(--pill-gray-bg);
+  color: var(--pill-gray-text);
+}
+[data-theme="dark"] .status-pill.action {
+  background: var(--pill-action-bg);
+  color: var(--pill-action-text);
+}
+/* Connected pill: green in dark (e.g. Capitola Coffee), same as live */
+[data-theme="dark"] .status-pill.connected {
+  background: var(--pill-live-bg);
+  color: var(--pill-live-text);
+}
+[data-theme="dark"] .status-pill.linked {
+  background: var(--pill-live-bg);
+  color: var(--pill-live-text);
+}
+[data-theme="dark"] .status-pill.linked::before {
+  background: radial-gradient(circle, var(--pill-live-dot) 4px, transparent 4px);
+}
+
+/* Dark mode: Dividers */
+[data-theme="dark"] .card-divider,
+[data-theme="dark"] .card-divider--homepage,
+[data-theme="dark"] .card-divider--fulfillment {
+  border-top-color: var(--border);
+  border-bottom: none;
+}
+[data-theme="dark"] .nav-divider {
+  background: var(--border);
+}
+[data-theme="dark"] .card-divider {
+  border-color: var(--border);
+}
+[data-theme="dark"] .popover-divider {
+  background: var(--border);
+}
+
+/* Dark mode: Icon boxes – gray → dark surface */
+[data-theme="dark"] .v3-icon-container,
+[data-theme="dark"] .v2-card-icon {
+  background: var(--button-secondary-bg);
+}
+
+/* Dark mode: Pill button hover */
+[data-theme="dark"] .pill-button {
+  background: var(--button-secondary-bg);
+  border-color: var(--border-strong);
+}
+[data-theme="dark"] .pill-button:hover {
+  background: var(--button-secondary-hover);
+  border-color: var(--border-strong);
+}
+
+/* Dark mode: Ordering header pills – “On” pill uses theme green */
+[data-theme="dark"] .ordering-pill-on {
+  background: var(--pill-live-bg);
+  color: var(--pill-live-text);
+}
+[data-theme="dark"] .ordering-pill-on:hover {
+  background: #2A4D35;
+  color: var(--pill-live-text);
+}
+[data-theme="dark"] .ordering-pill-dot {
+  background: var(--pill-live-dot);
+}
+
+/* Dark mode: Row hover = same as icon container (override BaseProfilePage !important) */
+[data-theme="dark"] .card-row:hover,
+[data-theme="dark"] .main-content .card-row:hover {
+  background: var(--button-secondary-bg) !important;
+}
+[data-theme="dark"] .card .card-rows .card-row:hover {
+  background: var(--button-secondary-bg) !important;
+}
+[data-theme="dark"] .card-action {
+  background: var(--button-secondary-bg);
+  color: var(--text-primary);
+}
+[data-theme="dark"] .card-action:hover {
+  background: var(--button-secondary-hover);
+}
+
+/* Dark mode: Sidebar account role text */
+[data-theme="dark"] .sidebar-account-nav .account-blade-user-role {
+  color: var(--text-secondary);
+}
+
+/* Dark mode: Account blade “more” button */
+[data-theme="dark"] .account-blade-more {
+  background: var(--button-secondary-bg);
+  color: var(--text-primary);
+}
+[data-theme="dark"] .account-blade-more:hover {
+  background: var(--button-secondary-hover);
+}
+[data-theme="dark"] .account-blade-more img,
+[data-theme="dark"] .account-blade-more svg {
+  filter: invert(1);
+}
+
+/* Dark mode: Account blade location edit button hover */
+[data-theme="dark"] .account-blade .card-action:hover {
+  background: var(--button-secondary-hover);
+}
+
+/* Dark mode: Edit website / Add page buttons (primary = white in dark) */
+[data-theme="dark"] .main-content .card-action.card-action--primary:hover {
+  background: var(--button-primary-hover) !important;
+}
+
+/* Shared standard-modal animation (upgrade + switch-business) */
+@keyframes standardModalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes standardModalFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes standardModalSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes standardModalSlideDown {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(20px); }
+}
