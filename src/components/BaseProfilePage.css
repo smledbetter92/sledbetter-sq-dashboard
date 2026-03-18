@@ -111,7 +111,7 @@
 .welcome-title-text {
   width: 642px;
   height: 26px;
-  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 700;
   font-size: 19px;
@@ -126,7 +126,7 @@
 .welcome-header-description {
   width: 642px;
   height: 22px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -155,7 +155,7 @@
   flex-grow: 0;
   border: none;
   cursor: pointer;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -283,7 +283,7 @@
 
 .guide-title {
   height: 22px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -297,7 +297,7 @@
 .guide-subtitle {
   width: 100%;
   height: 18px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -382,7 +382,7 @@
 }
 
 .monogram-text {
-  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 700;
   font-size: 18px;
@@ -419,7 +419,7 @@
   flex: 1;
   min-width: 0;
   height: 32px;
-  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 700;
   font-size: 25px;
@@ -434,7 +434,7 @@
   flex: 1;
   min-width: 0;
   height: 22px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -462,7 +462,7 @@
   flex-grow: 0;
   border: none;
   cursor: pointer;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -488,6 +488,159 @@
   width: 100% !important;
 }
 
+.card-tabs-wrapper {
+  width: 100%;
+  border-bottom: 1px solid #EFEFEF;
+}
+
+.card-tabs-wrapper--header {
+  padding-bottom: 0;
+}
+
+.card-tabs-wrapper--header .card-tab {
+  font-size: 19px;
+  line-height: 26px;
+  font-weight: 600;
+  padding: 0 0 10px 0 !important;
+}
+
+.card-tabs-wrapper--header .card-tab--active {
+  font-weight: 600;
+}
+
+.card-tabs {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding: 0;
+  border: none;
+}
+
+.card-tab {
+  padding: 10px 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #717171;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.card-tab:hover {
+  color: #404040;
+}
+
+.card-tab--active {
+  color: #101010;
+  font-weight: 700;
+  border-bottom-color: transparent;
+  position: relative;
+}
+
+.card-tab--active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #101010;
+  border-radius: 2px 2px 0 0;
+}
+
+.card-tabs-action {
+  margin-left: auto;
+  padding-left: 24px;
+  position: relative;
+}
+
+.card-tabs-action::before {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: -20px;
+  right: 0;
+  height: 1px;
+  background: var(--card-bg, #fff);
+}
+
+.card-tab-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: #717171;
+  background: #F0F0F0;
+  border-radius: 10px;
+  padding: 1px 7px;
+  line-height: 1.4;
+}
+
+.card-tab--active .card-tab-count {
+  background: #101010;
+  color: #FFFFFF;
+}
+
+.location-groups-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  text-align: center;
+  width: 100%;
+  align-self: stretch;
+  box-sizing: border-box;
+}
+
+.location-groups-empty--assigned {
+  border: 1px solid #F0F0F0;
+  border-radius: 16px;
+}
+
+.location-groups-empty--assigned > span {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
+}
+
+.location-groups-empty--assigned .location-groups-empty-cta {
+  height: 48px;
+  min-height: 48px;
+}
+
+.location-groups-empty-text {
+  font-size: 14px;
+  color: #717171;
+  margin: 0 0 16px 0;
+  max-width: 300px;
+}
+
+.location-groups-empty-cta {
+  font-size: 14px;
+  font-weight: 600;
+  color: #101010;
+  background: var(--button-secondary-bg, #F0F0F0);
+  border: none;
+  border-radius: 10000px;
+  padding: 8px 20px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.location-groups-empty-cta:hover {
+  background: var(--button-secondary-hover, #E0E0E0);
+}
+
+.location-groups-empty-cta:active {
+  transform: scale(0.98);
+}
+
 .base-profile-page > .card .card-rows {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
@@ -509,6 +662,38 @@
   margin: 0 -12px !important;
   width: 332px !important;
   box-sizing: content-box !important;
+}
+
+.base-profile-page > .card .card-rows.card-rows--groups {
+  display: flex !important;
+  flex-direction: column !important;
+  margin-left: 0 !important;
+  width: 100% !important;
+  grid-template-columns: none !important;
+}
+
+.base-profile-page > .card .card-rows--groups .card-row {
+  width: 100% !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.base-profile-page > .card .card-rows--groups .location-groups-empty {
+  width: 100% !important;
+  align-self: stretch !important;
+}
+
+.location-list-search {
+  padding: 0;
+  margin-bottom: -8px;
+  width: 100%;
+}
+
+.location-list-search .rep-search-input-wrapper {
+  width: 100%;
+  height: 40px;
+  min-height: 40px;
+  padding: 0 16px;
 }
 
 /* Adaptive grid layouts based on feature count */
@@ -631,7 +816,7 @@
 .location-card-title-text {
   flex: 1;
   min-width: 0;
-  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 19px;
@@ -643,7 +828,7 @@
 .location-card-header-description {
   flex: 1;
   min-width: 0;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -669,7 +854,7 @@
   flex-grow: 0;
   border: none;
   cursor: pointer;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -765,7 +950,7 @@
 .website-card-title-text {
   flex: 1;
   min-width: 0;
-  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 19px;
@@ -776,7 +961,7 @@
 .website-card-header-description {
   flex: 1;
   min-width: 0;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -925,7 +1110,7 @@
   border: none;
   border-radius: 10000px;
   cursor: pointer;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -1054,7 +1239,7 @@
 }
 
 .step-active-label {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -1126,7 +1311,7 @@
   flex-grow: 0;
   cursor: pointer;
   white-space: nowrap;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -1160,7 +1345,7 @@
   order: 1;
   flex-grow: 0;
   cursor: pointer;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -1348,7 +1533,7 @@
 }
 
 .step-content-placeholder {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -1400,7 +1585,7 @@
   flex-grow: 0;
   background: transparent;
   cursor: pointer;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
@@ -1434,7 +1619,7 @@
   flex-grow: 0;
   border: none;
   cursor: pointer;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
@@ -1490,7 +1675,7 @@
 
 .row-location-name {
   flex: 1;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
@@ -1498,7 +1683,7 @@
 }
 
 .row-location-address {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 22px;
@@ -1543,7 +1728,7 @@
   align-items: flex-start;
   padding: 0px 8px 0px 0px;
   width: 160px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -1579,7 +1764,7 @@
   background: transparent;
   border: none;
   border-radius: 10000px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -1605,7 +1790,7 @@
 }
 
 .ordering-detail-item {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -1618,7 +1803,7 @@
 }
 
 .ordering-option-description {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -1713,7 +1898,7 @@
 }
 
 .migration-info-banner-desc {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
@@ -1791,7 +1976,7 @@
 
 .field-update-hint {
   margin: 4px 0 0 0;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 13px;
   line-height: 18px;
   font-weight: 400;
@@ -1800,7 +1985,7 @@
 
 .field-helper-text {
   margin: 6px 0 0 0;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 13px;
   line-height: 18px;
   font-weight: 400;
@@ -1838,7 +2023,7 @@
 }
 
 .v3-edit-section-title {
-  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 700;
   font-size: 24px;
   line-height: 32px;
@@ -1847,7 +2032,7 @@
 }
 
 .v3-edit-section-subtitle {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
@@ -1856,7 +2041,7 @@
 }
 
 .v3-field-label {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 500;
   font-size: 12px;
   line-height: 18px;
@@ -1899,7 +2084,7 @@
   background: none;
   border: none;
   padding: 0;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
@@ -1912,7 +2097,7 @@
 }
 
 .v3-upload-hint {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
@@ -1935,7 +2120,7 @@
 }
 
 .v3-color-input {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
   line-height: 20px;
   color: #101010;
@@ -1970,7 +2155,7 @@
 }
 
 .v3-toggle-label {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
@@ -1978,7 +2163,7 @@
 }
 
 .v3-toggle-description {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
@@ -2042,7 +2227,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 600;
   font-size: 12px;
   flex-shrink: 0;
@@ -2055,7 +2240,7 @@
 }
 
 .v3-team-name {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
@@ -2063,7 +2248,7 @@
 }
 
 .v3-team-role {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
@@ -2074,7 +2259,7 @@
   background: none;
   border: none;
   padding: 0;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
@@ -2118,7 +2303,7 @@
 }
 
 .v3-connection-name {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
@@ -2126,7 +2311,7 @@
 }
 
 .v3-connection-status {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
@@ -2139,7 +2324,7 @@
   border: none;
   border-radius: 10000px;
   padding: 8px 16px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
@@ -2184,7 +2369,7 @@
   border: none;
   border-radius: 10000px;
   padding: 8px 16px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 600;
   font-size: 14px;
   line-height: 22px;
@@ -2241,7 +2426,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 600;
   font-size: 14px;
   flex-shrink: 0;
@@ -2379,7 +2564,7 @@
 }
 
 .v4-preview-monogram-text {
-  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 700;
   font-size: 40px;
   color: #FFFFFF;
@@ -2421,7 +2606,7 @@
 }
 
 .v4-logo-thumb-monogram span {
-  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 700;
   font-size: 16px;
   color: #FFFFFF;
@@ -2655,7 +2840,7 @@
 }
 
 .v3-connection-description {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 22px;
@@ -2747,7 +2932,7 @@
 }
 
 .website-modal-url-text {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -2772,7 +2957,7 @@
   border: none;
   cursor: pointer;
   margin-left: auto;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -2808,7 +2993,7 @@
   border-radius: 10000px;
   border: none;
   cursor: pointer;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 600;
   font-size: 15px;
   line-height: 22px;
@@ -2835,7 +3020,7 @@
   border-radius: 10000px;
   border: none;
   cursor: pointer;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 600;
   font-size: 15px;
   line-height: 22px;
@@ -2901,7 +3086,7 @@
 }
 
 .browser-page-name {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 500;
   font-size: 13px;
   line-height: 16px;
@@ -2933,7 +3118,7 @@
 }
 
 .browser-selection-text {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
   font-size: 13px;
   line-height: 16px;
@@ -2953,7 +3138,7 @@
 }
 
 .browser-address-text {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
   font-size: 13px;
   line-height: 16px;
@@ -3056,7 +3241,7 @@
 }
 
 .website-browser-url {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 13px;
@@ -3146,7 +3331,7 @@
 }
 
 .switch-business-modal-title {
-  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-style: normal;
   font-weight: 700;
   font-size: 25px;
@@ -3156,7 +3341,7 @@
 }
 
 .switch-business-modal-subtitle {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
   font-weight: 400;
   color: #666666;
@@ -3226,7 +3411,7 @@
 }
 
 .switch-business-monogram-text {
-  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 700;
   font-size: 18px;
   line-height: 24px;
@@ -3241,14 +3426,14 @@
 }
 
 .switch-business-item-name {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 15px;
   font-weight: 500;
   color: #101010;
 }
 
 .switch-business-item-handle {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 13px;
   font-weight: 400;
   color: #666666;
@@ -3321,7 +3506,7 @@
 }
 
 .card-title {
-  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 700;
   font-size: 19px;
@@ -3331,7 +3516,7 @@
 }
 
 .card-subtitle {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -3379,7 +3564,7 @@
 }
 
 .form-input-prefix {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 24px;
@@ -3414,7 +3599,7 @@
 }
 
 .change-limit-indicator {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 12px;
   font-weight: 500;
   color: #999999;
@@ -3430,7 +3615,7 @@
 }
 
 .cashtag-rename-btn {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 13px;
   font-weight: 600;
   color: #101010;
@@ -3475,7 +3660,7 @@
   cursor: pointer;
   flex: none;
   margin-left: auto;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -3640,7 +3825,7 @@
 }
 
 .card-row--emphasized .card-row-emphasized-subtitle {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 22px;
@@ -3648,7 +3833,7 @@
 }
 
 .card-row--emphasized .card-row-emphasized-description {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 22px;
@@ -3755,7 +3940,7 @@
 }
 
 .monogram-text-mini {
-  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 700;
   font-size: 10px;
   line-height: 1;
@@ -3881,7 +4066,7 @@
 
 .status-pill.live span,
 .status-pill.live {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -3892,7 +4077,7 @@
 
 .status-pill.gray {
   background: #F0F0F0;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -3903,7 +4088,7 @@
 
 .status-pill.action {
   background: #E5F3FF;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -3928,7 +4113,7 @@
 }
 
 .status-pill.linked {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -3940,7 +4125,7 @@
 /* Connected pill - blue */
 .status-pill.connected {
   background: #E5F3FF;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -3951,7 +4136,7 @@
 
 .status-pill.blue {
   background: #E5F3FF;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -3984,7 +4169,7 @@
 }
 
 .v4-business-handle {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
@@ -3993,7 +4178,7 @@
 }
 
 .v4-business-about {
-  font-family: 'Cash Sans', 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 24px;
@@ -4058,7 +4243,7 @@
 }
 
 .v4-profile-preview-name {
-  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 700;
   font-size: 24px;
   line-height: 32px;
@@ -4072,7 +4257,7 @@
 }
 
 .v4-profile-preview-handle {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 12px;
   font-weight: 400;
   line-height: 18px;
@@ -4106,7 +4291,7 @@
 }
 
 .v4-mini-brand-card .v4-mini-brand-monogram {
-  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 700;
   font-size: 7px;
   line-height: 1;
@@ -4177,7 +4362,7 @@
   background: transparent;
   border: none;
   border-radius: 12px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-size: 14px;
   line-height: 22px;
   font-weight: 600;
@@ -4317,7 +4502,7 @@
   flex: 1;
   min-width: 0;
   margin: 0;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
@@ -4329,7 +4514,7 @@
   flex: 1;
   min-width: 0;
   text-align: right;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
@@ -4456,7 +4641,7 @@
 }
 
 .modal-sidebar-header h3 {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 600;
   font-size: 16px;
   color: #101010;
@@ -4473,7 +4658,7 @@
   display: block;
   padding: 10px 12px;
   border-radius: 8px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
   font-weight: 500;
   color: #717171;
@@ -4499,7 +4684,7 @@
 }
 
 .edit-section h2 {
-  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 700;
   font-size: 24px;
   color: #101010;
@@ -4507,7 +4692,7 @@
 }
 
 .edit-section .section-description {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
   color: #717171;
   margin: 0 0 32px 0;
@@ -4519,7 +4704,7 @@
 
 .edit-field label {
   display: block;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 13px;
   font-weight: 500;
   color: #717171;
@@ -4527,7 +4712,7 @@
 }
 
 .edit-field-value {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 15px;
   font-weight: 500;
   color: #101010;
@@ -4568,14 +4753,14 @@
 }
 
 .location-item .card-title {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 15px;
   font-weight: 600;
   color: #101010;
 }
 
 .location-item .card-subtitle {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 13px;
   color: #717171;
 }
@@ -4599,14 +4784,14 @@
   background: #F5F5F5;
   border-radius: 10000px;
   padding: 6px 12px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 12px;
   font-weight: 600;
   color: #717171;
 }
 
 .website-preview-modal .preview-label {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
   color: #717171;
 }
@@ -4616,7 +4801,7 @@
   border: none;
   border-radius: 10000px;
   padding: 10px 20px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: #FFFFFF;
@@ -4680,7 +4865,7 @@
   background: #FFFFFF;
   border: 1px solid #E0E0E0;
   border-radius: 8px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 13px;
   color: #717171;
 }
@@ -4718,7 +4903,7 @@
 }
 
 .website-preview-modal .preview-brand-name {
-  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 700;
   font-size: 28px;
   color: #101010;
@@ -4726,14 +4911,14 @@
 }
 
 .website-preview-modal .preview-handle {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 15px;
   color: #717171;
   margin: 0 0 16px 0;
 }
 
 .website-preview-modal .preview-about {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
   line-height: 22px;
   color: #4A4A4A;
@@ -4753,7 +4938,7 @@
   justify-content: space-between;
   background: #2A2A2A;
   color: #FFFFFF;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
@@ -5063,7 +5248,7 @@
   color: #fff;
   border: none;
   border-radius: 10000px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
@@ -5115,7 +5300,7 @@
 .rep-search-input {
   border: none;
   outline: none;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
   width: 100%;
   background: transparent;
@@ -5152,7 +5337,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 600;
   font-size: 13px;
   color: #555;
@@ -5186,7 +5371,7 @@
   background: #F0F0F0;
   border: none;
   border-radius: 10000px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 600;
   font-size: 13px;
   color: #101010;
@@ -5213,7 +5398,7 @@
 }
 
 .rep-section-title {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 13px;
   font-weight: 600;
   color: #717171;
@@ -5232,7 +5417,7 @@
   background: #F0F0F0;
   border: none;
   border-radius: 10000px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 600;
   font-size: 13px;
   color: #101010;
@@ -5286,7 +5471,7 @@
   background: #F0F0F0;
   border: none;
   border-radius: 10000px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 600;
   font-size: 13px;
   color: #101010;
@@ -5348,7 +5533,7 @@
 }
 
 .security-passcode-digit {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 16px;
   font-weight: 600;
   color: #101010;
@@ -5358,7 +5543,7 @@
 .security-passcode-copy {
   background: none;
   border: none;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: #101010;
@@ -5406,7 +5591,7 @@
   border-radius: 10000px;
   border: none;
   cursor: pointer;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 600;
   font-size: 14px;
   line-height: 22px;
@@ -5485,7 +5670,7 @@
   border-radius: 10000px;
   border: none;
   cursor: pointer;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 600;
   font-size: 14px;
   line-height: 22px;
@@ -5517,7 +5702,7 @@
   border-radius: 10000px;
   border: none;
   cursor: pointer;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 600;
   font-size: 16px;
   color: #101010;
@@ -5540,7 +5725,7 @@
   border-radius: 10000px;
   border: none;
   cursor: pointer;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 600;
   font-size: 16px;
   color: #FFFFFF;
@@ -5575,7 +5760,7 @@
   border-radius: 10000px;
   border: none;
   cursor: pointer;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 600;
   font-size: 14px;
   line-height: 22px;
@@ -5653,7 +5838,7 @@
 }
 
 .deactivate-option-label {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 15px;
   font-weight: 400;
   line-height: 22px;
@@ -5665,7 +5850,7 @@
 }
 
 .deactivate-comments-title {
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 15px;
   font-weight: 700;
   line-height: 22px;
@@ -5679,7 +5864,7 @@
   padding: 12px 16px;
   border: 1px solid #DADADA;
   border-radius: 12px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
   line-height: 22px;
   color: #101010;
@@ -5713,7 +5898,7 @@
   background: #F0F0F0;
   border: none;
   border-radius: 10000px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 15px;
   font-weight: 600;
   color: #101010;
@@ -5738,7 +5923,7 @@
   background: #101010;
   border-radius: 10000px;
   border: none;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 15px;
   font-weight: 600;
   color: #FFFFFF;
@@ -5781,7 +5966,7 @@
 
 .deactivate-password-field .form-label {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   color: #101010;
   margin: 0;
   position: static;
@@ -5811,6 +5996,36 @@
 }
 
 /* Location Detail Modal */
+/* Title: in content when not scrolled, centered in top bar on scroll with fade-in */
+.location-detail-modal .modal-header {
+  padding-top: 24px;
+}
+.location-detail-modal .modal-header-inner {
+  min-height: 48px;
+}
+.location-detail-modal .modal-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.location-detail-modal.location-detail-scrolled .modal-title {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.location-detail-page-title {
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 32px;
+  color: #101010;
+  margin: 0 0 24px;
+  text-align: left;
+}
+
 .location-detail-content {
   max-width: 720px;
   margin: 0 auto;
@@ -5844,7 +6059,8 @@
 }
 
 .location-detail-content .card-title {
-  font-size: 18px;
+  font-size: 19px;
+  line-height: 26px;
   font-weight: 700;
   color: #101010;
 }
@@ -5894,7 +6110,7 @@
   outline: none;
   resize: vertical;
   padding: 0 4px 4px 0;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-size: 16px;
   line-height: 22px;
   color: #101010;
@@ -5963,9 +6179,12 @@
   width: calc(100% + 64px);
   margin-left: -32px;
   margin-right: -32px;
-  height: 180px;
+  height: 160px;
   overflow: hidden;
   position: relative;
+  perspective: 350px;
+  perspective-origin: center 55%;
+  transform-style: preserve-3d;
 }
 
 .location-map-preview--top {
@@ -5975,11 +6194,23 @@
   border-top-right-radius: 32px;
 }
 
+.location-map-tiles-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .location-map-tiles {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) rotateX(55deg) rotateY(-4deg) scale(1.2);
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .location-map-tiles img {
@@ -5992,7 +6223,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
 }
 
 .location-group-modal-header {
@@ -6022,7 +6253,7 @@
 .location-group-create-btn {
   height: 48px;
   padding: 12px 20px;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 16px;
   font-weight: 600;
   border: none;
@@ -6051,6 +6282,96 @@
   width: 664px;
 }
 
+/* Add or remove locations from group modal */
+.add-remove-locations-modal {
+  width: 664px;
+}
+
+.add-remove-locations-modal .location-group-modal-header {
+  margin-bottom: 0;
+}
+
+.add-remove-locations-modal .switch-business-modal-header {
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.add-remove-locations-body {
+  padding-top: 12px;
+}
+
+.add-remove-locations-table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.add-remove-locations-table-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 12px 16px;
+  border-bottom: 1px solid #E0E0E0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #101010;
+}
+
+.add-remove-locations-col-name {
+  grid-column: 1;
+}
+
+.add-remove-locations-col-address {
+  grid-column: 2;
+}
+
+.add-remove-locations-table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 12px 16px;
+  border-bottom: 1px solid #F0F0F0;
+  align-items: center;
+}
+
+.add-remove-locations-table-row:last-child {
+  border-bottom: none;
+}
+
+.add-remove-locations-row-cell {
+  font-size: 14px;
+  color: #101010;
+}
+
+.add-remove-locations-cell-name {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.add-remove-locations-cell-name input[type="checkbox"] {
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.add-remove-locations-checkbox-label {
+  font-weight: 500;
+}
+
+.add-remove-locations-cell-address {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.add-remove-locations-cell-address span {
+  font-size: 14px;
+  color: #101010;
+}
+
+.add-remove-locations-address-line2 {
+  font-size: 13px;
+  color: #717171;
+}
+
 .location-group-modal .transfer-modal-body {
   padding-bottom: 0;
 }
@@ -6069,7 +6390,7 @@
   outline: none;
   resize: vertical;
   padding: 0 4px 4px 0;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-size: 16px;
   line-height: 22px;
   color: #101010;
@@ -6096,6 +6417,23 @@
   flex: 1;
 }
 
+/* Dropdown-style fields – prevent text overlapping chevron (Bank info, Match item library, etc.) */
+.v3-form-fields .form-input-container .mcc-dropdown-value,
+.location-detail-content .form-input-container .mcc-dropdown-value,
+.modal-container .form-input-container .mcc-dropdown-value {
+  min-width: 0;
+}
+.v3-form-fields .form-input-container .mcc-dropdown-value .form-input-text,
+.location-detail-content .form-input-container .mcc-dropdown-value .form-input-text,
+.modal-container .form-input-container .mcc-dropdown-value .form-input-text {
+  flex: 1;
+  min-width: 0;
+  padding-right: 28px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 400;
+}
+
 .location-groups-section {
   display: flex;
   flex-direction: column;
@@ -6106,6 +6444,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 8px;
 }
 
 .location-groups-title {
@@ -6115,32 +6454,16 @@
   margin: 0;
 }
 
-.location-groups-empty {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  color: #717171;
-}
-
 .location-groups-table {
   display: flex;
   flex-direction: column;
-  border: 1px solid #DADADA;
-  border-radius: 8px;
-  overflow: hidden;
+  gap: 12px;
 }
 
 .location-groups-row {
   display: flex;
   align-items: center;
-  padding: 12px 16px;
   gap: 12px;
-  border-bottom: 1px solid #EFEFEF;
-}
-
-.location-groups-row:last-child {
-  border-bottom: none;
 }
 
 .location-groups-row-info {
@@ -6172,9 +6495,19 @@
   flex-shrink: 0;
 }
 
-.location-groups-menu-wrap {
+.location-groups-menu-wrap,
+.location-groups-assigned-menu-wrap {
   position: relative;
   flex-shrink: 0;
+}
+
+.location-groups-assigned-menu-wrap {
+  width: 32px;
+}
+
+.location-groups-assigned-menu-wrap .location-groups-dropdown {
+  right: 0;
+  left: auto;
 }
 
 .location-groups-menu-btn {
@@ -6208,6 +6541,7 @@
   padding: 4px 0;
   display: flex;
   flex-direction: column;
+  font-weight: 600;
 }
 
 .location-groups-dropdown-item {
@@ -6215,7 +6549,7 @@
   border: none;
   padding: 10px 16px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   color: #101010;
   text-align: left;
   cursor: pointer;
@@ -6233,13 +6567,60 @@
   background: #FEF0EF;
 }
 
+.location-brand-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .location-brand-row {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.location-brand-row-selectable {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
   padding: 12px 16px;
   border: 1px solid #E0E0E0;
   border-radius: 12px;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.location-brand-row-selectable:hover {
+  border-color: #C0C0C0;
+  background: #FAFAFA;
+}
+
+.location-brand-row-selectable.selected {
+  border-color: #101010;
+  background: #F7F7F7;
+}
+
+.location-brand-edit-icon {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--button-secondary-bg, #F0F0F0);
+  border: none;
+  color: #101010;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.15s ease;
+}
+
+.location-brand-edit-icon:hover {
+  background: var(--button-secondary-hover, #E0E0E0);
 }
 
 .location-brand-logo {
@@ -6252,21 +6633,120 @@
   flex-shrink: 0;
 }
 
+/* White logo: use logo as mask so only luminance (white) parts show through */
+.location-brand-logo-img {
+  object-fit: contain;
+}
+
 .location-brand-name {
   font-size: 15px;
-  font-weight: 500;
-  color: #101010;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.location-brand-label {
+  font-weight: 600;
+  color: #101010;
+}
+
+.location-brand-detail {
+  font-weight: 400;
+  color: #666;
+  font-size: 13px;
+}
+
+.location-brand-check {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  color: #101010;
 }
 
 .location-brand-edit {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  padding: 4px 0;
   color: #101010;
   display: flex;
   align-items: center;
+  gap: 6px;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.location-brand-edit:hover {
+  opacity: 0.7;
+}
+
+.location-brand-edit-label {
+  white-space: nowrap;
+}
+
+.location-branding-cta {
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #101010;
+  background: var(--button-secondary-bg, #F0F0F0);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.location-branding-cta:hover {
+  background: var(--button-secondary-hover, #E0E0E0);
+}
+
+.location-branding-override {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 4px;
+}
+
+.location-branding-revert {
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666666;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  align-self: flex-start;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.location-branding-revert:hover {
+  color: #101010;
+}
+
+.location-branding-edit-cta {
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #101010;
+  background: var(--button-secondary-bg, #F0F0F0);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background 0.15s ease;
+  margin-top: 4px;
+}
+
+.location-branding-edit-cta:hover {
+  background: var(--button-secondary-hover, #E0E0E0);
 }
 
 .location-hours-section {
@@ -6288,11 +6768,23 @@
   margin: 0 0 16px;
 }
 
+.card--business-hours {
+  padding-bottom: 0 !important;
+}
+
+.card--business-hours .location-hours-row:last-child {
+  padding-bottom: 0;
+}
+
 .location-hours-row {
   display: flex;
   align-items: center;
   padding: 12px 0;
   border-top: 1px solid #F0F0F0;
+}
+
+.location-hours-row:last-child {
+  padding-bottom: 0;
 }
 
 .location-hours-check {
@@ -6307,9 +6799,6 @@
 }
 
 .location-hours-check input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  accent-color: #101010;
   cursor: pointer;
 }
 
@@ -6321,13 +6810,25 @@
 
 .location-hours-time {
   flex: 1;
-  padding: 8px 12px;
-  border: none;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #E2E2E2;
   border-radius: 8px;
-  background: #F5F5F5;
+  background: #FFFFFF;
   font-size: 14px;
-  color: #959595;
+  color: #101010;
   outline: none;
+  box-sizing: border-box;
+}
+
+.location-hours-time::placeholder {
+  color: #959595;
+}
+
+.location-hours-time:disabled {
+  background: #F5F5F5;
+  color: #959595;
+  cursor: default;
 }
 
 .location-special-hours-btn {
@@ -6351,7 +6852,7 @@
   border: none;
   border-radius: 10000px;
   background: #E8E8E8;
-  font-family: 'Square Sans Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-size: 16px;
   font-weight: 600;
   height: 48px;

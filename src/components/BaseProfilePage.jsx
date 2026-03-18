@@ -8,6 +8,7 @@ import FeatureSection from './FeatureSection'
 import DefaultWebsite from './DefaultWebsite'
 import MCCDropdown from './MCCDropdown'
 import ConfirmDialog from './ConfirmDialog'
+import { getAllTimeZones, toIANA, formatTimezoneForDisplay } from '../utils/timezones'
 import brandguide from '../assets/brandguide2.png'
 import profileguide from '../assets/profileguide.png'
 import orderingguide from '../assets/orderingguide.png'
@@ -24,7 +25,6 @@ import AddIcon18 from '../assets/add icon 18.svg'
 import ArrowRightIcon from '../assets/Product review 12/Right arrow.svg'
 import ChevronRightIcon from '../assets/Chevron right.svg'
 import ShopInStoreIcon from '../assets/24/shop-in-store.svg'
-import BuildingsIcon from '../assets/Buildings.svg'
 import AngledHomeIcon from '../assets/Angled home.svg'
 import AboutIcon from '../assets/about.svg'
 import SecurityIcon from '../assets/security.svg'
@@ -32,6 +32,7 @@ import ConnectionsIcon from '../assets/connections.svg'
 import NeighborhoodsIcon from '../assets/neighborhoods.svg'
 import CashAppIcon from '../assets/Cash App.svg'
 import jbLogoLarge from '../assets/joy-bakeshop-logo.svg'
+import jbLogoWhite from '../assets/joy-bakeshop-logo-white.svg'
 import bfbLogoLarge from '../assets/Product review 12/bfb-logo.svg'
 import kjLogoLarge from '../assets/Product review 12/kj-logo.svg'
 import sotLogoLarge from '../assets/Product review 12/spot-of-tea-logo.svg'
@@ -44,7 +45,7 @@ import CaretDownIcon from '../assets/16/caret-down.svg'
 import RecurringAutomaticIcon from '../assets/16/recurring-automatic.svg'
 import StaffIcon from '../assets/staff.svg'
 import LocationFillIcon from '../assets/24/location-fill.svg'
-import LocationOutlineIcon from '../assets/24/location.svg'
+import LocationGroupsIcon from '../assets/24/location-groups.svg'
 // Connection logos
 import CapitolaCoffeeLogo from '../assets/capitolacoffee-brand.png'
 import GoogleLogo from '../assets/Google multicolor.svg'
@@ -79,7 +80,9 @@ const brandData = {
     locations: [
       { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 },
       { id: 'ansley-park', name: 'Ansley Park', address: '149 Peachtree Cir NE, Atlanta, GA 30309', phone: '(404) 555-0456', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map2 },
-      { id: 'virginia-highland', name: 'Virginia-Highland', address: '1034 N Highland Ave NE, Atlanta, GA 30306', phone: '(404) 555-0789', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map3 }
+      { id: 'virginia-highland', name: 'Virginia-Highland', address: '1034 N Highland Ave NE, Atlanta, GA 30306', phone: '(404) 555-0789', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map3 },
+      { id: 'midtown', name: 'Midtown', address: '999 Peachtree St NE, Atlanta, GA 30309', phone: '(404) 555-0901', hours: 'Mon-Fri 7am-9pm, Sat-Sun 8am-7pm', map: map1 },
+      { id: 'buckhead', name: 'Buckhead', address: '3060 Peachtree Rd NW, Atlanta, GA 30305', phone: '(404) 555-0902', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map2 }
     ]
   },
   'brooklyn-french-bakers': { 
@@ -138,6 +141,14 @@ const brandData = {
   }
 }
 
+// Transfer account options for Bank information
+const TRANSFER_ACCOUNTS = [
+  { id: 'chase-4521', label: 'Chase Business Checking •••• 4521' },
+  { id: 'bofa-8892', label: 'Bank of America Business Checking •••• 8892' },
+  { id: 'wells-3347', label: 'Wells Fargo Business Checking •••• 3347' },
+  { id: 'capital-2198', label: 'Capital One Spark Business •••• 2198' },
+]
+
 // Business list for switching
 const businesses = [
   { id: 'joy-bakeshop', name: 'Joy Bakeshop', handle: '$joybakeshop' },
@@ -147,12 +158,14 @@ const businesses = [
 ]
 
 const locationData = {
-  'brookhaven': { name: 'Brookhaven', address1: '3100 Lanier Dr NE', city: 'Brookhaven', state: 'Georgia', zip: '30319', timezone: 'Eastern Time Zone', status: 'Active', phone: '(404) 555-0123', email: 'brookhaven@joybakeshop.com', lat: 33.8651, lng: -84.3393 },
-  'ansley-park': { name: 'Ansley Park', address1: '149 Peachtree Cir NE', city: 'Atlanta', state: 'Georgia', zip: '30309', timezone: 'Eastern Time Zone', status: 'Active', phone: '(404) 555-0456', email: 'ansleypark@joybakeshop.com', lat: 33.7906, lng: -84.3831 },
-  'virginia-highland': { name: 'Virginia Highland', address1: '1034 N Highland Ave NE', city: 'Atlanta', state: 'Georgia', zip: '30306', timezone: 'Eastern Time Zone', status: 'Inactive', phone: '', email: '', lat: 33.7874, lng: -84.3517 },
-  'north-main': { name: 'North Main', address1: '220 N Main St', city: 'Greenville', state: 'South Carolina', zip: '29601', timezone: 'Eastern Time Zone', status: 'Active', phone: '(864) 555-0789', email: 'northmain@kevajuice.com', lat: 34.8568, lng: -82.3987 },
-  'augusta': { name: 'Augusta', address1: '109 Cleveland St', city: 'Greenville', state: 'South Carolina', zip: '29601', timezone: 'Eastern Time Zone', status: 'Active', phone: '(864) 555-0321', email: 'augusta@kevajuice.com', lat: 34.8526, lng: -82.3940 },
-  'alta-vista': { name: 'Alta Vista', address1: '1849 Piedmont Hwy', city: 'Piedmont', state: 'South Carolina', zip: '29673', timezone: 'Eastern Time Zone', status: 'Active', phone: '(864) 555-0654', email: 'altavista@kevajuice.com', lat: 34.7084, lng: -82.4610 },
+  'brookhaven': { name: 'Brookhaven', address1: '3100 Lanier Dr NE', city: 'Brookhaven', state: 'Georgia', zip: '30319', timezone: 'Eastern Time Zone', status: 'Active', phone: '(404) 555-0123', email: 'brookhaven@joybakeshop.com', lat: 33.8651, lng: -84.3393, website: 'https://joybakeshop.com', x: '@joybakeshop', instagram: '@joybakeshop', facebook: 'joybakeshop' },
+  'ansley-park': { name: 'Ansley Park', address1: '149 Peachtree Cir NE', city: 'Atlanta', state: 'Georgia', zip: '30309', timezone: 'Eastern Time Zone', status: 'Active', phone: '(404) 555-0456', email: 'ansleypark@joybakeshop.com', lat: 33.7906, lng: -84.3831, website: 'https://joybakeshop.com', x: '@joybakeshop', instagram: '@joybakeshop', facebook: 'joybakeshop' },
+  'virginia-highland': { name: 'Virginia Highland', address1: '1034 N Highland Ave NE', city: 'Atlanta', state: 'Georgia', zip: '30306', timezone: 'Eastern Time Zone', status: 'Inactive', phone: '', email: '', lat: 33.7874, lng: -84.3517, website: 'https://joybakeshop.com', x: '', instagram: '@joybakeshop', facebook: 'joybakeshop' },
+  'midtown': { name: 'Midtown', address1: '999 Peachtree St NE', city: 'Atlanta', state: 'Georgia', zip: '30309', timezone: 'Eastern Time Zone', status: 'Active', phone: '(404) 555-0345', email: 'midtown@joybakeshop.com', lat: 33.7756, lng: -84.3863, website: 'https://joybakeshop.com', x: '@joybakeshop', instagram: '@joybakeshop', facebook: 'joybakeshop' },
+  'buckhead': { name: 'Buckhead', address1: '3060 Peachtree Rd NW', city: 'Atlanta', state: 'Georgia', zip: '30305', timezone: 'Eastern Time Zone', status: 'Active', phone: '(404) 555-0567', email: 'buckhead@joybakeshop.com', lat: 33.8466, lng: -84.3642, website: 'https://joybakeshop.com', x: '@joybakeshop', instagram: '@joybakeshop', facebook: 'joybakeshop' },
+  'north-main': { name: 'North Main', address1: '220 N Main St', city: 'Greenville', state: 'South Carolina', zip: '29601', timezone: 'Eastern Time Zone', status: 'Active', phone: '(864) 555-0789', email: 'northmain@kevajuice.com', lat: 34.8568, lng: -82.3987, website: 'https://kevajuice.com', x: '@kevajuice', instagram: '@kevajuice', facebook: 'kevajuice' },
+  'augusta': { name: 'Augusta', address1: '109 Cleveland St', city: 'Greenville', state: 'South Carolina', zip: '29601', timezone: 'Eastern Time Zone', status: 'Active', phone: '(864) 555-0321', email: 'augusta@kevajuice.com', lat: 34.8526, lng: -82.3940, website: 'https://kevajuice.com', x: '@kevajuice', instagram: '@kevajuice', facebook: 'kevajuice' },
+  'alta-vista': { name: 'Alta Vista', address1: '1849 Piedmont Hwy', city: 'Piedmont', state: 'South Carolina', zip: '29673', timezone: 'Eastern Time Zone', status: 'Active', phone: '(864) 555-0654', email: 'altavista@kevajuice.com', lat: 34.7084, lng: -82.4610, website: 'https://kevajuice.com', x: '@kevajuice', instagram: '@kevajuice', facebook: 'kevajuice' },
 }
 
 function SecurityToggle({ onToggle }) {
@@ -1015,17 +1028,76 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
   const [isBusinessEditModalClosing, setIsBusinessEditModalClosing] = useState(false)
   const [businessEditActiveSection, setBusinessEditActiveSection] = useState('brand')
   
+  const [locationsTab, setLocationsTab] = useState('locations')
+
   // Location detail modal state
   const [locationDetailModal, setLocationDetailModal] = useState(null)
+  const [brandingOpenedFromLocation, setBrandingOpenedFromLocation] = useState(null) // location id when branding opened from location modal
   const [isLocationDetailClosing, setIsLocationDetailClosing] = useState(false)
+  const [locationDetailScrolled, setLocationDetailScrolled] = useState(false)
   const [isLocationNameDialogOpen, setIsLocationNameDialogOpen] = useState(false)
   const [isLocationNameDialogClosing, setIsLocationNameDialogClosing] = useState(false)
   const [isLocationGroupDialogOpen, setIsLocationGroupDialogOpen] = useState(false)
   const [isLocationGroupDialogClosing, setIsLocationGroupDialogClosing] = useState(false)
   const [locationGroupName, setLocationGroupName] = useState('')
   const [locationGroupDesc, setLocationGroupDesc] = useState('')
-  const [locationGroups, setLocationGroups] = useState([])
+  const [locationGroups, setLocationGroups] = useState([
+    { name: 'Group 1', desc: 'Atlanta area locations', locationIds: ['brookhaven', 'ansley-park', 'virginia-highland'], locations: 3 },
+    { name: 'Group 2', desc: 'Expanded and out-of-town locations', locationIds: ['midtown', 'buckhead', 'north-main', 'augusta', 'alta-vista'], locations: 5 }
+  ])
   const [locationGroupMenuOpen, setLocationGroupMenuOpen] = useState(null)
+  const [assignedGroupMenuOpen, setAssignedGroupMenuOpen] = useState(null)
+  const [locationSearchQuery, setLocationSearchQuery] = useState('')
+  const [locationGroupSearchQuery, setLocationGroupSearchQuery] = useState('')
+  const [addRemoveLocationsGroupIndex, setAddRemoveLocationsGroupIndex] = useState(null)
+  const [isAddRemoveLocationsModalOpen, setIsAddRemoveLocationsModalOpen] = useState(false)
+  const [isAddRemoveLocationsModalClosing, setIsAddRemoveLocationsModalClosing] = useState(false)
+  const [addRemoveLocationsSelection, setAddRemoveLocationsSelection] = useState(new Set())
+  const [isManageLocationGroupsModalOpen, setIsManageLocationGroupsModalOpen] = useState(false)
+  const [isManageLocationGroupsModalClosing, setIsManageLocationGroupsModalClosing] = useState(false)
+  const [manageLocationGroupsSelection, setManageLocationGroupsSelection] = useState(new Set())
+  const [isTimezoneDropdownOpen, setIsTimezoneDropdownOpen] = useState(false)
+  const [locationTimezoneOverrides, setLocationTimezoneOverrides] = useState({}) // { [locationId]: IANA string }
+  const [timezoneSearchQuery, setTimezoneSearchQuery] = useState('')
+  const timezoneDropdownRef = useRef(null)
+  const [locationPreferredLanguageOverrides, setLocationPreferredLanguageOverrides] = useState({}) // { [locationId]: 'English' | 'Spanish' }
+  const [isPreferredLanguageDropdownOpen, setIsPreferredLanguageDropdownOpen] = useState(false)
+  const preferredLanguageDropdownRef = useRef(null)
+  const [locationTransferAccountOverrides, setLocationTransferAccountOverrides] = useState({}) // { [locationId]: transferAccountId }
+  const [isTransferAccountDropdownOpen, setIsTransferAccountDropdownOpen] = useState(false)
+  const transferAccountDropdownRef = useRef(null)
+  const [locationMatchLibraryOverrides, setLocationMatchLibraryOverrides] = useState({}) // { [locationId]: sourceLocationId }
+  const [isMatchLocationDropdownOpen, setIsMatchLocationDropdownOpen] = useState(false)
+  const matchLocationDropdownRef = useRef(null)
+
+  // Regular hours: Mon-Fri 8am-8pm, Sat-Sun 9am-6pm
+  const defaultRegularHours = {
+    Monday: { open: '8:00 AM', close: '8:00 PM' },
+    Tuesday: { open: '8:00 AM', close: '8:00 PM' },
+    Wednesday: { open: '8:00 AM', close: '8:00 PM' },
+    Thursday: { open: '8:00 AM', close: '8:00 PM' },
+    Friday: { open: '8:00 AM', close: '8:00 PM' },
+    Saturday: { open: '9:00 AM', close: '6:00 PM' },
+    Sunday: { open: '9:00 AM', close: '6:00 PM' }
+  }
+  const [locationRegularHours, setLocationRegularHours] = useState(() => {
+    const byLocation = {}
+    Object.keys(locationData).forEach((id) => {
+      byLocation[id] = { ...defaultRegularHours }
+    })
+    return byLocation
+  })
+  // Mon-Fri open, Sat-Sun closed by default
+  const defaultDaysOpen = {
+    Monday: true, Tuesday: true, Wednesday: true, Thursday: true, Friday: true, Saturday: false, Sunday: false
+  }
+  const [locationDaysOpen, setLocationDaysOpen] = useState(() => {
+    const byLocation = {}
+    Object.keys(locationData).forEach((id) => {
+      byLocation[id] = { ...defaultDaysOpen }
+    })
+    return byLocation
+  })
 
   useEffect(() => {
     if (locationGroupMenuOpen === null) return
@@ -1036,6 +1108,60 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
     return () => document.removeEventListener('mousedown', handler)
   }, [locationGroupMenuOpen])
 
+  useEffect(() => {
+    if (assignedGroupMenuOpen === null) return
+    const handler = (e) => {
+      if (!e.target.closest('.location-groups-assigned-menu-wrap')) setAssignedGroupMenuOpen(null)
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [assignedGroupMenuOpen])
+
+  useEffect(() => {
+    if (!isTimezoneDropdownOpen) return
+    const handler = (e) => {
+      if (timezoneDropdownRef.current && !timezoneDropdownRef.current.contains(e.target)) {
+        setIsTimezoneDropdownOpen(false)
+        setTimezoneSearchQuery('')
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [isTimezoneDropdownOpen])
+
+  useEffect(() => {
+    if (!isPreferredLanguageDropdownOpen) return
+    const handler = (e) => {
+      if (preferredLanguageDropdownRef.current && !preferredLanguageDropdownRef.current.contains(e.target)) {
+        setIsPreferredLanguageDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [isPreferredLanguageDropdownOpen])
+
+  useEffect(() => {
+    if (!isTransferAccountDropdownOpen) return
+    const handler = (e) => {
+      if (transferAccountDropdownRef.current && !transferAccountDropdownRef.current.contains(e.target)) {
+        setIsTransferAccountDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [isTransferAccountDropdownOpen])
+
+  useEffect(() => {
+    if (!isMatchLocationDropdownOpen) return
+    const handler = (e) => {
+      if (matchLocationDropdownRef.current && !matchLocationDropdownRef.current.contains(e.target)) {
+        setIsMatchLocationDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [isMatchLocationDropdownOpen])
+
   const handleCloseLocationGroupDialog = () => {
     setIsLocationGroupDialogClosing(true)
     setTimeout(() => {
@@ -1045,6 +1171,86 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
       setLocationGroupDesc('')
     }, 350)
   }
+
+  const handleOpenAddRemoveLocationsModal = (groupIndex) => {
+    const group = locationGroups[groupIndex]
+    const existingIds = group?.locationIds || []
+    setAddRemoveLocationsSelection(new Set(existingIds))
+    setAddRemoveLocationsGroupIndex(groupIndex)
+    setIsAddRemoveLocationsModalOpen(true)
+    setLocationGroupMenuOpen(null)
+  }
+
+  const handleCloseAddRemoveLocationsModal = () => {
+    setIsAddRemoveLocationsModalClosing(true)
+    setTimeout(() => {
+      setIsAddRemoveLocationsModalOpen(false)
+      setIsAddRemoveLocationsModalClosing(false)
+      setAddRemoveLocationsGroupIndex(null)
+      setAddRemoveLocationsSelection(new Set())
+    }, 350)
+  }
+
+  const handleSaveAddRemoveLocations = () => {
+    if (addRemoveLocationsGroupIndex === null) return
+    const newIds = Array.from(addRemoveLocationsSelection)
+    setLocationGroups(locationGroups.map((g, i) =>
+      i === addRemoveLocationsGroupIndex ? { ...g, locationIds: newIds, locations: newIds.length } : g
+    ))
+    handleCloseAddRemoveLocationsModal()
+    showToast('Locations updated.')
+  }
+
+  const handleOpenManageLocationGroupsModal = () => {
+    if (!locationDetailModal) return
+    const indices = new Set()
+    locationGroups.forEach((group, i) => {
+      const ids = group.locationIds || []
+      if (ids.includes(locationDetailModal)) indices.add(i)
+    })
+    setManageLocationGroupsSelection(indices)
+    setIsManageLocationGroupsModalOpen(true)
+  }
+
+  const handleCloseManageLocationGroupsModal = () => {
+    setIsManageLocationGroupsModalClosing(true)
+    setTimeout(() => {
+      setIsManageLocationGroupsModalOpen(false)
+      setIsManageLocationGroupsModalClosing(false)
+      setManageLocationGroupsSelection(new Set())
+    }, 350)
+  }
+
+  const handleSaveManageLocationGroups = () => {
+    if (!locationDetailModal) return
+    const selectedIndices = manageLocationGroupsSelection
+    setLocationGroups(locationGroups.map((g, i) => {
+      const ids = g.locationIds || []
+      const hasLocation = ids.includes(locationDetailModal)
+      const shouldHave = selectedIndices.has(i)
+      if (hasLocation === shouldHave) return g
+      if (shouldHave) return { ...g, locationIds: [...ids, locationDetailModal], locations: ids.length + 1 }
+      return { ...g, locationIds: ids.filter((id) => id !== locationDetailModal), locations: ids.length - 1 }
+    }))
+    handleCloseManageLocationGroupsModal()
+    showToast('Location groups updated.')
+  }
+
+  const setLocationDayHours = (day, field, value) => {
+    if (!locationDetailModal) return
+    setLocationRegularHours((prev) => {
+      const loc = prev[locationDetailModal] ?? { ...defaultRegularHours }
+      const dayHours = loc[day] ?? { open: '8:00 AM', close: '8:00 PM' }
+      return {
+        ...prev,
+        [locationDetailModal]: {
+          ...loc,
+          [day]: { ...dayHours, [field]: value }
+        }
+      }
+    })
+  }
+
   const [selectedLocationType, setSelectedLocationType] = useState('Physical location')
   const [isLocationTypeOpen, setIsLocationTypeOpen] = useState(false)
   const locationTypeRef = useRef(null)
@@ -1059,14 +1265,84 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
 
   const handleCloseLocationDetail = () => {
     setIsLocationDetailClosing(true)
+    setLocationDetailScrolled(false)
     setTimeout(() => {
       setLocationDetailModal(null)
       setIsLocationDetailClosing(false)
     }, 350)
   }
 
+  useEffect(() => {
+    if (!locationDetailModal && !isLocationDetailClosing) {
+      setLocationDetailScrolled(false)
+      return
+    }
+    let cleanup = () => {}
+    const timer = setTimeout(() => {
+      const modalBody = document.querySelector('.location-detail-modal .location-modal-body')
+      if (!modalBody) return
+      const handler = () => setLocationDetailScrolled(modalBody.scrollTop > 20)
+      handler()
+      modalBody.addEventListener('scroll', handler)
+      cleanup = () => modalBody.removeEventListener('scroll', handler)
+    }, 0)
+    return () => {
+      clearTimeout(timer)
+      cleanup()
+    }
+  }, [locationDetailModal, isLocationDetailClosing])
+
   const currentLocation = locationDetailModal ? locationData[locationDetailModal] : null
 
+  // Location branding: 'business' | 'location' per location. When 'location', use locationBrandingOverrides for color.
+  const [locationBrandingSelection, setLocationBrandingSelection] = useState({}) // { [locationId]: 'business' | 'location' }
+  const [locationBrandingOverrides, setLocationBrandingOverrides] = useState({}) // { [locationId]: { color?: string } }
+  const useLocationBranding = locationDetailModal && locationBrandingSelection[locationDetailModal] === 'location'
+  const locationBrandingColor = locationDetailModal && locationBrandingOverrides[locationDetailModal]?.color
+    ? locationBrandingOverrides[locationDetailModal].color
+    : brand.color
+
+  const selectBusinessBranding = () => {
+    if (!locationDetailModal) return
+    setLocationBrandingSelection(prev => ({ ...prev, [locationDetailModal]: 'business' }))
+    setLocationBrandingOverrides(prev => {
+      const next = { ...prev }
+      delete next[locationDetailModal]
+      return next
+    })
+  }
+  const selectLocationBranding = () => {
+    if (!locationDetailModal) return
+    setLocationBrandingSelection(prev => ({ ...prev, [locationDetailModal]: 'location' }))
+    if (!locationBrandingOverrides[locationDetailModal]) {
+      setLocationBrandingOverrides(prev => ({
+        ...prev,
+        [locationDetailModal]: { color: '#7C3AED' }
+      }))
+    }
+  }
+  const setLocationBrandingColor = (color) => {
+    if (!locationDetailModal) return
+    setLocationBrandingOverrides(prev => ({
+      ...prev,
+      [locationDetailModal]: { ...(prev[locationDetailModal] || {}), color }
+    }))
+  }
+
+  const handleEditBusinessBrand = () => {
+    if (locationDetailModal) {
+      setBrandingOpenedFromLocation(locationDetailModal)
+      handleCloseLocationDetail()
+      setTimeout(() => {
+        setBusinessEditActiveSection('brand')
+        setIsBusinessEditModalOpen(true)
+      }, 220)
+    } else {
+      setBrandingOpenedFromLocation(null)
+      setBusinessEditActiveSection('brand')
+      setIsBusinessEditModalOpen(true)
+    }
+  }
   // Security modal state
   const [securityModal, setSecurityModal] = useState(null) // 'representatives' | 'permissions' | null
   const [isSecurityModalClosing, setIsSecurityModalClosing] = useState(false)
@@ -1220,9 +1496,14 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
   // Close handler for Business Edit modal with animation
   const handleCloseBusinessEditModal = () => {
     setIsBusinessEditModalClosing(true)
+    const returnToLocation = brandingOpenedFromLocation
     setTimeout(() => {
       setIsBusinessEditModalOpen(false)
       setIsBusinessEditModalClosing(false)
+      setBrandingOpenedFromLocation(null)
+      if (returnToLocation) {
+        setLocationDetailModal(returnToLocation)
+      }
     }, 350)
   }
   
@@ -1285,6 +1566,15 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
             <hr className="card-divider" />
 
             <div className="card-rows">
+              <div className="card-row" onClick={() => { setBusinessEditActiveSection('business-info'); setIsBusinessEditModalOpen(true); }}>
+                <div className="v3-icon-container">
+                  <img src={InfoIcon} alt="" width="24" height="24" />
+                </div>
+                <h4 className="service-title">Business information</h4>
+                <span className="v3-service-subtitle">{brand.name} · Bakery</span>
+                <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
+              </div>
+
               <div className="card-row" onClick={() => { setBusinessEditActiveSection('brand'); setIsBusinessEditModalOpen(true); }}>
                 <div className="v3-icon-container">
                   <div className="v4-mini-brand-card" style={(customerViewMode === 'new-1' || customerViewMode === 'new-2') ? { background: brand.color } : undefined}>
@@ -1295,19 +1585,10 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                     )}
                   </div>
                 </div>
-                <h4 className="service-title">Brand card</h4>
+                <h4 className="service-title">Branding</h4>
                 {(customerViewMode === 'new-1' || customerViewMode === 'new-2')
                     ? <span className="v3-service-subtitle v4-action-text">Update your logo</span>
                     : <span className="v3-service-subtitle v4-verified-text">✪ Verified brand</span>}
-                <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
-              </div>
-
-              <div className="card-row" onClick={() => { setBusinessEditActiveSection('business-info'); setIsBusinessEditModalOpen(true); }}>
-                <div className="v3-icon-container">
-                  <img src={InfoIcon} alt="" width="24" height="24" />
-                </div>
-                <h4 className="service-title">Business information</h4>
-                <span className="v3-service-subtitle">{brand.name} · Bakery</span>
                 <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
               </div>
 
@@ -1397,176 +1678,234 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
             </div>
           )}
 
-          {/* Organization / Locations Card - Keva Juice returning: two groups (Atlanta, Greenville); else standard locations */}
+          {/* Locations Card with Tabs */}
           <div className="card">
-            <div className="card-header">
-              <div className="card-header-info">
-                <h3 className="card-title">{activeBrand === 'keva-juice' && customerViewMode === 'returning' ? 'Organization' : 'Locations'}</h3>
-                <p className="card-subtitle">
-                  {activeBrand === 'keva-juice' && customerViewMode === 'returning'
-                    ? '2 franchises · 7 locations'
-                    : (customerViewMode === 'new-1' || customerViewMode === 'new-2')
-                      ? '1 location'
-                      : '4 active · 1 inactive'}
-                </p>
-              </div>
-              {activeBrand === 'keva-juice' && customerViewMode === 'returning' ? (
-                <div className="location-header-buttons">
-                  <button className="card-action">Add location</button>
-                  <button className="card-action">Add franchisee</button>
-                </div>
-              ) : (
-                <button className="card-action">Add location</button>
-              )}
-            </div>
-
-            <hr className="card-divider" />
-
-            <div className={`card-rows${activeBrand === 'keva-juice' && customerViewMode === 'returning' ? ' card-rows--organization' : ''}`}>
-              {activeBrand === 'keva-juice' && customerViewMode === 'returning' ? (
-                <>
-                  {/* Group 1: Atlanta */}
-                  <div className="v3-organization-group">
-                    <div className="v3-locations-with-connector">
-                      <div className="v3-locations-vertical-line" aria-hidden="true" />
-                      <div className="card-row card-row--channel">
-                        <div className="v3-icon-container v3-connection-icon v3-channel-brand-icon" style={!brandLogos[activeBrand] ? { background: brand.color } : undefined}>
-                          {brandLogos[activeBrand] ? (
-                            <img src={brandLogos[activeBrand]} alt="" width="20" height="24" style={{ objectFit: 'contain' }} />
-                          ) : (
-                            <span className="v3-channel-brand-initial">{brand.name.charAt(0)}</span>
-                          )}
-                        </div>
-                        <div className="v3-channel-row-label">
-                          <h4 className="service-title">Keva Juice - Atlanta</h4>
-                          <span className="v3-channel-row-sublabel">Sandi Peterson, executive manager</span>
-                        </div>
-                        <span className="status-pill gray">Flagship</span>
-                        <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
+            <div className="card-tabs-wrapper card-tabs-wrapper--header">
+              <div className="card-tabs">
+                <button className={`card-tab ${locationsTab === 'locations' ? 'card-tab--active' : ''}`} onClick={() => setLocationsTab('locations')}>Locations</button>
+                <button className={`card-tab ${locationsTab === 'groups' ? 'card-tab--active' : ''}`} onClick={() => setLocationsTab('groups')}>
+                  Location groups
+                </button>
+                <div className="card-tabs-action">
+                  {locationsTab === 'locations' ? (
+                    activeBrand === 'keva-juice' && customerViewMode === 'returning' ? (
+                      <div className="location-header-buttons">
+                        <button className="card-action">Add location</button>
+                        <button className="card-action">Add franchisee</button>
                       </div>
-                      <div className="card-rows--indent">
-                        <div className="card-row card-row--location" onClick={() => setLocationDetailModal('brookhaven')}>
-                          <div className="v3-icon-container v3-location-icon">
-                            <img src={LocationFillIcon} alt="" width="24" height="24" />
-                          </div>
-                          <h4 className="service-title">Brookhaven</h4>
-                          <span className="v3-service-subtitle">3100 Lanier Dr NE, Brookhaven, GA 30319</span>
-                          <span className="status-pill live">Active</span>
-                          <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
-                        </div>
-                        <div className="card-row card-row--location" onClick={() => setLocationDetailModal('ansley-park')}>
-                          <div className="v3-icon-container v3-location-icon">
-                            <img src={LocationFillIcon} alt="" width="24" height="24" />
-                          </div>
-                          <h4 className="service-title">Ansley Park</h4>
-                          <span className="v3-service-subtitle">149 Peachtree Cir NE, Atlanta, GA 30309</span>
-                          <span className="status-pill live">Active</span>
-                          <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
-                        </div>
-                        <div className="card-row card-row--location" onClick={() => setLocationDetailModal('virginia-highland')}>
-                          <div className="v3-icon-container v3-location-icon inactive">
-                            <img src={LocationOutlineIcon} alt="" width="24" height="24" />
-                          </div>
-                          <h4 className="service-title">Virginia Highland</h4>
-                          <span className="v3-service-subtitle">1034 N Highland Ave NE, Atlanta, GA 30306</span>
-                          <span className="status-pill gray">Inactive</span>
-                          <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="v3-organization-divider-wrap">
-                    <hr className="card-divider card-divider--organization" />
-                  </div>
-
-                  {/* Group 2: Greenville */}
-                  <div className="v3-organization-group">
-                    <div className="v3-locations-with-connector">
-                      <div className="v3-locations-vertical-line" aria-hidden="true" />
-                      <div className="card-row card-row--channel">
-                        <div className="v3-icon-container v3-connection-icon v3-channel-brand-icon" style={!brandLogos[activeBrand] ? { background: brand.color } : undefined}>
-                          {brandLogos[activeBrand] ? (
-                            <img src={brandLogos[activeBrand]} alt="" width="20" height="24" style={{ objectFit: 'contain' }} />
-                          ) : (
-                            <span className="v3-channel-brand-initial">{brand.name.charAt(0)}</span>
-                          )}
-                        </div>
-                        <div className="v3-channel-row-label">
-                          <h4 className="service-title">Keva Juice - Greenville</h4>
-                          <span className="v3-channel-row-sublabel">James Wilson, executive manager</span>
-                        </div>
-                        <span className="status-pill gray">B-notice required</span>
-                        <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
-                      </div>
-                      <div className="card-rows--indent">
-                        <div className="card-row card-row--location" onClick={() => setLocationDetailModal('north-main')}>
-                          <div className="v3-icon-container v3-location-icon">
-                            <img src={LocationFillIcon} alt="" width="24" height="24" />
-                          </div>
-                          <h4 className="service-title">North Main</h4>
-                          <span className="v3-service-subtitle">220 N Main St, Greenville, SC 29601</span>
-                          <span className="status-pill live">Active</span>
-                          <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
-                        </div>
-                        <div className="card-row card-row--location" onClick={() => setLocationDetailModal('augusta')}>
-                          <div className="v3-icon-container v3-location-icon">
-                            <img src={LocationFillIcon} alt="" width="24" height="24" />
-                          </div>
-                          <h4 className="service-title">Augusta</h4>
-                          <span className="v3-service-subtitle">109 Cleveland St, Greenville, SC 29601</span>
-                          <span className="status-pill live">Active</span>
-                          <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
-                        </div>
-                        <div className="card-row card-row--location" onClick={() => setLocationDetailModal('alta-vista')}>
-                          <div className="v3-icon-container v3-location-icon">
-                            <img src={LocationFillIcon} alt="" width="24" height="24" />
-                          </div>
-                          <h4 className="service-title">Alta Vista</h4>
-                          <span className="v3-service-subtitle">1849 Piedmont Hwy, Piedmont, SC 29673</span>
-                          <span className="status-pill live">Active</span>
-                          <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="card-row card-row--location" onClick={() => setLocationDetailModal('brookhaven')}>
-                    <div className="v3-icon-container v3-location-icon">
-                      <img src={LocationFillIcon} alt="" width="24" height="24" />
-                    </div>
-                    <h4 className="service-title">Brookhaven</h4>
-                    <span className="v3-service-subtitle">3100 Lanier Dr NE, Brookhaven, GA 30319</span>
-                    <span className="status-pill live">Active</span>
-                    <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
-                  </div>
-                  {customerViewMode === 'returning' && (
-                    <>
-                      <div className="card-row card-row--location" onClick={() => setLocationDetailModal('ansley-park')}>
-                        <div className="v3-icon-container v3-location-icon">
-                          <img src={LocationFillIcon} alt="" width="24" height="24" />
-                        </div>
-                        <h4 className="service-title">Ansley Park</h4>
-                        <span className="v3-service-subtitle">149 Peachtree Cir NE, Atlanta, GA 30309</span>
-                        <span className="status-pill live">Active</span>
-                        <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
-                      </div>
-                      <div className="card-row card-row--location" onClick={() => setLocationDetailModal('virginia-highland')}>
-                        <div className="v3-icon-container v3-location-icon inactive">
-                          <img src={LocationOutlineIcon} alt="" width="24" height="24" />
-                        </div>
-                        <h4 className="service-title">Virginia Highland</h4>
-                        <span className="v3-service-subtitle">1034 N Highland Ave NE, Atlanta, GA 30306</span>
-                        <span className="status-pill gray">Inactive</span>
-                        <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
-                      </div>
-                    </>
+                    ) : (
+                      <button className="card-action">Add location</button>
+                    )
+                  ) : (
+                    <button className="card-action" onClick={() => setIsLocationGroupDialogOpen(true)}>Create group</button>
                   )}
-                </>
-              )}
+                </div>
+              </div>
             </div>
+
+            {locationsTab === 'locations' ? (
+              <>
+                <div className="location-list-search">
+                  <div className="rep-search-input-wrapper">
+                    <svg className="rep-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#101010" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    <input type="text" className="rep-search-input" placeholder="Search locations" value={locationSearchQuery} onChange={(e) => setLocationSearchQuery(e.target.value)} />
+                  </div>
+                </div>
+              <div className={`card-rows${activeBrand === 'keva-juice' && customerViewMode === 'returning' ? ' card-rows--organization' : ''}`}>
+                {activeBrand === 'keva-juice' && customerViewMode === 'returning' ? (
+                  <>
+                    {/* Group 1: Atlanta */}
+                    <div className="v3-organization-group">
+                      <div className="v3-locations-with-connector">
+                        <div className="v3-locations-vertical-line" aria-hidden="true" />
+                        <div className="card-row card-row--channel">
+                          <div className="v3-icon-container v3-connection-icon v3-channel-brand-icon" style={!brandLogos[activeBrand] ? { background: brand.color } : undefined}>
+                            {brandLogos[activeBrand] ? (
+                              <img src={brandLogos[activeBrand]} alt="" width="20" height="24" style={{ objectFit: 'contain' }} />
+                            ) : (
+                              <span className="v3-channel-brand-initial">{brand.name.charAt(0)}</span>
+                            )}
+                          </div>
+                          <div className="v3-channel-row-label">
+                            <h4 className="service-title">Keva Juice - Atlanta</h4>
+                            <span className="v3-channel-row-sublabel">Sandi Peterson, executive manager</span>
+                          </div>
+                          <span className="status-pill gray">Flagship</span>
+                          <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
+                        </div>
+                        <div className="card-rows--indent">
+                          {['brookhaven', 'ansley-park', 'virginia-highland'].filter((locId) => {
+                            if (!locationSearchQuery.trim()) return true
+                            const q = locationSearchQuery.toLowerCase()
+                            const loc = locationData[locId]
+                            if (!loc) return true
+                            const name = (loc.name || '').toLowerCase()
+                            const addr = `${loc.address1 || ''} ${loc.city || ''} ${loc.state || ''} ${loc.zip || ''}`.toLowerCase()
+                            return name.includes(q) || addr.includes(q)
+                          }).map((locId) => {
+                            const loc = locationData[locId]
+                            const isInactive = loc?.status === 'Inactive'
+                            const addr = loc ? `${loc.address1}, ${loc.city}, ${loc.state} ${loc.zip}` : ''
+                            return (
+                              <div key={locId} className="card-row card-row--location" onClick={() => setLocationDetailModal(locId)}>
+                                <div className="v3-icon-container v3-location-icon">
+                                  <img src={LocationFillIcon} alt="" width="24" height="24" />
+                                </div>
+                                <h4 className="service-title">{loc?.name || locId}</h4>
+                                <span className="v3-service-subtitle">{addr}</span>
+                                <span className={`status-pill ${isInactive ? 'gray' : 'live'}`}>{loc?.status || 'Active'}</span>
+                                <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="v3-organization-divider-wrap">
+                      <hr className="card-divider card-divider--organization" />
+                    </div>
+
+                    {/* Group 2: Greenville */}
+                    <div className="v3-organization-group">
+                      <div className="v3-locations-with-connector">
+                        <div className="v3-locations-vertical-line" aria-hidden="true" />
+                        <div className="card-row card-row--channel">
+                          <div className="v3-icon-container v3-connection-icon v3-channel-brand-icon" style={!brandLogos[activeBrand] ? { background: brand.color } : undefined}>
+                            {brandLogos[activeBrand] ? (
+                              <img src={brandLogos[activeBrand]} alt="" width="20" height="24" style={{ objectFit: 'contain' }} />
+                            ) : (
+                              <span className="v3-channel-brand-initial">{brand.name.charAt(0)}</span>
+                            )}
+                          </div>
+                          <div className="v3-channel-row-label">
+                            <h4 className="service-title">Keva Juice - Greenville</h4>
+                            <span className="v3-channel-row-sublabel">James Wilson, executive manager</span>
+                          </div>
+                          <span className="status-pill gray">B-notice required</span>
+                          <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
+                        </div>
+                        <div className="card-rows--indent">
+                          {['north-main', 'augusta', 'alta-vista'].filter((locId) => {
+                            if (!locationSearchQuery.trim()) return true
+                            const q = locationSearchQuery.toLowerCase()
+                            const loc = locationData[locId]
+                            if (!loc) return true
+                            const name = (loc.name || '').toLowerCase()
+                            const addr = `${loc.address1 || ''} ${loc.city || ''} ${loc.state || ''} ${loc.zip || ''}`.toLowerCase()
+                            return name.includes(q) || addr.includes(q)
+                          }).map((locId) => {
+                            const loc = locationData[locId]
+                            const isInactive = loc?.status === 'Inactive'
+                            const addr = loc ? `${loc.address1}, ${loc.city}, ${loc.state} ${loc.zip}` : ''
+                            return (
+                              <div key={locId} className="card-row card-row--location" onClick={() => setLocationDetailModal(locId)}>
+                                <div className="v3-icon-container v3-location-icon">
+                                  <img src={LocationFillIcon} alt="" width="24" height="24" />
+                                </div>
+                                <h4 className="service-title">{loc?.name || locId}</h4>
+                                <span className="v3-service-subtitle">{addr}</span>
+                                <span className={`status-pill ${isInactive ? 'gray' : 'live'}`}>{loc?.status || 'Active'}</span>
+                                <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {(brand.locations || [])
+                      .filter((loc) => {
+                        if (!locationSearchQuery.trim()) return true
+                        const q = locationSearchQuery.toLowerCase()
+                        const name = (loc.name || '').toLowerCase()
+                        const addr = (loc.address || '').toLowerCase()
+                        return name.includes(q) || addr.includes(q)
+                      })
+                      .map((loc) => {
+                      const locId = loc.id || loc.name.toLowerCase().replace(/\s+/g, '-')
+                      const status = locationData[locId]?.status || 'Active'
+                      const isInactive = status === 'Inactive'
+                      return (
+                        <div key={locId} className="card-row card-row--location" onClick={() => setLocationDetailModal(locId)}>
+                          <div className="v3-icon-container v3-location-icon">
+                            <img src={LocationFillIcon} alt="" width="24" height="24" />
+                          </div>
+                          <h4 className="service-title">{loc.name}</h4>
+                          <span className="v3-service-subtitle">{loc.address}</span>
+                          <span className={`status-pill ${isInactive ? 'gray' : 'live'}`}>{status}</span>
+                          <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
+                        </div>
+                      )
+                    })}
+                  </>
+                )}
+              </div>
+              </>
+            ) : (
+              <>
+                {locationGroups.length > 0 && (
+                  <div className="location-list-search">
+                    <div className="rep-search-input-wrapper">
+                      <svg className="rep-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#101010" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      <input type="text" className="rep-search-input" placeholder="Search location groups" value={locationGroupSearchQuery} onChange={(e) => setLocationGroupSearchQuery(e.target.value)} />
+                    </div>
+                  </div>
+                )}
+              <div className="card-rows card-rows--groups">
+                {locationGroups.length === 0 ? (
+                  <div className="location-groups-empty">
+                    <p className="location-groups-empty-text">Group locations to apply bulk updates, filter reports, and more.</p>
+                    <button className="location-groups-empty-cta" onClick={() => setIsLocationGroupDialogOpen(true)}>Create group</button>
+                  </div>
+                ) : (
+                  locationGroups
+                    .map((group, origIdx) => ({ group, origIdx }))
+                    .filter(({ group }) => {
+                      if (!locationGroupSearchQuery.trim()) return true
+                      const q = locationGroupSearchQuery.toLowerCase()
+                      const name = (group.name || '').toLowerCase()
+                      const desc = (group.desc || '').toLowerCase()
+                      return name.includes(q) || desc.includes(q)
+                    })
+                    .map(({ group, origIdx }) => (
+                    <div key={origIdx} className="card-row card-row--no-hover location-groups-row">
+                      <div className="v3-icon-container v3-location-icon">
+                        <img src={LocationGroupsIcon} alt="" width="24" height="24" />
+                      </div>
+                      <div className="location-groups-row-info">
+                        <span className="location-groups-row-name">{group.name}</span>
+                        {group.desc && <span className="location-groups-row-desc">{group.desc}</span>}
+                      </div>
+                      <span className="location-groups-row-count">{(group.locationIds?.length ?? group.locations) ?? 0} location{((group.locationIds?.length ?? group.locations) ?? 0) !== 1 ? 's' : ''}</span>
+                      <div className="location-groups-menu-wrap">
+                        <button className="location-groups-menu-btn" onClick={(e) => { e.stopPropagation(); setLocationGroupMenuOpen(locationGroupMenuOpen === origIdx ? null : origIdx); }}>
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="5" r="2" fill="#101010"/>
+                            <circle cx="12" cy="12" r="2" fill="#101010"/>
+                            <circle cx="12" cy="19" r="2" fill="#101010"/>
+                          </svg>
+                        </button>
+                        {locationGroupMenuOpen === origIdx && (
+                          <div className="location-groups-dropdown">
+                            <button className="location-groups-dropdown-item" onClick={() => setLocationGroupMenuOpen(null)}>Edit</button>
+                            <button className="location-groups-dropdown-item" onClick={() => handleOpenAddRemoveLocationsModal(origIdx)}>Add/remove locations</button>
+                            <button className="location-groups-dropdown-item location-groups-dropdown-item--danger" onClick={() => { setLocationGroups(locationGroups.filter((_, idx) => idx !== origIdx)); setLocationGroupMenuOpen(null); }}>Delete</button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))
+                    )}
+              </div>
+              </>
+            )}
           </div>
 
           {/* Security Card */}
@@ -1669,7 +2008,7 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                         className={`v3-business-edit-nav-item v3-business-edit-nav-text-only ${businessEditActiveSection === 'brand' ? 'active' : ''}`}
                         onClick={() => setBusinessEditActiveSection('brand')}
                       >
-                        <span>Brand card</span>
+                        <span>Branding</span>
                       </button>
                       <button 
                         type="button"
@@ -2272,7 +2611,7 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
         {/* Location Detail Modal */}
         {(locationDetailModal || isLocationDetailClosing) && currentLocation && (
           <div className={`modal-overlay ${isLocationDetailClosing ? 'closing' : ''}`}>
-            <div className="modal-container business-edit-modal">
+            <div className={`modal-container business-edit-modal location-detail-modal ${locationDetailScrolled ? 'location-detail-scrolled' : ''}`}>
               <div className="modal-header">
                 <div className="modal-header-inner">
                   <button className="modal-close" onClick={handleCloseLocationDetail} aria-label="Close">
@@ -2292,13 +2631,15 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                     </div>
                     {currentLocation.status === 'Active' && <button type="button" className="modal-deactivate-btn">Deactivate</button>}
                     {currentLocation.status === 'Inactive' && <button type="button" className="modal-deactivate-btn">Activate</button>}
-                    <button type="button" className="modal-send" onClick={handleCloseLocationDetail}>Save</button>
+                    <button type="button" className="modal-send" onClick={() => { showToast('Location settings saved.'); handleCloseLocationDetail(); }}>Save</button>
                   </div>
                 </div>
               </div>
 
               <div className="location-modal-body">
                 <div className="location-detail-content">
+
+                  <h2 className="location-detail-page-title">Location details</h2>
 
                   {/* Basic information */}
                   <div className="card card-modal card--no-divider">
@@ -2351,7 +2692,8 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                       const startY = centerTileY - Math.floor(rows / 2)
                       return (
                         <div className="location-map-preview location-map-preview--top">
-                          <div className="location-map-tiles" style={{ width: cols * 256, height: rows * 256 }}>
+                          <div className="location-map-tiles-wrap">
+                            <div className="location-map-tiles" style={{ width: cols * 256, height: rows * 256 }}>
                             {Array.from({ length: rows }, (_, r) =>
                               Array.from({ length: cols }, (_, c) => (
                                 <img
@@ -2364,6 +2706,7 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                                 />
                               ))
                             )}
+                          </div>
                           </div>
                           <div className="location-map-pin">
                             <svg width="32" height="42" viewBox="0 0 32 42" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2442,51 +2785,63 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                     <div className="card-header">
                       <div className="card-header-info">
                         <h3 className="card-title">Location groups</h3>
-                        <p className="card-subtitle">Group your locations with custom labels and use them to apply bulk updates, filter reports, and more.</p>
+                        <p className="card-subtitle">Group your locations and use them to apply bulk updates, filter reports, and more.</p>
                       </div>
                     </div>
                     <div className="v3-form-fields">
                       <div className="location-groups-section">
-                        <div className="location-groups-header">
-                          <h4 className="location-groups-title">Current groups</h4>
-                          <a href="#" className="security-link" onClick={(e) => { e.preventDefault(); setIsLocationGroupDialogOpen(true); }}>Manage</a>
-                        </div>
-                        {locationGroups.length === 0 ? (
-                          <div className="location-groups-empty">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="#959595"/>
-                            </svg>
-                            <span>No location groups found</span>
+                        {(() => {
+                          const groupsForLocation = locationGroups.filter((group) => {
+                            const ids = group.locationIds || []
+                            return ids.includes(locationDetailModal)
+                          })
+                          return groupsForLocation.length === 0 ? (
+                          <div className="location-groups-empty location-groups-empty--assigned">
+                            <span>Not assigned to any groups</span>
+                            <button className="location-groups-empty-cta" style={{ marginTop: 12 }} onClick={handleOpenManageLocationGroupsModal}>Assign to groups</button>
                           </div>
                         ) : (
+                          <>
+                          <div className="location-groups-header">
+                            <h4 className="location-groups-title">Assigned groups</h4>
+                            <a href="#" className="security-link" onClick={(e) => { e.preventDefault(); handleOpenManageLocationGroupsModal(); }}>Manage</a>
+                          </div>
                           <div className="location-groups-table">
-                            {locationGroups.map((group, i) => (
+                            {groupsForLocation.map((group, i) => {
+                              const groupIndex = locationGroups.findIndex((g) => g === group)
+                              return (
                               <div key={i} className="location-groups-row">
+                                <div className="v3-icon-container v3-location-icon">
+                                  <img src={LocationGroupsIcon} alt="" width="24" height="24" />
+                                </div>
                                 <div className="location-groups-row-info">
                                   <span className="location-groups-row-name">{group.name}</span>
                                   {group.desc && <span className="location-groups-row-desc">{group.desc}</span>}
                                 </div>
-                                <span className="location-groups-row-count">{group.locations} location{group.locations !== 1 ? 's' : ''}</span>
-                                <div className="location-groups-menu-wrap">
-                                  <button className="location-groups-menu-btn" onClick={(e) => { e.stopPropagation(); setLocationGroupMenuOpen(locationGroupMenuOpen === i ? null : i); }}>
+                                <div className="location-groups-assigned-menu-wrap">
+                                  <button className="location-groups-menu-btn" onClick={(e) => { e.stopPropagation(); setAssignedGroupMenuOpen(assignedGroupMenuOpen === i ? null : i); }} aria-label="Options">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                       <circle cx="12" cy="5" r="2" fill="#101010"/>
                                       <circle cx="12" cy="12" r="2" fill="#101010"/>
                                       <circle cx="12" cy="19" r="2" fill="#101010"/>
                                     </svg>
                                   </button>
-                                  {locationGroupMenuOpen === i && (
-                                    <div className="location-groups-dropdown">
-                                      <button className="location-groups-dropdown-item" onClick={() => setLocationGroupMenuOpen(null)}>Edit</button>
-                                      <button className="location-groups-dropdown-item" onClick={() => setLocationGroupMenuOpen(null)}>Add/remove locations</button>
-                                      <button className="location-groups-dropdown-item location-groups-dropdown-item--danger" onClick={() => { setLocationGroups(locationGroups.filter((_, idx) => idx !== i)); setLocationGroupMenuOpen(null); }}>Delete</button>
+                                  {assignedGroupMenuOpen === i && (
+                                    <div className="location-groups-dropdown" role="menu">
+                                      <button className="location-groups-dropdown-item location-groups-dropdown-item--danger" role="menuitem" onClick={() => {
+                                        setLocationGroups(locationGroups.map((g, idx) => idx === groupIndex ? { ...g, locationIds: (g.locationIds || []).filter((id) => id !== locationDetailModal), locations: Math.max(0, (g.locations || g.locationIds?.length || 0) - 1) } : g))
+                                        setAssignedGroupMenuOpen(null)
+                                        showToast('Removed from group.')
+                                      }}>Remove from group</button>
                                     </div>
                                   )}
                                 </div>
                               </div>
-                            ))}
+                            )})}
                           </div>
-                        )}
+                          </>
+                        )
+                        })()}
                       </div>
                     </div>
                   </div>
@@ -2520,94 +2875,253 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                       </div>
                     </div>
                     <div className="v3-form-fields">
-                      <div className="form-input-container">
+                      <div className={`form-input-container${(currentLocation.website || '').trim() ? ' has-value' : ''}`}>
                         <label className="form-label">Website</label>
-                        <input type="url" className="form-input-text" defaultValue="" placeholder="Website" />
+                        <input type="url" className="form-input-text" defaultValue={currentLocation.website || ''} onChange={(e) => e.target.parentElement.classList.toggle('has-value', e.target.value.trim().length > 0)} onBlur={(e) => e.target.parentElement.classList.toggle('has-value', e.target.value.trim().length > 0)} />
                       </div>
-                      <div className="location-form-row">
-                        <div className="form-input-container">
-                          <label className="form-label">X</label>
-                          <input type="text" className="form-input-text" defaultValue="" placeholder="X" />
-                        </div>
-                        <div className="form-input-container">
-                          <label className="form-label">Instagram</label>
-                          <input type="text" className="form-input-text" defaultValue="" placeholder="Instagram" />
-                        </div>
+                      <div className={`form-input-container${(currentLocation.x || '').trim() ? ' has-value' : ''}`}>
+                        <label className="form-label">X</label>
+                        <input type="text" className="form-input-text" defaultValue={currentLocation.x || ''} onChange={(e) => e.target.parentElement.classList.toggle('has-value', e.target.value.trim().length > 0)} onBlur={(e) => e.target.parentElement.classList.toggle('has-value', e.target.value.trim().length > 0)} />
                       </div>
-                      <div className="form-input-container">
+                      <div className={`form-input-container${(currentLocation.instagram || '').trim() ? ' has-value' : ''}`}>
+                        <label className="form-label">Instagram</label>
+                        <input type="text" className="form-input-text" defaultValue={currentLocation.instagram || ''} onChange={(e) => e.target.parentElement.classList.toggle('has-value', e.target.value.trim().length > 0)} onBlur={(e) => e.target.parentElement.classList.toggle('has-value', e.target.value.trim().length > 0)} />
+                      </div>
+                      <div className={`form-input-container${(currentLocation.facebook || '').trim() ? ' has-value' : ''}`}>
                         <label className="form-label">Facebook</label>
-                        <input type="text" className="form-input-text" defaultValue="" placeholder="Facebook" />
+                        <input type="text" className="form-input-text" defaultValue={currentLocation.facebook || ''} onChange={(e) => e.target.parentElement.classList.toggle('has-value', e.target.value.trim().length > 0)} onBlur={(e) => e.target.parentElement.classList.toggle('has-value', e.target.value.trim().length > 0)} />
                       </div>
                     </div>
                   </div>
 
-                  {/* Branding */}
+                  {/* Location branding */}
                   <div className="card card-modal card--no-divider">
                     <div className="card-header">
                       <div className="card-header-info">
                         <h3 className="card-title">Branding</h3>
-                        <p className="card-subtitle">Customize your customer facing touchpoints like receipts, invoices, appointment booking flow, and checkout screens with your brand's color and logo.</p>
+                        <p className="card-subtitle">Choose which branding this location uses. Receipts, invoices, and checkout will reflect your selection.</p>
                       </div>
                     </div>
                     <div className="v3-form-fields">
-                      <div className="location-brand-row">
-                        <div className="location-brand-logo" style={{ background: brand.color }}>
-                          {brandLogos[activeBrand] ? (
-                            <img src={brandLogos[activeBrand]} alt="" width="28" height="28" style={{ objectFit: 'contain' }} />
-                          ) : (
-                            <span style={{ color: '#fff', fontWeight: 600, fontSize: '16px' }}>{brand.name.charAt(0)}</span>
-                          )}
+                      <div className="location-brand-rows">
+                        <div className="location-brand-row">
+                          <div
+                            role="button"
+                            tabIndex={0}
+                            className={`location-brand-row-selectable${!useLocationBranding ? ' selected' : ''}`}
+                            onClick={selectBusinessBranding}
+                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectBusinessBranding(); } }}
+                          >
+                            <div className="location-brand-logo location-brand-logo--business" style={{ background: brand.color }}>
+                              {brandLogos[activeBrand] ? (
+                                <img
+                                  src={activeBrand === 'joy-bakeshop' ? jbLogoWhite : brandLogos[activeBrand]}
+                                  alt=""
+                                  width={34}
+                                  height={34}
+                                  className="location-brand-logo-img"
+                                  style={{ width: 38, height: 38 }}
+                                />
+                              ) : (
+                                <span style={{ color: '#fff', fontWeight: 600, fontSize: '16px' }}>{brand.name.charAt(0)}</span>
+                              )}
+                            </div>
+                            <span className="location-brand-name">
+                              <span className="location-brand-label">Business branding</span>
+                              <span className="location-brand-detail">{brand.name}</span>
+                            </span>
+                            {!useLocationBranding && (
+                              <span className="location-brand-check" aria-hidden="true">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M5 13l4 4L19 7" stroke="#101010" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                              </span>
+                            )}
+                          </div>
+                          <button
+                            type="button"
+                            className="location-brand-edit-icon"
+                            aria-label="Edit business branding"
+                            onClick={handleEditBusinessBrand}
+                          >
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M16.4745 5.40802L18.5917 7.52518M17.8358 3.68549L12.1086 9.41274C11.8131 9.70819 11.6116 10.0838 11.5296 10.4933L11.0001 13.0001L13.5069 12.4706C13.9164 12.3886 14.292 12.1871 14.5875 11.8916L20.3147 6.16437C20.9991 5.47998 20.9991 4.36988 20.3147 3.68549C19.6303 3.00109 18.5202 3.00109 17.8358 3.68549Z" stroke="#101010" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                              <path d="M19 15V18C19 19.1046 18.1046 20 17 20H6C4.89543 20 4 19.1046 4 18V7C4 5.89543 4.89543 5 6 5H9" stroke="#101010" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                          </button>
                         </div>
-                        <span className="location-brand-name">{brand.name} brand</span>
-                        <button className="location-brand-edit" aria-label="Edit branding">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M16.4745 5.40802L18.5917 7.52518M17.8358 3.68549L12.1086 9.41274C11.8131 9.70819 11.6116 10.0838 11.5296 10.4933L11.0001 13.0001L13.5069 12.4706C13.9164 12.3886 14.292 12.1871 14.5875 11.8916L20.3147 6.16437C20.9991 5.47998 20.9991 4.36988 20.3147 3.68549C19.6303 3.00109 18.5202 3.00109 17.8358 3.68549Z" stroke="#101010" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            <path d="M19 15V18C19 19.1046 18.1046 20 17 20H6C4.89543 20 4 19.1046 4 18V7C4 5.89543 4.89543 5 6 5H9" stroke="#101010" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                          </svg>
-                        </button>
+                        <div className="location-brand-row">
+                          <div
+                            role="button"
+                            tabIndex={0}
+                            className={`location-brand-row-selectable${useLocationBranding ? ' selected' : ''}`}
+                            onClick={selectLocationBranding}
+                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectLocationBranding(); } }}
+                          >
+                            <div className="location-brand-logo location-brand-logo--location" style={{ background: '#7C3AED' }}>
+                              {brandLogos[activeBrand] ? (
+                                <img
+                                  src={activeBrand === 'joy-bakeshop' ? jbLogoWhite : brandLogos[activeBrand]}
+                                  alt=""
+                                  width={34}
+                                  height={34}
+                                  className="location-brand-logo-img"
+                                  style={{ width: 38, height: 38 }}
+                                />
+                              ) : (
+                                <span style={{ color: '#fff', fontWeight: 600, fontSize: '16px' }}>{currentLocation.name.charAt(0)}</span>
+                              )}
+                            </div>
+                            <span className="location-brand-name">
+                              <span className="location-brand-label">Location-specific branding</span>
+                              <span className="location-brand-detail">for {currentLocation.name}</span>
+                            </span>
+                            {useLocationBranding && (
+                              <span className="location-brand-check" aria-hidden="true">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M5 13l4 4L19 7" stroke="#101010" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                              </span>
+                            )}
+                          </div>
+                          <button
+                            type="button"
+                            className="location-brand-edit-icon"
+                            aria-label="Edit location branding"
+                            onClick={handleEditBusinessBrand}
+                          >
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M16.4745 5.40802L18.5917 7.52518M17.8358 3.68549L12.1086 9.41274C11.8131 9.70819 11.6116 10.0838 11.5296 10.4933L11.0001 13.0001L13.5069 12.4706C13.9164 12.3886 14.292 12.1871 14.5875 11.8916L20.3147 6.16437C20.9991 5.47998 20.9991 4.36988 20.3147 3.68549C19.6303 3.00109 18.5202 3.00109 17.8358 3.68549Z" stroke="#101010" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                              <path d="M19 15V18C19 19.1046 18.1046 20 17 20H6C4.89543 20 4 19.1046 4 18V7C4 5.89543 4.89543 5 6 5H9" stroke="#101010" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
 
                   {/* Business hours */}
-                  <div className="card card-modal card--no-divider">
+                  <div className="card card-modal card--no-divider card--business-hours">
                     <div className="card-header">
                       <div className="card-header-info">
                         <h3 className="card-title">Business hours</h3>
                       </div>
                     </div>
                     <div className="v3-form-fields">
-                      <div className="form-input-container has-value">
-                        <label className="form-label">Time Zone</label>
-                        <div className="mcc-dropdown-value">
-                          <span className="form-input-text">{currentLocation.timezone}</span>
-                          <svg className="mcc-dropdown-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" clipRule="evenodd" d="M8.70703 11.7071C8.31651 12.0976 7.68334 12.0976 7.29282 11.7071L1.29282 5.70711L2.70703 4.29289L7.99992 9.58579L13.2928 4.29289L14.707 5.70711L8.70703 11.7071Z" fill="#959595"/>
-                          </svg>
+                      <div className="mcc-dropdown" ref={timezoneDropdownRef}>
+                        <div
+                          className={`form-input-container has-value mcc-dropdown-trigger ${isTimezoneDropdownOpen ? 'focused' : ''}`}
+                          onClick={() => setIsTimezoneDropdownOpen(!isTimezoneDropdownOpen)}
+                        >
+                          <label className="form-label">Time Zone</label>
+                          <div className="mcc-dropdown-value">
+                            <span className="form-input-text">
+                              {formatTimezoneForDisplay(
+                                locationDetailModal && locationTimezoneOverrides[locationDetailModal]
+                                  ? locationTimezoneOverrides[locationDetailModal]
+                                  : toIANA(currentLocation?.timezone)
+                              )}
+                            </span>
+                            <svg className={`mcc-dropdown-chevron ${isTimezoneDropdownOpen ? 'open' : ''}`} width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path fillRule="evenodd" clipRule="evenodd" d="M8.70703 11.7071C8.31651 12.0976 7.68334 12.0976 7.29282 11.7071L1.29282 5.70711L2.70703 4.29289L7.99992 9.58579L13.2928 4.29289L14.707 5.70711L8.70703 11.7071Z" fill="#959595"/>
+                            </svg>
+                          </div>
                         </div>
-                      </div>
-
-                      <div className="location-hours-section">
-                        <h4 className="location-hours-heading">Regular hours</h4>
-                        <p className="location-hours-desc">Let your clients know when you're open.</p>
-                        {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => (
-                          <div key={day} className="location-hours-row">
-                            <label className="location-hours-check">
-                              <input type="checkbox" />
-                              <span>{day}</span>
-                            </label>
-                            <div className="location-hours-inputs">
-                              <input type="text" className="location-hours-time" placeholder="Closed" disabled />
-                              <input type="text" className="location-hours-time" placeholder="Closed" disabled />
+                        {isTimezoneDropdownOpen && (
+                          <div className="mcc-dropdown-menu">
+                            <div className="mcc-dropdown-search-wrap">
+                              <div className="mcc-dropdown-search-field">
+                                <svg className="mcc-dropdown-search-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path fillRule="evenodd" clipRule="evenodd" d="M5.11531 5.11537C7.93575 2.29494 12.5087 2.29497 15.3292 5.11537C17.9096 7.69582 18.1267 11.7413 15.9854 14.5714L21.2071 19.7931L19.793 21.2072L14.5714 15.9855C11.7413 18.1268 7.69576 17.9097 5.11531 15.3292C2.29491 12.5088 2.29488 7.93581 5.11531 5.11537ZM13.9151 6.52944C11.8757 4.49009 8.56876 4.49005 6.52938 6.52944C4.48999 8.56882 4.49002 11.8758 6.52938 13.9152C8.56878 15.9546 11.8757 15.9546 13.9151 13.9152C15.9545 11.8758 15.9545 8.56884 13.9151 6.52944Z" fill="#101010"/>
+                                </svg>
+                                <input
+                                  type="text"
+                                  className="mcc-dropdown-search"
+                                  placeholder="Search time zones"
+                                  value={timezoneSearchQuery}
+                                  onChange={(e) => setTimezoneSearchQuery(e.target.value)}
+                                />
+                              </div>
+                            </div>
+                            <div className="mcc-dropdown-list">
+                              {(() => {
+                                const all = getAllTimeZones()
+                                const q = timezoneSearchQuery.toLowerCase().trim()
+                                const filtered = q
+                                  ? all.filter((t) => t.label.toLowerCase().includes(q) || t.id.toLowerCase().includes(q))
+                                  : all
+                                return filtered.length === 0 ? (
+                                  <div className="mcc-dropdown-empty">No time zones found</div>
+                                ) : (
+                                  filtered.map((tz) => {
+                                    const selected = (locationDetailModal && locationTimezoneOverrides[locationDetailModal]) || toIANA(currentLocation?.timezone)
+                                    return (
+                                      <button
+                                        key={tz.id}
+                                        type="button"
+                                        className={`mcc-dropdown-item ${selected === tz.id ? 'selected' : ''}`}
+                                        onClick={() => {
+                                          if (locationDetailModal) {
+                                            setLocationTimezoneOverrides((prev) => ({ ...prev, [locationDetailModal]: tz.id }))
+                                          }
+                                          setIsTimezoneDropdownOpen(false)
+                                          setTimezoneSearchQuery('')
+                                        }}
+                                      >
+                                        <span className="mcc-dropdown-item-label">{tz.label}</span>
+                                      </button>
+                                    )
+                                  })
+                                )
+                              })()}
                             </div>
                           </div>
-                        ))}
+                        )}
                       </div>
 
                       <div className="location-hours-section">
-                        <h4 className="location-hours-heading">Special hours</h4>
-                        <p className="location-hours-desc">Let your clients know when your hours are different from your regular hours.</p>
-                        <button className="location-special-hours-btn">Add special hours</button>
+                        {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => {
+                          const hoursForLocation = (locationDetailModal && locationRegularHours[locationDetailModal]) ?? defaultRegularHours
+                          const dayHours = hoursForLocation[day] ?? { open: '8:00 AM', close: '8:00 PM' }
+                          const isOpen = (locationDetailModal && locationDaysOpen[locationDetailModal]?.[day]) ?? defaultDaysOpen[day]
+                          const setDayOpen = (open) => {
+                            if (!locationDetailModal) return
+                            setLocationDaysOpen((prev) => ({
+                              ...prev,
+                              [locationDetailModal]: { ...(prev[locationDetailModal] ?? defaultDaysOpen), [day]: open }
+                            }))
+                          }
+                          return (
+                            <div key={day} className="location-hours-row">
+                              <label className="location-hours-check">
+                                <input
+                                  type="checkbox"
+                                  checked={isOpen}
+                                  onChange={(e) => setDayOpen(e.target.checked)}
+                                />
+                                <span>{day}</span>
+                              </label>
+                              <div className="location-hours-inputs">
+                                <input
+                                  type="text"
+                                  className="location-hours-time"
+                                  placeholder="Closed"
+                                  value={isOpen ? dayHours.open : 'Closed'}
+                                  onChange={(e) => setLocationDayHours(day, 'open', e.target.value)}
+                                  disabled={!isOpen}
+                                />
+                                <input
+                                  type="text"
+                                  className="location-hours-time"
+                                  placeholder="Closed"
+                                  value={isOpen ? dayHours.close : 'Closed'}
+                                  onChange={(e) => setLocationDayHours(day, 'close', e.target.value)}
+                                  disabled={!isOpen}
+                                />
+                              </div>
+                            </div>
+                          )
+                        })}
                       </div>
                     </div>
                   </div>
@@ -2621,18 +3135,48 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                       </div>
                     </div>
                     <div className="v3-form-fields">
-                      <div className="form-input-container">
-                        <label className="form-label">Transfer account</label>
-                        <div className="mcc-dropdown-value">
-                          <span className="form-input-text" style={{ color: '#959595' }}>Transfer account</span>
-                          <svg className="mcc-dropdown-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" clipRule="evenodd" d="M8.70703 11.7071C8.31651 12.0976 7.68334 12.0976 7.29282 11.7071L1.29282 5.70711L2.70703 4.29289L7.99992 9.58579L13.2928 4.29289L14.707 5.70711L8.70703 11.7071Z" fill="#959595"/>
-                          </svg>
+                      <div className="mcc-dropdown" ref={transferAccountDropdownRef}>
+                        <div
+                          className={`form-input-container mcc-dropdown-trigger ${locationDetailModal && (locationTransferAccountOverrides[locationDetailModal] ?? null) ? 'has-value' : ''} ${isTransferAccountDropdownOpen ? 'focused' : ''}`}
+                          onClick={() => setIsTransferAccountDropdownOpen(!isTransferAccountDropdownOpen)}
+                        >
+                          <label className="form-label">Transfer account</label>
+                          <div className="mcc-dropdown-value">
+                            <span className="form-input-text">
+                              {locationDetailModal && (locationTransferAccountOverrides[locationDetailModal] ?? null)
+                                ? (TRANSFER_ACCOUNTS.find(a => a.id === (locationTransferAccountOverrides[locationDetailModal] ?? null))?.label ?? 'Transfer account')
+                                : <span style={{ color: 'transparent' }}>Transfer account</span>}
+                            </span>
+                            <svg className={`mcc-dropdown-chevron ${isTransferAccountDropdownOpen ? 'open' : ''}`} width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path fillRule="evenodd" clipRule="evenodd" d="M8.70703 11.7071C8.31651 12.0976 7.68334 12.0976 7.29282 11.7071L1.29282 5.70711L2.70703 4.29289L7.99992 9.58579L13.2928 4.29289L14.707 5.70711L8.70703 11.7071Z" fill="#959595"/>
+                            </svg>
+                          </div>
                         </div>
+                        {isTransferAccountDropdownOpen && (
+                          <div className="mcc-dropdown-menu">
+                            <div className="mcc-dropdown-list" style={{ padding: '4px 8px' }}>
+                              {TRANSFER_ACCOUNTS.map((acc) => (
+                                <button
+                                  key={acc.id}
+                                  type="button"
+                                  className={`mcc-dropdown-item ${locationDetailModal && (locationTransferAccountOverrides[locationDetailModal] ?? null) === acc.id ? 'selected' : ''}`}
+                                  onClick={() => {
+                                    if (locationDetailModal) {
+                                      setLocationTransferAccountOverrides(prev => ({ ...prev, [locationDetailModal]: acc.id }))
+                                    }
+                                    setIsTransferAccountDropdownOpen(false)
+                                  }}
+                                >
+                                  <span className="mcc-dropdown-item-label">{acc.label}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
-                      <div className="form-input-container">
+                      <div className="form-input-container has-value">
                         <label className="form-label">Transfer tag</label>
-                        <input type="text" className="form-input-text" defaultValue="" placeholder="Transfer tag" />
+                        <input type="text" className="form-input-text" defaultValue="Main checking" placeholder="Transfer tag" onChange={(e) => e.target.parentElement.classList.toggle('has-value', e.target.value.length > 0)} onBlur={(e) => e.target.parentElement.classList.toggle('has-value', e.target.value.length > 0)} />
                       </div>
                     </div>
                   </div>
@@ -2646,14 +3190,40 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                       </div>
                     </div>
                     <div className="v3-form-fields">
-                      <div className="form-input-container has-value">
-                        <label className="form-label">Select language</label>
-                        <div className="mcc-dropdown-value">
-                          <span className="form-input-text">English</span>
-                          <svg className="mcc-dropdown-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" clipRule="evenodd" d="M8.70703 11.7071C8.31651 12.0976 7.68334 12.0976 7.29282 11.7071L1.29282 5.70711L2.70703 4.29289L7.99992 9.58579L13.2928 4.29289L14.707 5.70711L8.70703 11.7071Z" fill="#959595"/>
-                          </svg>
+                      <div className="mcc-dropdown" ref={preferredLanguageDropdownRef}>
+                        <div
+                          className={`form-input-container has-value mcc-dropdown-trigger ${isPreferredLanguageDropdownOpen ? 'focused' : ''}`}
+                          onClick={() => setIsPreferredLanguageDropdownOpen(!isPreferredLanguageDropdownOpen)}
+                        >
+                          <label className="form-label">Select language</label>
+                          <div className="mcc-dropdown-value">
+                            <span className="form-input-text">{locationDetailModal && (locationPreferredLanguageOverrides[locationDetailModal] ?? 'English')}</span>
+                            <svg className={`mcc-dropdown-chevron ${isPreferredLanguageDropdownOpen ? 'open' : ''}`} width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path fillRule="evenodd" clipRule="evenodd" d="M8.70703 11.7071C8.31651 12.0976 7.68334 12.0976 7.29282 11.7071L1.29282 5.70711L2.70703 4.29289L7.99992 9.58579L13.2928 4.29289L14.707 5.70711L8.70703 11.7071Z" fill="#959595"/>
+                            </svg>
+                          </div>
                         </div>
+                        {isPreferredLanguageDropdownOpen && (
+                          <div className="mcc-dropdown-menu">
+                            <div className="mcc-dropdown-list" style={{ padding: '4px 8px' }}>
+                              {['English', 'Spanish'].map((lang) => (
+                                <button
+                                  key={lang}
+                                  type="button"
+                                  className={`mcc-dropdown-item ${(locationDetailModal && (locationPreferredLanguageOverrides[locationDetailModal] ?? 'English')) === lang ? 'selected' : ''}`}
+                                  onClick={() => {
+                                    if (locationDetailModal) {
+                                      setLocationPreferredLanguageOverrides(prev => ({ ...prev, [locationDetailModal]: lang }))
+                                    }
+                                    setIsPreferredLanguageDropdownOpen(false)
+                                  }}
+                                >
+                                  <span className="mcc-dropdown-item-label">{lang}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -2667,15 +3237,59 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                       </div>
                     </div>
                     <div className="v3-form-fields">
-                      <div className="form-input-container">
-                        <label className="form-label">Location</label>
-                        <div className="mcc-dropdown-value">
-                          <span className="form-input-text" style={{ color: '#959595' }}>Location</span>
-                          <svg className="mcc-dropdown-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" clipRule="evenodd" d="M8.70703 11.7071C8.31651 12.0976 7.68334 12.0976 7.29282 11.7071L1.29282 5.70711L2.70703 4.29289L7.99992 9.58579L13.2928 4.29289L14.707 5.70711L8.70703 11.7071Z" fill="#959595"/>
-                          </svg>
-                        </div>
-                      </div>
+                      {(() => {
+                        const allLocationIds = (activeBrand === 'keva-juice' && customerViewMode === 'returning')
+                          ? ['brookhaven', 'ansley-park', 'virginia-highland', 'north-main', 'augusta', 'alta-vista']
+                          : (brand.locations || []).map(loc => loc.id || loc.name.toLowerCase().replace(/\s+/g, '-'))
+                        const matchableLocations = allLocationIds
+                          .filter(id => id !== locationDetailModal)
+                          .map(id => ({ id, label: locationData[id]?.name || (brand.locations || []).find(l => (l.id || l.name.toLowerCase().replace(/\s+/g, '-')) === id)?.name || id }))
+                        return (
+                          <div className="mcc-dropdown" ref={matchLocationDropdownRef}>
+                            <div
+                              className={`form-input-container mcc-dropdown-trigger ${locationDetailModal && (locationMatchLibraryOverrides[locationDetailModal] ?? null) ? 'has-value' : ''} ${isMatchLocationDropdownOpen ? 'focused' : ''}`}
+                              onClick={() => setIsMatchLocationDropdownOpen(!isMatchLocationDropdownOpen)}
+                            >
+                              <label className="form-label">Location</label>
+                              <div className="mcc-dropdown-value">
+                                <span className="form-input-text">
+                                  {locationDetailModal && (locationMatchLibraryOverrides[locationDetailModal] ?? null)
+                                    ? (matchableLocations.find(l => l.id === (locationMatchLibraryOverrides[locationDetailModal] ?? null))?.label ?? 'Location')
+                                    : <span style={{ color: 'transparent' }}>Location</span>}
+                                </span>
+                                <svg className={`mcc-dropdown-chevron ${isMatchLocationDropdownOpen ? 'open' : ''}`} width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path fillRule="evenodd" clipRule="evenodd" d="M8.70703 11.7071C8.31651 12.0976 7.68334 12.0976 7.29282 11.7071L1.29282 5.70711L2.70703 4.29289L7.99992 9.58579L13.2928 4.29289L14.707 5.70711L8.70703 11.7071Z" fill="#959595"/>
+                                </svg>
+                              </div>
+                            </div>
+                            {isMatchLocationDropdownOpen && (
+                              <div className="mcc-dropdown-menu">
+                                <div className="mcc-dropdown-list" style={{ padding: '4px 8px' }}>
+                                  {matchableLocations.length === 0 ? (
+                                    <div className="mcc-dropdown-empty">No other locations</div>
+                                  ) : (
+                                    matchableLocations.map((loc) => (
+                                      <button
+                                        key={loc.id}
+                                        type="button"
+                                        className={`mcc-dropdown-item ${locationDetailModal && (locationMatchLibraryOverrides[locationDetailModal] ?? null) === loc.id ? 'selected' : ''}`}
+                                        onClick={() => {
+                                          if (locationDetailModal) {
+                                            setLocationMatchLibraryOverrides(prev => ({ ...prev, [locationDetailModal]: loc.id }))
+                                          }
+                                          setIsMatchLocationDropdownOpen(false)
+                                        }}
+                                      >
+                                        <span className="mcc-dropdown-item-label">{loc.label}</span>
+                                      </button>
+                                    ))
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        )
+                      })()}
                     </div>
                   </div>
 
@@ -2727,6 +3341,113 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
           </div>
         )}
 
+        {/* Add or remove locations from group modal */}
+        {(isAddRemoveLocationsModalOpen || isAddRemoveLocationsModalClosing) && addRemoveLocationsGroupIndex !== null && (
+          <div className={`switch-business-modal-overlay ${isAddRemoveLocationsModalClosing ? 'closing' : ''}`} onClick={(e) => { if (e.target === e.currentTarget) handleCloseAddRemoveLocationsModal() }}>
+            <div className={`switch-business-modal transfer-modal add-remove-locations-modal ${isAddRemoveLocationsModalClosing ? 'closing' : ''}`}>
+              <div className="location-group-modal-header">
+                <button className="location-group-close" onClick={handleCloseAddRemoveLocationsModal} aria-label="Close">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+                <button type="button" className={`location-group-create-btn location-group-create-btn--active`} onClick={handleSaveAddRemoveLocations}>Save</button>
+              </div>
+              <div className="switch-business-modal-header">
+                <h2 className="switch-business-modal-title">Add or remove locations from {locationGroups[addRemoveLocationsGroupIndex]?.name || ''}</h2>
+              </div>
+              <div className="transfer-modal-body add-remove-locations-body">
+                <div className="add-remove-locations-table">
+                  <div className="add-remove-locations-table-header">
+                    <span className="add-remove-locations-col-name">Location name</span>
+                    <span className="add-remove-locations-col-address">Address</span>
+                  </div>
+                  {(activeBrand === 'keva-juice' && customerViewMode === 'returning'
+                    ? ['brookhaven', 'ansley-park', 'virginia-highland', 'north-main', 'augusta', 'alta-vista']
+                    : (brand.locations || []).map(loc => loc.id || loc.name.toLowerCase().replace(/\s+/g, '-'))
+                  ).map((locId) => {
+                    const loc = locationData[locId] || (brand.locations || []).find(l => (l.id || l.name.toLowerCase().replace(/\s+/g, '-')) === locId)
+                    const name = loc?.name || locId
+                    let addressLine1 = ''
+                    let addressLine2 = ''
+                    if (loc?.address1) {
+                      addressLine1 = loc.address1
+                      addressLine2 = [loc.city, loc.state, loc.zip].filter(Boolean).join(', ')
+                    } else if (typeof loc?.address === 'string') {
+                      const parts = loc.address.split(',').map(p => p.trim())
+                      addressLine1 = parts[0] || ''
+                      addressLine2 = parts.slice(1).join(', ')
+                    }
+                    const isChecked = addRemoveLocationsSelection.has(locId)
+                    return (
+                      <div key={locId} className="add-remove-locations-table-row">
+                        <label className="add-remove-locations-row-cell add-remove-locations-cell-name">
+                          <input type="checkbox" checked={isChecked} onChange={(e) => { const next = new Set(addRemoveLocationsSelection); if (e.target.checked) next.add(locId); else next.delete(locId); setAddRemoveLocationsSelection(next) }} />
+                          <span className="add-remove-locations-checkbox-label">{name}</span>
+                        </label>
+                        <div className="add-remove-locations-row-cell add-remove-locations-cell-address">
+                          {addressLine1 && <span>{addressLine1}</span>}
+                          {addressLine2 && <span className="add-remove-locations-address-line2">{addressLine2}</span>}
+                          {!addressLine1 && !addressLine2 && loc?.address && <span>{loc.address}</span>}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Manage Location Groups (from location detail) */}
+        {(isManageLocationGroupsModalOpen || isManageLocationGroupsModalClosing) && locationDetailModal && (
+          <div className={`switch-business-modal-overlay ${isManageLocationGroupsModalClosing ? 'closing' : ''}`} onClick={(e) => { if (e.target === e.currentTarget) handleCloseManageLocationGroupsModal() }}>
+            <div className={`switch-business-modal transfer-modal add-remove-locations-modal ${isManageLocationGroupsModalClosing ? 'closing' : ''}`}>
+              <div className="location-group-modal-header">
+                <button className="location-group-close" onClick={handleCloseManageLocationGroupsModal} aria-label="Close">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+                <button type="button" className="location-group-create-btn location-group-create-btn--active" onClick={handleSaveManageLocationGroups}>Save</button>
+              </div>
+              <div className="switch-business-modal-header">
+                <h2 className="switch-business-modal-title">Assign to location groups</h2>
+                <p className="switch-business-modal-subtitle" style={{ marginTop: 4 }}>Select which groups {currentLocation?.name || 'this location'} belongs to</p>
+              </div>
+              <div className="transfer-modal-body add-remove-locations-body">
+                <div className="add-remove-locations-table">
+                  <div className="add-remove-locations-table-header">
+                    <span className="add-remove-locations-col-name">Group name</span>
+                    <span className="add-remove-locations-col-address">Description</span>
+                  </div>
+                  {locationGroups.length === 0 ? (
+                    <div className="location-groups-empty" style={{ padding: 24 }}>
+                      <span>No location groups yet</span>
+                      <button className="location-groups-empty-cta" style={{ marginTop: 12 }} onClick={() => { handleCloseManageLocationGroupsModal(); setIsLocationGroupDialogOpen(true); }}>Create group</button>
+                    </div>
+                  ) : (
+                    locationGroups.map((group, i) => {
+                      const isChecked = manageLocationGroupsSelection.has(i)
+                      return (
+                        <div key={i} className="add-remove-locations-table-row">
+                          <label className="add-remove-locations-row-cell add-remove-locations-cell-name">
+                            <input type="checkbox" checked={isChecked} onChange={(e) => { const next = new Set(manageLocationGroupsSelection); if (e.target.checked) next.add(i); else next.delete(i); setManageLocationGroupsSelection(next) }} />
+                            <span className="add-remove-locations-checkbox-label">{group.name}</span>
+                          </label>
+                          <div className="add-remove-locations-row-cell add-remove-locations-cell-address">
+                            {group.desc && <span>{group.desc}</span>}
+                          </div>
+                        </div>
+                      )
+                    })
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Location Group Dialog */}
         {(isLocationGroupDialogOpen || isLocationGroupDialogClosing) && (
           <div className={`switch-business-modal-overlay ${isLocationGroupDialogClosing ? 'closing' : ''}`} onClick={(e) => { if (e.target === e.currentTarget) handleCloseLocationGroupDialog() }}>
@@ -2737,7 +3458,7 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                     <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </button>
-                <button type="button" className={`location-group-create-btn ${locationGroupName.trim() ? 'location-group-create-btn--active' : ''}`} disabled={!locationGroupName.trim()} onClick={() => { setLocationGroups([...locationGroups, { name: locationGroupName.trim(), desc: locationGroupDesc.trim(), locations: 0 }]); handleCloseLocationGroupDialog(); }}>Create</button>
+                <button type="button" className={`location-group-create-btn ${locationGroupName.trim() ? 'location-group-create-btn--active' : ''}`} disabled={!locationGroupName.trim()} onClick={() => { setLocationGroups([...locationGroups, { name: locationGroupName.trim(), desc: locationGroupDesc.trim(), locations: 0, locationIds: [] }]); handleCloseLocationGroupDialog(); }}>Create</button>
               </div>
               <div className="switch-business-modal-header">
                 <h2 className="switch-business-modal-title">Create a location group</h2>
