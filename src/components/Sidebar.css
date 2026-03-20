@@ -477,6 +477,57 @@
   color: #666666;
 }
 
+/* Demo mode toggle — Business vs Franchise */
+.sidebar-demo-mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  margin-bottom: 4px;
+}
+
+.sidebar-demo-mode-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary, #8c8c8c);
+  flex-shrink: 0;
+}
+
+.sidebar-demo-mode-pills {
+  display: flex;
+  flex: 1;
+  gap: 2px;
+  background: var(--bg-secondary, #f0f0f0);
+  border-radius: 8px;
+  padding: 2px;
+}
+
+.sidebar-demo-mode-pill {
+  flex: 1;
+  padding: 5px 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  font-family: 'Cash Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary, #8c8c8c);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sidebar-demo-mode-pill.active {
+  background: var(--bg-primary, #fff);
+  color: var(--text-primary, #111);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.sidebar-demo-mode-pill:hover:not(.active) {
+  color: var(--text-primary, #111);
+}
+
 .sidebar-footer {
   display: flex;
   align-items: center;

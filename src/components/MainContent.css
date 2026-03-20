@@ -342,6 +342,23 @@
   margin: 0 0 32px 0;
 }
 
+/* Manage businesses ▾ menu: same row as h1 page title (Add business, Manage brand groups) */
+.page-title-add-toolbar.v3-profile-page-add-toolbar {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.page-title-profile-header-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
 .page-title-left {
   display: flex;
   flex-direction: column;
@@ -2118,8 +2135,11 @@
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  overflow-y: auto;
   z-index: 10;
   animation: standardModalFadeIn 0.25s ease;
 }

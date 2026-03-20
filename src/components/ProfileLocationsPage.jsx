@@ -9,9 +9,7 @@ import vcLogoLarge from '../assets/Product review 12/vanilla-cafe-logo.svg'
 import tmLogoLarge from '../assets/Product review 12/tea-monks-logo.svg'
 import pscLogoLarge from '../assets/Product review 12/paper-son-coffee-logo.svg'
 import brandCardShadow from '../assets/brandcard-shadow.svg'
-import map1 from '../assets/map-1.png'
-import map2 from '../assets/map-2.png'
-import map3 from '../assets/map-3.png'
+import { cloneSharedOrgLocations } from '../data/sharedOrgLocations'
 import GlobeIcon from '../assets/Globe.svg'
 import QRCodeIcon from '../assets/QR code.svg'
 import SeatMapIcon from '../assets/Seat map.svg'
@@ -34,6 +32,35 @@ const brandLogos = {
   'paper-son-coffee': pscLogoLarge
 }
 
+/** Same three org sites for every brand; services pattern from former Joy prototype */
+function buildOrgLocationsForProfile() {
+  const bases = cloneSharedOrgLocations()
+  const servicesByIndex = [
+    [
+      { type: 'online-ordering', icon: GlobeIcon, title: 'Online ordering', subtitle: 'Pickup · Delivery · 15 min prep time', detail: 'Menus · Lunch, Dinner' },
+      { type: 'voice-ordering', icon: MicrophoneIcon, title: 'Voice ordering', subtitle: '(415)111-1234', detail: 'Pending carrier verification', warning: true },
+      { type: 'table-ordering', icon: QRCodeIcon, title: 'Table ordering', subtitle: '5 sections · 18 tables · Prep time 10mins', detail: 'Menus · Full menu' },
+      { type: 'catering', icon: CateringIcon, title: 'Catering', subtitle: 'Catering lunch & dinner menu', detail: 'Lead time 24hr · Prep time 30mins' },
+      { type: 'add-more', icon: PlusIcon, title: 'Add more', subtitle: 'Curbside pickup, catering, voice ordering', detail: '' }
+    ],
+    [
+      { type: 'online-ordering', icon: GlobeIcon, title: 'Online ordering', subtitle: 'Pickup · Delivery · 15 min prep time', detail: 'Menus · Lunch, Dinner' },
+      { type: 'table-ordering', icon: QRCodeIcon, title: 'Table ordering', subtitle: '5 sections · 18 tables · Prep time 10mins', detail: 'Menus · Full menu' },
+      { type: 'catering', icon: CateringIcon, title: 'Catering', subtitle: 'Catering lunch & dinner menu', detail: 'Lead time 24hr · Prep time 30mins' },
+      { type: 'add-more', icon: PlusIcon, title: 'Add more', subtitle: 'Curbside pickup, catering, voice ordering', detail: '' }
+    ],
+    [
+      { type: 'online-ordering', icon: GlobeIcon, title: 'Online ordering', subtitle: 'Pickup · Delivery · 15 min prep time', detail: 'Menus · Lunch, Dinner' },
+      { type: 'catering', icon: CateringIcon, title: 'Catering', subtitle: 'Catering lunch & dinner menu', detail: 'Lead time 24hr · Prep time 30mins' },
+      { type: 'voice-ordering', icon: MicrophoneIcon, title: 'Voice ordering', subtitle: '(415)111-1234', detail: 'Pending carrier verification', warning: true },
+      { type: 'add-more', icon: PlusIcon, title: 'Add more', subtitle: 'Curbside pickup, catering, voice ordering', detail: '' }
+    ]
+  ]
+  return bases.map((loc, i) => ({ ...loc, services: servicesByIndex[i] || [] }))
+}
+
+const ORG_PROFILE_LOCATIONS = buildOrgLocationsForProfile()
+
 const brandData = {
   'joy-bakeshop': {
     name: 'Joy Bakeshop',
@@ -41,51 +68,7 @@ const brandData = {
     color: '#0000FF',
     about: "We're a small, butter-obsessed bakery making croissants, danishes, and morning buns the old-fashioned way: slow fermentation, real ingredients, and daily bakes. Saving by for flaky layers, seasonal fillings, and coffee that plays nice with pastry.",
     connections: 'Website, Google Business Profile, Apple Business Connect, Meta for Business',
-    locations: [
-      {
-        id: 1,
-        name: 'Brookhaven',
-        address: '3100 Lanier Dr NE, Atlanta, GA 30319',
-        phone: '(404) 555-0123',
-        hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm',
-        map: map1,
-        services: [
-          { type: 'online-ordering', icon: GlobeIcon, title: 'Online ordering', subtitle: 'Pickup · Delivery · 15 min prep time', detail: 'Menus · Lunch, Dinner' },
-          { type: 'voice-ordering', icon: MicrophoneIcon, title: 'Voice ordering', subtitle: '(415)111-1234', detail: 'Pending carrier verification', warning: true },
-          { type: 'table-ordering', icon: QRCodeIcon, title: 'Table ordering', subtitle: '5 sections · 18 tables · Prep time 10mins', detail: 'Menus · Full menu' },
-          { type: 'catering', icon: CateringIcon, title: 'Catering', subtitle: 'Catering lunch & dinner menu', detail: 'Lead time 24hr · Prep time 30mins' },
-          { type: 'add-more', icon: PlusIcon, title: 'Add more', subtitle: 'Curbside pickup, catering, voice ordering', detail: '' }
-        ]
-      },
-      {
-        id: 2,
-        name: 'Ansley Park',
-        address: '149 Peachtree Cir NE, Atlanta, GA 30309',
-        phone: '(404) 555-0456',
-        hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm',
-        map: map2,
-        services: [
-          { type: 'online-ordering', icon: GlobeIcon, title: 'Online ordering', subtitle: 'Pickup · Delivery · 15 min prep time', detail: 'Menus · Lunch, Dinner' },
-          { type: 'table-ordering', icon: QRCodeIcon, title: 'Table ordering', subtitle: '5 sections · 18 tables · Prep time 10mins', detail: 'Menus · Full menu' },
-          { type: 'catering', icon: CateringIcon, title: 'Catering', subtitle: 'Catering lunch & dinner menu', detail: 'Lead time 24hr · Prep time 30mins' },
-          { type: 'add-more', icon: PlusIcon, title: 'Add more', subtitle: 'Curbside pickup, catering, voice ordering', detail: '' }
-        ]
-      },
-      {
-        id: 3,
-        name: 'Virginia-Highland',
-        address: '1034 N Highland Ave NE, Atlanta, GA 30306',
-        phone: '(404) 555-0789',
-        hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm',
-        map: map3,
-        services: [
-          { type: 'online-ordering', icon: GlobeIcon, title: 'Online ordering', subtitle: 'Pickup · Delivery · 15 min prep time', detail: 'Menus · Lunch, Dinner' },
-          { type: 'catering', icon: CateringIcon, title: 'Catering', subtitle: 'Catering lunch & dinner menu', detail: 'Lead time 24hr · Prep time 30mins' },
-          { type: 'voice-ordering', icon: MicrophoneIcon, title: 'Voice ordering', subtitle: '(415)111-1234', detail: 'Pending carrier verification', warning: true },
-          { type: 'add-more', icon: PlusIcon, title: 'Add more', subtitle: 'Curbside pickup, catering, voice ordering', detail: '' }
-        ]
-      }
-    ]
+    locations: ORG_PROFILE_LOCATIONS
   },
   'brooklyn-french-bakers': {
     name: 'Brooklyn French Bakers',
@@ -93,17 +76,7 @@ const brandData = {
     color: '#FF8C42',
     about: "This store delivers fresh pastries and bread every morning from our kitchen on Columbia Street, Waterfront. Brooklyn French Bakers is owned by French who are passionate about sharing French culture and products.",
     connections: 'Website, Google Business Profile, Apple Business Connect, Meta for Business',
-    locations: [
-      {
-        id: 1,
-        name: 'Brookhaven',
-        address: '3100 Lanier Dr NE, Atlanta, GA 30319',
-        phone: '(404) 555-0123',
-        hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm',
-        map: map1,
-        services: []
-      }
-    ]
+    locations: ORG_PROFILE_LOCATIONS
   },
   'keva-juice': {
     name: 'Keva Juice',
@@ -111,17 +84,7 @@ const brandData = {
     color: '#FF6B35',
     about: "Keva Juice is Reno, Nevada and Colorado Springs' oldest smoothie, açaí, and juice bar, proudly serving our community for more than 20 years. As a family-owned business, our passion for providing the best smoothies, açaí bowls, and fresh juices has helped us become the go-to local spot for healthy and delicious drinks.",
     connections: 'Website, Google Business Profile, Apple Business Connect, Meta for Business',
-    locations: [
-      {
-        id: 1,
-        name: 'Brookhaven',
-        address: '3100 Lanier Dr NE, Atlanta, GA 30319',
-        phone: '(404) 555-0123',
-        hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm',
-        map: map1,
-        services: []
-      }
-    ]
+    locations: ORG_PROFILE_LOCATIONS
   },
   'spot-of-tea': {
     name: 'Spot of Tea',
@@ -129,17 +92,7 @@ const brandData = {
     color: '#2A67B0',
     about: "Spot of Tea is a neighborhood tea house, started right here in DC. Whenever you walk through our door, our mission is to make sure you leave feeling refreshed, every time!",
     connections: 'Website, Google Business Profile, Apple Business Connect, Meta for Business',
-    locations: [
-      {
-        id: 1,
-        name: 'Brookhaven',
-        address: '3100 Lanier Dr NE, Atlanta, GA 30319',
-        phone: '(404) 555-0123',
-        hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm',
-        map: map1,
-        services: []
-      }
-    ]
+    locations: ORG_PROFILE_LOCATIONS
   },
   'vanilla-cafe': {
     name: 'Vanilla Cafe',
@@ -147,17 +100,7 @@ const brandData = {
     color: '#4D6242',
     about: "Vanilla – coffee & patisserie. Offering specialty coffee, non-alcoholic cocktails, all-day breakfast, lunch, and signature desserts. Discover the best of Slavic comfort food, croissants, and elegant sweets.",
     connections: 'Website, Google Business Profile, Apple Business Connect, Meta for Business',
-    locations: [
-      {
-        id: 1,
-        name: 'Brookhaven',
-        address: '3100 Lanier Dr NE, Atlanta, GA 30319',
-        phone: '(404) 555-0123',
-        hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm',
-        map: map1,
-        services: []
-      }
-    ]
+    locations: ORG_PROFILE_LOCATIONS
   },
   'tea-monks': {
     name: 'Tea Monks',
@@ -165,17 +108,7 @@ const brandData = {
     color: '#A66800',
     about: "Tea Monks has been crafting delicious freshly brewed Boba Tea drinks made with premium all-natural high-quality ingredients like tea leaves, creamers and toppings etc imported from Taiwan.",
     connections: 'Website, Google Business Profile, Apple Business Connect, Meta for Business',
-    locations: [
-      {
-        id: 1,
-        name: 'Brookhaven',
-        address: '3100 Lanier Dr NE, Atlanta, GA 30319',
-        phone: '(404) 555-0123',
-        hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm',
-        map: map1,
-        services: []
-      }
-    ]
+    locations: ORG_PROFILE_LOCATIONS
   },
   'paper-son-coffee': {
     name: 'Paper Son Coffee',
@@ -183,17 +116,7 @@ const brandData = {
     color: '#2B6058',
     about: "Classic and Asian American inspired multi roaster coffee stand in the Dogpatch SF!",
     connections: 'Website, Google Business Profile, Apple Business Connect, Meta for Business',
-    locations: [
-      {
-        id: 1,
-        name: 'Brookhaven',
-        address: '3100 Lanier Dr NE, Atlanta, GA 30319',
-        phone: '(404) 555-0123',
-        hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm',
-        map: map1,
-        services: []
-      }
-    ]
+    locations: ORG_PROFILE_LOCATIONS
   }
 }
 

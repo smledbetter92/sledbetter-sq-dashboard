@@ -1,0 +1,360 @@
+.brand-group-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 10050;
+  padding: 24px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  animation: brandGroupDialogFadeIn 0.2s ease;
+}
+
+@keyframes brandGroupDialogFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.brand-group-dialog {
+  width: 100%;
+  max-width: 440px;
+  max-height: min(640px, 90vh);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 28px 28px 24px;
+  border-radius: 28px;
+  background: var(--card-bg, #fff);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.16);
+  border: 1px solid var(--card-border, #f0f0f0);
+}
+
+/* Inside ManageBusinessGroupsModal — no second card / overlay */
+.brand-group-dialog--embedded {
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.brand-group-dialog--embedded .brand-group-dialog-fieldset {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.brand-group-dialog--embedded .brand-group-dialog-checklist {
+  max-height: min(320px, 42vh);
+}
+
+.brand-group-dialog-title {
+  margin: 0;
+  font-family: 'Square Sans Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text-primary, #101010);
+}
+
+.brand-group-dialog-lede {
+  margin: -4px 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text-secondary, #525252);
+}
+
+.brand-group-dialog-fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+/* Div instead of <legend> so size isn’t inflated by UA fieldset/legend styles */
+.brand-group-dialog-fieldset-heading {
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  color: #101010;
+}
+
+/* Group name: shared .v3-form-fields / .form-input-container (business details pattern) */
+.brand-group-dialog .v3-form-fields {
+  padding-top: 0;
+}
+
+/* Match "Businesses in this group" heading: 600 + secondary gray; floated label stays primary + 600 */
+.brand-group-dialog .v3-form-fields .form-input-container:not(.has-value):not(:focus-within) .form-label {
+  font-weight: 400;
+  color: var(--text-secondary, #737373);
+}
+
+.brand-group-dialog .v3-form-fields .form-input-container.has-value .form-label,
+.brand-group-dialog .v3-form-fields .form-input-container:focus-within .form-label {
+  font-weight: 600;
+  color: #101010;
+}
+
+.brand-group-dialog-empty {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-secondary, #737373);
+}
+
+.brand-group-dialog-checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  max-height: min(280px, 40vh);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: none;
+  border-radius: 0;
+  background: var(--card-bg, #ffffff);
+}
+
+.brand-group-dialog-checklist > li {
+  border-bottom: 1px solid var(--border-strong, #ebebeb);
+}
+
+.brand-group-dialog-checklist > li:last-child {
+  border-bottom: none;
+}
+
+.brand-group-dialog-checklist > li > .brand-group-dialog-check-row {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.brand-group-dialog-check-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+  margin: 0;
+}
+
+.brand-group-dialog-check-row:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+/* Custom checkbox: rounded box; checkmark sized between “tiny” and “native” */
+.brand-group-dialog-check-row input[type='checkbox'] {
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin: 0;
+  border: 1.5px solid #c4c4c4;
+  border-radius: 5px;
+  background: var(--card-bg, #ffffff);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.brand-group-dialog-check-row input[type='checkbox']:hover {
+  border-color: #959595;
+}
+
+.brand-group-dialog-check-row input[type='checkbox']:focus {
+  outline: none;
+}
+
+.brand-group-dialog-check-row input[type='checkbox']:focus-visible {
+  outline: 2px solid #101010;
+  outline-offset: 2px;
+}
+
+.brand-group-dialog-check-row input[type='checkbox']:checked {
+  background-color: #101010;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10' fill='none'%3E%3Cpath d='M1 5.5l3.5 3.5L11 1.5' stroke='%23ffffff' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 11px 9px;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-color: #101010;
+}
+
+.brand-group-dialog-check-media {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--gray-100, #f5f5f5);
+}
+
+.brand-group-dialog-check-media img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.brand-group-dialog-check-mono {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.brand-group-dialog-check-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.brand-group-dialog-check-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary, #111);
+}
+
+.brand-group-dialog-check-handle {
+  font-size: 12px;
+  color: var(--text-secondary, #737373);
+}
+
+.brand-group-dialog-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.brand-group-dialog-actions-main {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.brand-group-dialog-cancel,
+.brand-group-dialog-save {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+}
+
+.brand-group-dialog-cancel {
+  background: var(--gray-100, #f5f5f5);
+  color: var(--text-primary, #101010);
+}
+
+.brand-group-dialog-save {
+  background: #101010;
+  color: #fff;
+}
+
+.brand-group-dialog-delete {
+  align-self: flex-start;
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: #b42318;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: underline;
+}
+
+[data-theme='dark'] .brand-group-dialog {
+  border-color: var(--border-strong, #333);
+}
+
+[data-theme='dark'] .brand-group-dialog-fieldset-heading {
+  color: var(--text-primary, #fafafa);
+}
+
+[data-theme='dark'] .brand-group-dialog .v3-form-fields .form-input-container:not(.has-value):not(:focus-within) .form-label {
+  color: var(--text-secondary, #a3a3a3);
+}
+
+[data-theme='dark'] .brand-group-dialog .v3-form-fields .form-input-container.has-value .form-label,
+[data-theme='dark'] .brand-group-dialog .v3-form-fields .form-input-container:focus-within .form-label {
+  color: var(--text-primary, #fafafa);
+}
+
+[data-theme='dark'] .brand-group-dialog-checklist {
+  background: var(--card-bg, #1a1a1a);
+}
+
+[data-theme='dark'] .brand-group-dialog-checklist > li {
+  border-bottom-color: var(--border-strong, #333);
+}
+
+[data-theme='dark'] .brand-group-dialog-check-row:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme='dark'] .brand-group-dialog-check-row input[type='checkbox'] {
+  background: var(--card-bg, #1a1a1a);
+  border-color: var(--border-strong, #555);
+}
+
+[data-theme='dark'] .brand-group-dialog-check-row input[type='checkbox']:hover {
+  border-color: #8a8a8a;
+}
+
+[data-theme='dark'] .brand-group-dialog-check-row input[type='checkbox']:checked {
+  background-color: #fafafa;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10' fill='none'%3E%3Cpath d='M1 5.5l3.5 3.5L11 1.5' stroke='%23101010' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  border-color: #fafafa;
+}
+
+[data-theme='dark'] .brand-group-dialog-check-row input[type='checkbox']:focus-visible {
+  outline-color: #fafafa;
+}
+
+[data-theme='dark'] .brand-group-dialog-save {
+  background: #fafafa;
+  color: #101010;
+}
+
+[data-theme='dark'] .brand-group-dialog-cancel {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary, #fafafa);
+}

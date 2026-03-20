@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo, Fragment } from 'react'
 import './BaseProfilePage.css'
 import './ProfileLocationsPage.css'
 import './AnalyticsModal.css'
@@ -8,13 +8,13 @@ import FeatureSection from './FeatureSection'
 import DefaultWebsite from './DefaultWebsite'
 import MCCDropdown from './MCCDropdown'
 import ConfirmDialog from './ConfirmDialog'
+import BrandGroupBrandingModal from './BrandGroupBrandingModal'
 import { getAllTimeZones, toIANA, formatTimezoneForDisplay } from '../utils/timezones'
 import brandguide from '../assets/brandguide2.png'
 import profileguide from '../assets/profileguide.png'
 import orderingguide from '../assets/orderingguide.png'
 import map1 from '../assets/map-1.png'
-import map2 from '../assets/map-2.png'
-import map3 from '../assets/map-3.png'
+import { cloneSharedOrgLocations } from '../data/sharedOrgLocations'
 import CheckIcon from '../assets/Check.svg'
 import CheckSelectionIcon from '../assets/Check-selection.svg'
 import LocationPinIcon from '../assets/Location pin.svg'
@@ -60,6 +60,7 @@ import avatar4 from '../assets/avatar-4.png'
 import SettingsIcon from '../assets/settings.svg'
 import LockIcon from '../assets/Lock on.svg'
 import InfoIcon from '../assets/info.svg'
+import multiBrandIcon from '../assets/multi-brand.svg'
 
 const brandLogos = {
   'joy-bakeshop': jbLogoLarge,
@@ -77,67 +78,49 @@ const brandData = {
     color: '#0000FF', 
     handle: '$joybakeshop',
     about: "We're a small, butter-obsessed bakery making croissants, danishes, and morning buns the old-fashioned way: slow fermentation, real ingredients, and daily bakes. Saving by for flaky layers, seasonal fillings, and coffee that plays nice with pastry.",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 },
-      { id: 'ansley-park', name: 'Ansley Park', address: '149 Peachtree Cir NE, Atlanta, GA 30309', phone: '(404) 555-0456', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map2 },
-      { id: 'virginia-highland', name: 'Virginia-Highland', address: '1034 N Highland Ave NE, Atlanta, GA 30306', phone: '(404) 555-0789', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map3 },
-      { id: 'midtown', name: 'Midtown', address: '999 Peachtree St NE, Atlanta, GA 30309', phone: '(404) 555-0901', hours: 'Mon-Fri 7am-9pm, Sat-Sun 8am-7pm', map: map1 },
-      { id: 'buckhead', name: 'Buckhead', address: '3060 Peachtree Rd NW, Atlanta, GA 30305', phone: '(404) 555-0902', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map2 }
-    ]
+    locations: cloneSharedOrgLocations()
   },
   'brooklyn-french-bakers': { 
     name: 'Brooklyn French Bakers', 
     color: '#FF8C42', 
     handle: '$brooklynfrenchbakers',
     about: "This store delivers fresh pastries and bread every morning from our kitchen on Columbia Street, Waterfront. Brooklyn French Bakers is owned by French who are passionate about sharing French culture and products.",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 }
-    ]
+    locations: cloneSharedOrgLocations()
   },
   'keva-juice': { 
     name: 'Keva Juice', 
     color: '#FF6B35', 
     handle: '$kevasmoothie',
     about: "Keva Juice is Reno, Nevada and Colorado Springs' oldest smoothie, açaí, and juice bar, proudly serving our community for more than 20 years. As a family-owned business, our passion for providing the best smoothies, açaí bowls, and fresh juices has helped us become the go-to local spot for healthy and delicious drinks.",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 }
-    ]
+    locations: cloneSharedOrgLocations()
   },
   'spot-of-tea': { 
     name: 'Spot of Tea', 
     color: '#2A67B0', 
     handle: '$drinkspotoftea',
     about: "Spot of Tea is a neighborhood tea house, started right here in DC. Whenever you walk through our door, our mission is to make sure you leave feeling refreshed, every time!",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 }
-    ]
+    locations: cloneSharedOrgLocations()
   },
   'vanilla-cafe': { 
     name: 'Vanilla Cafe', 
     color: '#4D6242', 
     handle: '$vanillacafemia',
     about: "Vanilla – coffee & patisserie. Offering specialty coffee, non-alcoholic cocktails, all-day breakfast, lunch, and signature desserts. Discover the best of Slavic comfort food, croissants, and elegant sweets.",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 }
-    ]
+    locations: cloneSharedOrgLocations()
   },
   'tea-monks': { 
     name: 'Tea Monks', 
     color: '#A66800', 
     handle: '$teamonks',
     about: "Tea Monks has been crafting delicious freshly brewed Boba Tea drinks made with premium all-natural high-quality ingredients like tea leaves, creamers and toppings etc imported from Taiwan.",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 }
-    ]
+    locations: cloneSharedOrgLocations()
   },
   'paper-son-coffee': { 
     name: 'Paper Son Coffee', 
     color: '#2B6058', 
     handle: '$papersoncoffee',
     about: "Classic and Asian American inspired multi roaster coffee stand in the Dogpatch SF!",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 }
-    ]
+    locations: cloneSharedOrgLocations()
   }
 }
 
@@ -161,11 +144,6 @@ const locationData = {
   'brookhaven': { name: 'Brookhaven', address1: '3100 Lanier Dr NE', city: 'Brookhaven', state: 'Georgia', zip: '30319', timezone: 'Eastern Time Zone', status: 'Active', phone: '(404) 555-0123', email: 'brookhaven@joybakeshop.com', lat: 33.8651, lng: -84.3393, website: 'https://joybakeshop.com', x: '@joybakeshop', instagram: '@joybakeshop', facebook: 'joybakeshop' },
   'ansley-park': { name: 'Ansley Park', address1: '149 Peachtree Cir NE', city: 'Atlanta', state: 'Georgia', zip: '30309', timezone: 'Eastern Time Zone', status: 'Active', phone: '(404) 555-0456', email: 'ansleypark@joybakeshop.com', lat: 33.7906, lng: -84.3831, website: 'https://joybakeshop.com', x: '@joybakeshop', instagram: '@joybakeshop', facebook: 'joybakeshop' },
   'virginia-highland': { name: 'Virginia Highland', address1: '1034 N Highland Ave NE', city: 'Atlanta', state: 'Georgia', zip: '30306', timezone: 'Eastern Time Zone', status: 'Inactive', phone: '', email: '', lat: 33.7874, lng: -84.3517, website: 'https://joybakeshop.com', x: '', instagram: '@joybakeshop', facebook: 'joybakeshop' },
-  'midtown': { name: 'Midtown', address1: '999 Peachtree St NE', city: 'Atlanta', state: 'Georgia', zip: '30309', timezone: 'Eastern Time Zone', status: 'Active', phone: '(404) 555-0345', email: 'midtown@joybakeshop.com', lat: 33.7756, lng: -84.3863, website: 'https://joybakeshop.com', x: '@joybakeshop', instagram: '@joybakeshop', facebook: 'joybakeshop' },
-  'buckhead': { name: 'Buckhead', address1: '3060 Peachtree Rd NW', city: 'Atlanta', state: 'Georgia', zip: '30305', timezone: 'Eastern Time Zone', status: 'Active', phone: '(404) 555-0567', email: 'buckhead@joybakeshop.com', lat: 33.8466, lng: -84.3642, website: 'https://joybakeshop.com', x: '@joybakeshop', instagram: '@joybakeshop', facebook: 'joybakeshop' },
-  'north-main': { name: 'North Main', address1: '220 N Main St', city: 'Greenville', state: 'South Carolina', zip: '29601', timezone: 'Eastern Time Zone', status: 'Active', phone: '(864) 555-0789', email: 'northmain@kevajuice.com', lat: 34.8568, lng: -82.3987, website: 'https://kevajuice.com', x: '@kevajuice', instagram: '@kevajuice', facebook: 'kevajuice' },
-  'augusta': { name: 'Augusta', address1: '109 Cleveland St', city: 'Greenville', state: 'South Carolina', zip: '29601', timezone: 'Eastern Time Zone', status: 'Active', phone: '(864) 555-0321', email: 'augusta@kevajuice.com', lat: 34.8526, lng: -82.3940, website: 'https://kevajuice.com', x: '@kevajuice', instagram: '@kevajuice', facebook: 'kevajuice' },
-  'alta-vista': { name: 'Alta Vista', address1: '1849 Piedmont Hwy', city: 'Piedmont', state: 'South Carolina', zip: '29673', timezone: 'Eastern Time Zone', status: 'Active', phone: '(864) 555-0654', email: 'altavista@kevajuice.com', lat: 34.7084, lng: -82.4610, website: 'https://kevajuice.com', x: '@kevajuice', instagram: '@kevajuice', facebook: 'kevajuice' },
 }
 
 function SecurityToggle({ onToggle }) {
@@ -177,8 +155,11 @@ function SecurityToggle({ onToggle }) {
   )
 }
 
-function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateChange, profileVersion, customerViewMode = 'returning', isPreviewVisible, onPreviewVisibilityChange, isV2WebsiteModalOpen, isV2WebsiteModalClosing, onV2WebsiteModalChange, onV2WebsiteModalClose, isSwitchBusinessModalOpen, isSwitchBusinessModalClosing, onSwitchBusinessModalOpen, onSwitchBusinessModalClose, onSelectBusiness, onNavigationStart, onSidebarLevelChange }) {
-  const brand = brandData[activeBrand] || brandData['joy-bakeshop']
+function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateChange, profileVersion, customerViewMode = 'returning', isPreviewVisible, onPreviewVisibilityChange, isV2WebsiteModalOpen, isV2WebsiteModalClosing, onV2WebsiteModalChange, onV2WebsiteModalClose, isSwitchBusinessModalOpen, isSwitchBusinessModalClosing, onSwitchBusinessModalOpen, onSwitchBusinessModalClose, onSelectBusiness, onNavigationStart, onSidebarLevelChange, orgBusinesses = [], brandGroups = [], onBrandGroupsChange = () => {}, mergedBrandData: mergedBrandDataProp, openFullScreenBusinessEditBrandId = null, onOpenFullScreenBusinessEditConsumed = () => {}, openBrandGroupBrandingGroupId = null, onOpenBrandGroupBrandingConsumed = () => {}, onRequestEditBrandGroupModal = () => {}, demoMode = 'franchise' }) {
+  const effectiveBrandData = mergedBrandDataProp != null ? mergedBrandDataProp : brandData
+  const brand = effectiveBrandData[activeBrand] || effectiveBrandData['joy-bakeshop']
+  const hasPresetBrandLogo = Boolean(brandLogos[activeBrand])
+  const activeBrandLogo = brandLogos[activeBrand] || multiBrandIcon
   const [migrationBannerDismissed, setMigrationBannerDismissed] = useState(false)
   const [nameChangeDismissed, setNameChangeDismissed] = useState(false)
   const [cashTagStatus, setCashTagStatus] = useState('idle') // 'idle' | 'checking' | 'available' | 'taken' | 'blocked'
@@ -188,7 +169,8 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
   const [selectedLanguage, setSelectedLanguage] = useState('English')
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false)
   const languageDropdownRef = useRef(null)
-  
+  const [profileBusinessMenuOpen, setProfileBusinessMenuOpen] = useState(false)
+  const profileBusinessMenuRef = useRef(null)
   // Change limit tracking (prototype state)
   const [cashTagRenamesUsed, setCashTagRenamesUsed] = useState(1) // 0, 1, or 2 used out of 2
   const [nameChangesUsed, setNameChangesUsed] = useState(0) // 0, 1, 2, or 3 used out of 3 per year
@@ -979,10 +961,17 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
     const handler = (e) => {
       if (languageDropdownRef.current && !languageDropdownRef.current.contains(e.target)) setIsLanguageDropdownOpen(false)
       if (locationTypeRef.current && !locationTypeRef.current.contains(e.target)) setIsLocationTypeOpen(false)
+      if (profileBusinessMenuRef.current && !profileBusinessMenuRef.current.contains(e.target)) {
+        setProfileBusinessMenuOpen(false)
+      }
     }
     document.addEventListener('mousedown', handler)
     return () => document.removeEventListener('mousedown', handler)
   }, [])
+
+  useEffect(() => {
+    setProfileBusinessMenuOpen(false)
+  }, [activeBrand])
 
   // Handle escape key to close modal
   useEffect(() => {
@@ -1027,6 +1016,10 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
   const [isBusinessEditModalOpen, setIsBusinessEditModalOpen] = useState(false)
   const [isBusinessEditModalClosing, setIsBusinessEditModalClosing] = useState(false)
   const [businessEditActiveSection, setBusinessEditActiveSection] = useState('brand')
+
+  const [isBrandGroupBrandingModalOpen, setIsBrandGroupBrandingModalOpen] = useState(false)
+  const [isBrandGroupBrandingModalClosing, setIsBrandGroupBrandingModalClosing] = useState(false)
+  const [brandGroupBrandingModalGroupId, setBrandGroupBrandingModalGroupId] = useState(null)
   
   const [locationsTab, setLocationsTab] = useState('locations')
 
@@ -1042,8 +1035,8 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
   const [locationGroupName, setLocationGroupName] = useState('')
   const [locationGroupDesc, setLocationGroupDesc] = useState('')
   const [locationGroups, setLocationGroups] = useState([
-    { name: 'Group 1', desc: 'Atlanta area locations', locationIds: ['brookhaven', 'ansley-park', 'virginia-highland'], locations: 3 },
-    { name: 'Group 2', desc: 'Expanded and out-of-town locations', locationIds: ['midtown', 'buckhead', 'north-main', 'augusta', 'alta-vista'], locations: 5 }
+    { name: 'Group 1', desc: 'Brookhaven & Ansley Park', locationIds: ['brookhaven', 'ansley-park'], locations: 2 },
+    { name: 'Group 2', desc: 'Virginia-Highland', locationIds: ['virginia-highland'], locations: 1 }
   ])
   const [locationGroupMenuOpen, setLocationGroupMenuOpen] = useState(null)
   const [assignedGroupMenuOpen, setAssignedGroupMenuOpen] = useState(null)
@@ -1294,51 +1287,114 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
 
   const currentLocation = locationDetailModal ? locationData[locationDetailModal] : null
 
-  // Location branding: 'business' | 'location' per location. When 'location', use locationBrandingOverrides for color.
-  const [locationBrandingSelection, setLocationBrandingSelection] = useState({}) // { [locationId]: 'business' | 'location' }
-  const [locationBrandingOverrides, setLocationBrandingOverrides] = useState({}) // { [locationId]: { color?: string } }
-  const useLocationBranding = locationDetailModal && locationBrandingSelection[locationDetailModal] === 'location'
-  const locationBrandingColor = locationDetailModal && locationBrandingOverrides[locationDetailModal]?.color
-    ? locationBrandingOverrides[locationDetailModal].color
-    : brand.color
+  // Location branding: exactly one of business | brand group | location specific.
+  const [locationBrandingConfig, setLocationBrandingConfig] = useState({})
+  // { [locationId]: { mode: 'single' | 'group' | 'location', businessId?: string, groupId?: string } }
+  const [locBizPickerOpen, setLocBizPickerOpen] = useState(false)
+  const [locGroupPickerOpen, setLocGroupPickerOpen] = useState(false)
+  const locBizPickerRef = useRef(null)
+  const locGroupPickerRef = useRef(null)
 
-  const selectBusinessBranding = () => {
+  useEffect(() => {
+    if (!locBizPickerOpen && !locGroupPickerOpen) return
+    const onClick = (e) => {
+      if (locBizPickerOpen && locBizPickerRef.current && !locBizPickerRef.current.contains(e.target)) setLocBizPickerOpen(false)
+      if (locGroupPickerOpen && locGroupPickerRef.current && !locGroupPickerRef.current.contains(e.target)) setLocGroupPickerOpen(false)
+    }
+    document.addEventListener('mousedown', onClick)
+    return () => document.removeEventListener('mousedown', onClick)
+  }, [locBizPickerOpen, locGroupPickerOpen])
+
+  const locBrandingResolved = useMemo(() => {
+    const enabledIds = orgBusinesses.filter((b) => b.enabled && effectiveBrandData[b.id]).map((b) => b.id)
+    const fallbackBiz = enabledIds.includes(activeBrand) ? activeBrand : enabledIds[0] || activeBrand
+    if (!locationDetailModal) {
+      return { mode: 'single', businessId: fallbackBiz, groupId: brandGroups[0]?.id }
+    }
+    const raw = locationBrandingConfig[locationDetailModal]
+    const mode = raw?.mode ?? 'single'
+    let businessId = raw?.businessId ?? fallbackBiz
+    if (enabledIds.length && !enabledIds.includes(businessId)) businessId = fallbackBiz
+    let groupId = raw?.groupId
+    if (mode === 'group') {
+      const ok = brandGroups.some((g) => g.id === groupId)
+      if (!ok) groupId = brandGroups[0]?.id
+    }
+    return { mode, businessId, groupId }
+  }, [locationDetailModal, locationBrandingConfig, activeBrand, orgBusinesses, effectiveBrandData, brandGroups])
+
+  const isLocBrandSingle = locBrandingResolved.mode === 'single'
+  const isLocBrandGroup = locBrandingResolved.mode === 'group'
+
+  const selectSingleBrandingForLocation = () => {
     if (!locationDetailModal) return
-    setLocationBrandingSelection(prev => ({ ...prev, [locationDetailModal]: 'business' }))
-    setLocationBrandingOverrides(prev => {
-      const next = { ...prev }
-      delete next[locationDetailModal]
-      return next
+    setLocationBrandingConfig((prev) => {
+      const cur = prev[locationDetailModal] || {}
+      return {
+        ...prev,
+        [locationDetailModal]: {
+          ...cur,
+          mode: 'single',
+          businessId: cur.businessId ?? (orgBusinesses.find((b) => b.enabled)?.id || activeBrand)
+        }
+      }
     })
   }
-  const selectLocationBranding = () => {
+
+  const selectGroupBrandingForLocation = () => {
     if (!locationDetailModal) return
-    setLocationBrandingSelection(prev => ({ ...prev, [locationDetailModal]: 'location' }))
-    if (!locationBrandingOverrides[locationDetailModal]) {
-      setLocationBrandingOverrides(prev => ({
+    setLocationBrandingConfig((prev) => {
+      const cur = prev[locationDetailModal] || {}
+      const firstG = brandGroups[0]?.id
+      const gid =
+        cur.groupId && brandGroups.some((g) => g.id === cur.groupId) ? cur.groupId : firstG
+      return {
         ...prev,
-        [locationDetailModal]: { color: '#7C3AED' }
-      }))
-    }
+        [locationDetailModal]: {
+          ...cur,
+          mode: 'group',
+          groupId: gid,
+          businessId: cur.businessId ?? activeBrand
+        }
+      }
+    })
   }
-  const setLocationBrandingColor = (color) => {
+
+  const setLocBrandingBusinessId = (businessId) => {
     if (!locationDetailModal) return
-    setLocationBrandingOverrides(prev => ({
+    setLocationBrandingConfig((prev) => ({
       ...prev,
-      [locationDetailModal]: { ...(prev[locationDetailModal] || {}), color }
+      [locationDetailModal]: { ...(prev[locationDetailModal] || {}), mode: 'single', businessId }
     }))
   }
 
+  const setLocBrandingGroupId = (groupId) => {
+    if (!locationDetailModal) return
+    setLocationBrandingConfig((prev) => ({
+      ...prev,
+      [locationDetailModal]: { ...(prev[locationDetailModal] || {}), mode: 'group', groupId }
+    }))
+  }
+
+  const singleBrandForLocationRow = effectiveBrandData[locBrandingResolved.businessId] || brand
+  const singleRowHasLogo = Boolean(brandLogos[locBrandingResolved.businessId])
+  const singleRowLogo = brandLogos[locBrandingResolved.businessId] || multiBrandIcon
+  const selectedGroup = brandGroups.find((g) => g.id === locBrandingResolved.groupId)
+
+  const handleEditSingleBusinessAtLocation = () => {}
+
+  const handleEditGroupBrandingAtLocation = () => {}
+
+  const renderLocationBrandMonogram = (brandName) => {
+    const words = brandName.split(' ').filter(Boolean)
+    const mono =
+      words.length >= 2 ? `${words[0][0]}${words[1][0]}`.toUpperCase() : brandName.substring(0, 2).toUpperCase()
+    return mono
+  }
+
   const handleEditBusinessBrand = () => {
-    if (locationDetailModal) {
-      setBrandingOpenedFromLocation(locationDetailModal)
-      handleCloseLocationDetail()
-      setTimeout(() => {
-        setBusinessEditActiveSection('brand')
-        setIsBusinessEditModalOpen(true)
-      }, 220)
-    } else {
-      setBrandingOpenedFromLocation(null)
+    // Disabled for now
+    if (false) {
       setBusinessEditActiveSection('brand')
       setIsBusinessEditModalOpen(true)
     }
@@ -1506,6 +1562,25 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
       }
     }, 350)
   }
+
+  const handleCloseBrandGroupBrandingModal = () => {
+    setIsBrandGroupBrandingModalClosing(true)
+    setTimeout(() => {
+      setIsBrandGroupBrandingModalOpen(false)
+      setIsBrandGroupBrandingModalClosing(false)
+      setBrandGroupBrandingModalGroupId(null)
+    }, 350)
+  }
+
+  const handleSaveBrandGroupBranding = (payload) => {
+    onBrandGroupsChange(brandGroups.map((g) => (g.id === payload.id ? { ...g, ...payload } : g)))
+    showToast('Brand group branding updated.')
+    handleCloseBrandGroupBrandingModal()
+  }
+
+  const editingBrandGroupForModal = brandGroupBrandingModalGroupId
+    ? brandGroups.find((g) => g.id === brandGroupBrandingModalGroupId)
+    : null
   
   // Scroll to active section when Business Edit modal opens
   useEffect(() => {
@@ -1520,6 +1595,23 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
       }, 100)
     }
   }, [isBusinessEditModalOpen, businessEditActiveSection])
+
+  // Full-screen business edit opened from elsewhere (e.g. Manage brand groups → Edit on a brand)
+  useEffect(() => {
+    if (!openFullScreenBusinessEditBrandId) return
+    if (activeBrand !== openFullScreenBusinessEditBrandId) return
+    setBrandingOpenedFromLocation(null)
+    setBusinessEditActiveSection('brand')
+    setIsBusinessEditModalOpen(true)
+    onOpenFullScreenBusinessEditConsumed()
+  }, [openFullScreenBusinessEditBrandId, activeBrand, onOpenFullScreenBusinessEditConsumed])
+
+  useEffect(() => {
+    if (!openBrandGroupBrandingGroupId) return
+    setBrandGroupBrandingModalGroupId(openBrandGroupBrandingGroupId)
+    setIsBrandGroupBrandingModalOpen(true)
+    onOpenBrandGroupBrandingConsumed()
+  }, [openBrandGroupBrandingGroupId, onOpenBrandGroupBrandingConsumed])
 
   // Handle escape key to close V2 website modal
   useEffect(() => {
@@ -1548,19 +1640,202 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
       return () => document.removeEventListener('keydown', handleEscape)
     }
   }, [isBusinessEditModalOpen])
-  
+
+  const profileEnabledBusinesses = orgBusinesses.filter((b) => b.enabled)
+  const profileShowBusinessDropdown = demoMode === 'franchise' && profileEnabledBusinesses.length > 0
+
+  /** Brand groups this business belongs to (for subtitle line), deduped by id then by display name */
+  const getBrandGroupsForBusinessSubtitle = (businessId) => {
+    const seenIds = new Set()
+    const seenLower = new Set()
+    const out = []
+    for (const g of brandGroups) {
+      if (!(g.businessIds || []).includes(businessId)) continue
+      const gid = g.id || ''
+      if (!gid || seenIds.has(gid)) continue
+      seenIds.add(gid)
+      const n = (g.name || '').trim()
+      if (!n) continue
+      const k = n.toLowerCase()
+      if (seenLower.has(k)) continue
+      seenLower.add(k)
+      out.push({ id: gid, name: n })
+    }
+    return out
+  }
+
+  /** e.g. Bakery — or Bakery · [folder] Food Court (clickable → Manage brand groups → Edit brand group) */
+  const renderCategoryWithBrandGroups = (businessId) => {
+    const groups = demoMode === 'franchise' ? getBrandGroupsForBusinessSubtitle(businessId) : []
+    const category = 'Bakery'
+    if (!groups.length) return category
+    return (
+      <>
+        {category}
+        {' · '}
+        <span className="v3-profile-category-group-inline-wrap">
+          <svg
+            className="v3-profile-category-group-folder"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M10 3.5C10.3038 3.5 10.5915 3.63778 10.7812 3.875L12.4814 6H21L21.1025 6.00488C21.1691 6.01166 21.2338 6.02475 21.2959 6.04395C21.3008 6.04547 21.3057 6.04723 21.3105 6.04883C21.3343 6.05659 21.3579 6.06476 21.3809 6.07422C21.3935 6.07944 21.4056 6.08608 21.418 6.0918C21.4355 6.09987 21.4528 6.10815 21.4697 6.11719C21.4771 6.1211 21.484 6.12579 21.4912 6.12988C21.5105 6.14078 21.5294 6.15195 21.5479 6.16406C21.5581 6.17076 21.5682 6.17751 21.5781 6.18457C21.5954 6.19685 21.6125 6.20933 21.6289 6.22266C21.6343 6.22701 21.6392 6.23186 21.6445 6.23633C21.6623 6.25138 21.6796 6.26696 21.6963 6.2832C21.7029 6.28962 21.7094 6.29613 21.7158 6.30273C21.7525 6.34037 21.786 6.38082 21.8164 6.42383C21.8234 6.43378 21.8302 6.44388 21.8369 6.4541C21.8631 6.49417 21.8859 6.53631 21.9062 6.58008C21.9268 6.62445 21.945 6.67016 21.959 6.71777C21.9722 6.76275 21.9815 6.80908 21.9883 6.85645C21.995 6.90339 22 6.95118 22 7V18.5C22 19.0523 21.5523 19.5 21 19.5H3C2.44772 19.5 2 19.0523 2 18.5V4.5C2 3.94772 2.44772 3.5 3 3.5H10ZM4 17.5H20V8H12C11.6962 8 11.4085 7.86222 11.2188 7.625L9.51855 5.5H4V17.5Z"
+              fill="currentColor"
+            />
+          </svg>
+          {groups.map((item, i) => (
+            <Fragment key={`${businessId}-bg-${item.id}`}>
+              {i > 0 ? ', ' : null}
+              <button
+                type="button"
+                className="v3-profile-category-group-inline v3-profile-category-group-inline--clickable"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  onRequestEditBrandGroupModal(item.id)
+                }}
+                aria-label={`Edit brand group ${item.name || 'Unnamed brand group'}`}
+              >
+                {item.name || 'Unnamed brand group'}
+              </button>
+            </Fragment>
+          ))}
+        </span>
+      </>
+    )
+  }
+
+  const primaryProfileLocation = brand.locations?.[0]
+  const locDetail = primaryProfileLocation?.id ? locationData[primaryProfileLocation.id] : null
+  const businessInformationRowAddress =
+    primaryProfileLocation?.address ||
+    (locDetail ? `${locDetail.address1}, ${locDetail.city}, ${locDetail.state} ${locDetail.zip}` : '')
+
   return (
       <div className="base-profile-page v3">
         {/* V3 Cards Container - stacked vertically */}
         <div className="cards-container">
-          {/* My Business Card */}
+          {/* My Business Card — title + chevron = business switcher when multiple */}
           <div className="card">
             <div className="card-header">
-              <div className="card-header-info">
-                <h3 className="card-title">{profileVersion === 'v2' ? brand.name : 'Business profile'}</h3>
-                <p className="card-subtitle">{profileVersion === 'v2' ? <>{brand.handle} · Bakery</> : brand.name}</p>
+              <div className={`card-header-info${profileShowBusinessDropdown ? ' card-header-info--business-select' : ''}`}>
+                {profileShowBusinessDropdown ? (
+                  <div className="v3-profile-business-dropdown v3-profile-business-dropdown--in-title" ref={profileBusinessMenuRef}>
+                    <div className="v3-profile-business-dropdown-inner">
+                      <label className="v3-profile-business-dropdown-field-label" htmlFor="profile-business-dropdown-trigger" id="profile-select-business-label">
+                        Select business
+                      </label>
+                      <button
+                        id="profile-business-dropdown-trigger"
+                        type="button"
+                        className="card-title v3-profile-business-dropdown-title-btn"
+                        aria-expanded={profileBusinessMenuOpen}
+                        aria-haspopup="listbox"
+                        aria-labelledby="profile-select-business-label"
+                        onClick={() => setProfileBusinessMenuOpen((o) => !o)}
+                      >
+                        <span className="v3-profile-business-dropdown-title-text">{brand.name}</span>
+                        <img
+                          src={CaretDownIcon}
+                          alt=""
+                          width={20}
+                          height={20}
+                          className={`v3-profile-business-dropdown-title-chevron ${profileBusinessMenuOpen ? 'v3-profile-business-dropdown-title-chevron--open' : ''}`}
+                        />
+                      </button>
+                      {profileBusinessMenuOpen && (
+                        <div className="v3-profile-business-dropdown-panel v3-profile-business-dropdown-panel--from-title v3-profile-business-dropdown-panel--stacked">
+                          <div className="v3-profile-business-dropdown-scroll">
+                            <ul className="v3-profile-business-dropdown-list v3-profile-business-dropdown-list--in-scroll" role="listbox" aria-label="Businesses">
+                              {profileEnabledBusinesses.map((b) => {
+                                const bd = effectiveBrandData[b.id] || brand
+                                const itemLogo = brandLogos[b.id] || multiBrandIcon
+                                const isActive = activeBrand === b.id
+                                const showMono = customerViewMode === 'new-1' || customerViewMode === 'new-2'
+                                const mono =
+                                  b.name.split(' ').length >= 2
+                                    ? (b.name.split(' ')[0][0] + b.name.split(' ')[1][0]).toUpperCase()
+                                    : b.name.substring(0, 2).toUpperCase()
+                                return (
+                                  <li key={b.id} role="presentation">
+                                    <button
+                                      type="button"
+                                      role="option"
+                                      aria-selected={isActive}
+                                      className={`v3-profile-business-dropdown-item ${isActive ? 'v3-profile-business-dropdown-item--active' : ''}`}
+                                      onClick={() => {
+                                        onBrandChange?.(b.id)
+                                        setProfileBusinessMenuOpen(false)
+                                      }}
+                                    >
+                                      <span className="v3-profile-business-dropdown-item-media">
+                                        {showMono ? (
+                                          <span className="v3-profile-business-dropdown-item-monogram" style={{ background: bd.color }}>
+                                            {mono}
+                                          </span>
+                                        ) : (
+                                          <img src={itemLogo} alt="" width={22} height={22} />
+                                        )}
+                                      </span>
+                                      <span className="v3-profile-business-dropdown-item-text">
+                                        <span className="v3-profile-business-dropdown-item-name">{b.name}</span>
+                                        <span className="v3-profile-business-dropdown-item-handle">
+                                          {b.handle.startsWith('$') ? b.handle : `$${b.handle}`}
+                                        </span>
+                                      </span>
+                                      {isActive && (
+                                        <img src={CheckSelectionIcon} alt="" width={18} height={18} className="v3-profile-business-dropdown-check" />
+                                      )}
+                                    </button>
+                                  </li>
+                                )
+                              })}
+                            </ul>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <p className="card-subtitle">
+                      {profileVersion === 'v2' ? (
+                        <span className="card-subtitle--business-meta">
+                          {brand.handle} · {renderCategoryWithBrandGroups(activeBrand)}
+                        </span>
+                      ) : (
+                        'Business profile'
+                      )}
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <h3 className="card-title">{profileVersion === 'v2' ? brand.name : 'Business profile'}</h3>
+                    <p className="card-subtitle">
+                      {profileVersion === 'v2' ? (
+                        <span className="card-subtitle--business-meta">
+                          {brand.handle} · {renderCategoryWithBrandGroups(activeBrand)}
+                        </span>
+                      ) : (
+                        brand.name
+                      )}
+                    </p>
+                  </>
+                )}
               </div>
-              <button className="card-action" onClick={() => setIsBusinessEditModalOpen(true)}>Preview profile</button>
+              <div className="v3-profile-card-header-actions">
+                <button
+                  type="button"
+                  className="card-action"
+                  onClick={() => setIsBusinessEditModalOpen(true)}
+                >
+                  Preview profile
+                </button>
+              </div>
             </div>
 
             <hr className="card-divider" />
@@ -1571,17 +1846,17 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                   <img src={InfoIcon} alt="" width="24" height="24" />
                 </div>
                 <h4 className="service-title">Business information</h4>
-                <span className="v3-service-subtitle">{brand.name} · Bakery</span>
+                <span className="v3-service-subtitle">{businessInformationRowAddress}</span>
                 <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
               </div>
 
-              <div className="card-row" onClick={() => { setBusinessEditActiveSection('brand'); setIsBusinessEditModalOpen(true); }}>
+              <div className="card-row">
                 <div className="v3-icon-container">
                   <div className="v4-mini-brand-card" style={(customerViewMode === 'new-1' || customerViewMode === 'new-2') ? { background: brand.color } : undefined}>
                     {(customerViewMode === 'new-1' || customerViewMode === 'new-2') ? (
                       <span className="v4-mini-brand-monogram">{brand.name[0].toUpperCase()}</span>
                     ) : (
-                      <img src={brandLogos[activeBrand]} alt="" className="v4-mini-brand-logo" />
+                      <img src={activeBrandLogo} alt="" className="v4-mini-brand-logo" />
                     )}
                   </div>
                 </div>
@@ -1721,9 +1996,9 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                       <div className="v3-locations-with-connector">
                         <div className="v3-locations-vertical-line" aria-hidden="true" />
                         <div className="card-row card-row--channel">
-                          <div className="v3-icon-container v3-connection-icon v3-channel-brand-icon" style={!brandLogos[activeBrand] ? { background: brand.color } : undefined}>
-                            {brandLogos[activeBrand] ? (
-                              <img src={brandLogos[activeBrand]} alt="" width="20" height="24" style={{ objectFit: 'contain' }} />
+                          <div className="v3-icon-container v3-connection-icon v3-channel-brand-icon" style={!hasPresetBrandLogo ? { background: brand.color } : undefined}>
+                            {hasPresetBrandLogo ? (
+                              <img src={activeBrandLogo} alt="" width="20" height="24" style={{ objectFit: 'contain' }} />
                             ) : (
                               <span className="v3-channel-brand-initial">{brand.name.charAt(0)}</span>
                             )}
@@ -1736,7 +2011,7 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                           <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
                         </div>
                         <div className="card-rows--indent">
-                          {['brookhaven', 'ansley-park', 'virginia-highland'].filter((locId) => {
+                          {['brookhaven', 'ansley-park'].filter((locId) => {
                             if (!locationSearchQuery.trim()) return true
                             const q = locationSearchQuery.toLowerCase()
                             const loc = locationData[locId]
@@ -1768,27 +2043,27 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                       <hr className="card-divider card-divider--organization" />
                     </div>
 
-                    {/* Group 2: Greenville */}
+                    {/* Group 2: Virginia-Highland */}
                     <div className="v3-organization-group">
                       <div className="v3-locations-with-connector">
                         <div className="v3-locations-vertical-line" aria-hidden="true" />
                         <div className="card-row card-row--channel">
-                          <div className="v3-icon-container v3-connection-icon v3-channel-brand-icon" style={!brandLogos[activeBrand] ? { background: brand.color } : undefined}>
-                            {brandLogos[activeBrand] ? (
-                              <img src={brandLogos[activeBrand]} alt="" width="20" height="24" style={{ objectFit: 'contain' }} />
+                          <div className="v3-icon-container v3-connection-icon v3-channel-brand-icon" style={!hasPresetBrandLogo ? { background: brand.color } : undefined}>
+                            {hasPresetBrandLogo ? (
+                              <img src={activeBrandLogo} alt="" width="20" height="24" style={{ objectFit: 'contain' }} />
                             ) : (
                               <span className="v3-channel-brand-initial">{brand.name.charAt(0)}</span>
                             )}
                           </div>
                           <div className="v3-channel-row-label">
-                            <h4 className="service-title">Keva Juice - Greenville</h4>
+                            <h4 className="service-title">Keva Juice — Virginia-Highland</h4>
                             <span className="v3-channel-row-sublabel">James Wilson, executive manager</span>
                           </div>
                           <span className="status-pill gray">B-notice required</span>
                           <img src={ChevronRightIcon} alt="" className="v3-chevron" width="16" height="16" />
                         </div>
                         <div className="card-rows--indent">
-                          {['north-main', 'augusta', 'alta-vista'].filter((locId) => {
+                          {['virginia-highland'].filter((locId) => {
                             if (!locationSearchQuery.trim()) return true
                             const q = locationSearchQuery.toLowerCase()
                             const loc = locationData[locId]
@@ -2038,7 +2313,7 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                               {(customerViewMode === 'new-1' || customerViewMode === 'new-2') ? (
                                 <span className="v4-preview-monogram-text">{monogram}</span>
                               ) : (
-                                <img src={brandLogos[activeBrand]} alt={brand.name} className="v4-preview-logo-img" />
+                                <img src={activeBrandLogo} alt={brand.name} className="v4-preview-logo-img" />
                               )}
                             </div>
                           </div>
@@ -2051,7 +2326,7 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                                 </div>
                               </div>
                               <div className="image-preview v4-logo-thumb">
-                                <img src={brandLogos[activeBrand]} alt={brand.name} />
+                                <img src={activeBrandLogo} alt={brand.name} />
                               </div>
                               <button className="image-upload-button v4-logo-thumb">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2507,6 +2782,17 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
           </div>
         )}
 
+        {demoMode === 'franchise' && (isBrandGroupBrandingModalOpen || isBrandGroupBrandingModalClosing) && editingBrandGroupForModal && (
+          <BrandGroupBrandingModal
+            isOpen={isBrandGroupBrandingModalOpen}
+            isClosing={isBrandGroupBrandingModalClosing}
+            onClose={handleCloseBrandGroupBrandingModal}
+            group={editingBrandGroupForModal}
+            customerViewMode={customerViewMode}
+            onSave={handleSaveBrandGroupBranding}
+          />
+        )}
+
         {/* Security Modal - Full page like Business Edit */}
         {(securityModal || isSecurityModalClosing) && (
           <div className={`modal-overlay ${isSecurityModalClosing ? 'closing' : ''}`}>
@@ -2894,28 +3180,48 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                     </div>
                   </div>
 
-                  {/* Location branding */}
+                  {/* Location branding: Business | Brand group | Location specific (one choice) */}
                   <div className="card card-modal card--no-divider">
                     <div className="card-header">
                       <div className="card-header-info">
                         <h3 className="card-title">Branding</h3>
-                        <p className="card-subtitle">Choose which branding this location uses. Receipts, invoices, and checkout will reflect your selection.</p>
+                        <p className="card-subtitle">
+                          {demoMode === 'franchise'
+                            ? <>Choose a <strong>Business</strong> or <strong>Brand group</strong> for how this location appears to customers.</>
+                            : <>Choose how this location appears to customers.</>
+                          }
+                        </p>
                       </div>
                     </div>
                     <div className="v3-form-fields">
                       <div className="location-brand-rows">
-                        <div className="location-brand-row">
+                        {/* Business */}
+                        <div className="location-brand-row" ref={locBizPickerRef}>
                           <div
                             role="button"
                             tabIndex={0}
-                            className={`location-brand-row-selectable${!useLocationBranding ? ' selected' : ''}`}
-                            onClick={selectBusinessBranding}
-                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectBusinessBranding(); } }}
+                            className={`location-brand-row-selectable${isLocBrandSingle ? ' selected' : ''}`}
+                            onClick={() => setLocBizPickerOpen((p) => !p)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault()
+                                setLocBizPickerOpen((p) => !p)
+                              }
+                            }}
+                            aria-pressed={isLocBrandSingle}
+                            aria-expanded={locBizPickerOpen}
                           >
-                            <div className="location-brand-logo location-brand-logo--business" style={{ background: brand.color }}>
-                              {brandLogos[activeBrand] ? (
+                            <div
+                              className="location-brand-logo location-brand-logo--business"
+                              style={{ background: singleBrandForLocationRow.color || brand.color }}
+                            >
+                              {customerViewMode === 'new-1' || customerViewMode === 'new-2' ? (
+                                <span className="location-brand-monogram-text">
+                                  {renderLocationBrandMonogram(singleBrandForLocationRow.name)}
+                                </span>
+                              ) : singleRowHasLogo ? (
                                 <img
-                                  src={activeBrand === 'joy-bakeshop' ? jbLogoWhite : brandLogos[activeBrand]}
+                                  src={locBrandingResolved.businessId === 'joy-bakeshop' ? jbLogoWhite : singleRowLogo}
                                   alt=""
                                   width={34}
                                   height={34}
@@ -2923,26 +3229,72 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                                   style={{ width: 38, height: 38 }}
                                 />
                               ) : (
-                                <span style={{ color: '#fff', fontWeight: 600, fontSize: '16px' }}>{brand.name.charAt(0)}</span>
+                                <span style={{ color: '#fff', fontWeight: 600, fontSize: '16px' }}>
+                                  {singleBrandForLocationRow.name.charAt(0)}
+                                </span>
                               )}
                             </div>
                             <span className="location-brand-name">
-                              <span className="location-brand-label">Business branding</span>
-                              <span className="location-brand-detail">{brand.name}</span>
+                              <span className="location-brand-label">Business</span>
+                              <span className="location-brand-detail">{singleBrandForLocationRow.name}</span>
                             </span>
-                            {!useLocationBranding && (
+                            {isLocBrandSingle && (
                               <span className="location-brand-check" aria-hidden="true">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M5 13l4 4L19 7" stroke="#101010" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <circle cx="12" cy="12" r="10" fill="#101010"/>
+                                  <path d="M8 12.5l2.5 2.5L16 9.5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                                 </svg>
                               </span>
                             )}
+                            <span className="location-brand-chevron" aria-hidden="true">
+                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                            </span>
                           </div>
+                          {locBizPickerOpen && (
+                            <div className="location-brand-picker" role="listbox">
+                              {(orgBusinesses.some((b) => b.enabled && effectiveBrandData[b.id])
+                                ? orgBusinesses.filter((b) => b.enabled && effectiveBrandData[b.id])
+                                : Object.keys(effectiveBrandData).map((id) => ({
+                                    id,
+                                    name: effectiveBrandData[id]?.name,
+                                    enabled: true
+                                  }))
+                              ).map((b) => {
+                                const bd = effectiveBrandData[b.id] || {}
+                                const isActive = isLocBrandSingle && locBrandingResolved.businessId === b.id
+                                return (
+                                  <button
+                                    key={b.id}
+                                    type="button"
+                                    className={`location-brand-picker-item${isActive ? ' active' : ''}`}
+                                    role="option"
+                                    aria-selected={isActive}
+                                    onClick={() => {
+                                      setLocBrandingBusinessId(b.id)
+                                      setLocBizPickerOpen(false)
+                                    }}
+                                  >
+                                    <span className="location-brand-picker-dot" style={{ background: bd.color || '#666' }}>
+                                      <span className="location-brand-picker-initials">{renderLocationBrandMonogram(bd.name || b.name)}</span>
+                                    </span>
+                                    <span className="location-brand-picker-name">{bd.name || b.name}</span>
+                                    {isActive && (
+                                      <svg className="location-brand-picker-check" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5 13l4 4L19 7" stroke="#101010" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                      </svg>
+                                    )}
+                                  </button>
+                                )
+                              })}
+                            </div>
+                          )}
                           <button
                             type="button"
                             className="location-brand-edit-icon"
-                            aria-label="Edit business branding"
-                            onClick={handleEditBusinessBrand}
+                            aria-label={`Edit branding for ${singleBrandForLocationRow.name}`}
+                            onClick={handleEditSingleBusinessAtLocation}
                           >
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <path d="M16.4745 5.40802L18.5917 7.52518M17.8358 3.68549L12.1086 9.41274C11.8131 9.70819 11.6116 10.0838 11.5296 10.4933L11.0001 13.0001L13.5069 12.4706C13.9164 12.3886 14.292 12.1871 14.5875 11.8916L20.3147 6.16437C20.9991 5.47998 20.9991 4.36988 20.3147 3.68549C19.6303 3.00109 18.5202 3.00109 17.8358 3.68549Z" stroke="#101010" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -2950,52 +3302,100 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                             </svg>
                           </button>
                         </div>
-                        <div className="location-brand-row">
+
+                        {/* Brand group — franchise mode only */}
+                        {demoMode === 'franchise' && <div className="location-brand-row" ref={locGroupPickerRef}>
                           <div
                             role="button"
                             tabIndex={0}
-                            className={`location-brand-row-selectable${useLocationBranding ? ' selected' : ''}`}
-                            onClick={selectLocationBranding}
-                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectLocationBranding(); } }}
+                            className={`location-brand-row-selectable${isLocBrandGroup ? ' selected' : ''}${brandGroups.length === 0 ? ' location-brand-row-selectable--muted' : ''}`}
+                            onClick={() => brandGroups.length > 0 && setLocGroupPickerOpen((p) => !p)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault()
+                                if (brandGroups.length > 0) setLocGroupPickerOpen((p) => !p)
+                              }
+                            }}
+                            aria-pressed={isLocBrandGroup}
+                            aria-expanded={locGroupPickerOpen}
+                            aria-disabled={brandGroups.length === 0}
                           >
-                            <div className="location-brand-logo location-brand-logo--location" style={{ background: '#7C3AED' }}>
-                              {brandLogos[activeBrand] ? (
-                                <img
-                                  src={activeBrand === 'joy-bakeshop' ? jbLogoWhite : brandLogos[activeBrand]}
-                                  alt=""
-                                  width={34}
-                                  height={34}
-                                  className="location-brand-logo-img"
-                                  style={{ width: 38, height: 38 }}
-                                />
+                            <div
+                              className="location-brand-logo location-brand-logo--business location-brand-logo--group"
+                              style={{ background: selectedGroup?.color || '#7C3AED' }}
+                            >
+                              {customerViewMode === 'new-1' || customerViewMode === 'new-2' ? (
+                                <span className="location-brand-monogram-text">
+                                  {renderLocationBrandMonogram((selectedGroup?.name || 'Unnamed brand group').trim())}
+                                </span>
                               ) : (
-                                <span style={{ color: '#fff', fontWeight: 600, fontSize: '16px' }}>{currentLocation.name.charAt(0)}</span>
+                                <img src={multiBrandIcon} alt="" width={28} height={28} className="location-brand-logo-img" />
                               )}
                             </div>
                             <span className="location-brand-name">
-                              <span className="location-brand-label">Location-specific branding</span>
-                              <span className="location-brand-detail">for {currentLocation.name}</span>
+                              <span className="location-brand-label">Brand group</span>
+                              <span className="location-brand-detail">
+                                {selectedGroup ? (selectedGroup.name || 'Unnamed brand group') : brandGroups.length === 0 ? 'No brand groups yet' : (brandGroups[0]?.name || 'Unnamed brand group')}
+                              </span>
                             </span>
-                            {useLocationBranding && (
+                            {isLocBrandGroup && (
                               <span className="location-brand-check" aria-hidden="true">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M5 13l4 4L19 7" stroke="#101010" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <circle cx="12" cy="12" r="10" fill="#101010"/>
+                                  <path d="M8 12.5l2.5 2.5L16 9.5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                                 </svg>
                               </span>
                             )}
+                            <span className="location-brand-chevron" aria-hidden="true">
+                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                            </span>
                           </div>
+                          {locGroupPickerOpen && (
+                            <div className="location-brand-picker" role="listbox">
+                              {brandGroups.map((g) => {
+                                const isActive = isLocBrandGroup && locBrandingResolved.groupId === g.id
+                                return (
+                                  <button
+                                    key={g.id}
+                                    type="button"
+                                    className={`location-brand-picker-item${isActive ? ' active' : ''}`}
+                                    role="option"
+                                    aria-selected={isActive}
+                                    onClick={() => {
+                                      setLocBrandingGroupId(g.id)
+                                      setLocGroupPickerOpen(false)
+                                    }}
+                                  >
+                                    <span className="location-brand-picker-dot" style={{ background: g.color || '#7C3AED' }}>
+                                      <span className="location-brand-picker-initials">{renderLocationBrandMonogram(g.name || 'Unnamed')}</span>
+                                    </span>
+                                    <span className="location-brand-picker-name">{g.name || 'Unnamed brand group'}</span>
+                                    {isActive && (
+                                      <svg className="location-brand-picker-check" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5 13l4 4L19 7" stroke="#101010" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                      </svg>
+                                    )}
+                                  </button>
+                                )
+                              })}
+                            </div>
+                          )}
                           <button
                             type="button"
                             className="location-brand-edit-icon"
-                            aria-label="Edit location branding"
-                            onClick={handleEditBusinessBrand}
+                            aria-label="Edit brand group branding"
+                            onClick={handleEditGroupBrandingAtLocation}
+                            disabled={!selectedGroup}
                           >
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <path d="M16.4745 5.40802L18.5917 7.52518M17.8358 3.68549L12.1086 9.41274C11.8131 9.70819 11.6116 10.0838 11.5296 10.4933L11.0001 13.0001L13.5069 12.4706C13.9164 12.3886 14.292 12.1871 14.5875 11.8916L20.3147 6.16437C20.9991 5.47998 20.9991 4.36988 20.3147 3.68549C19.6303 3.00109 18.5202 3.00109 17.8358 3.68549Z" stroke="#101010" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                               <path d="M19 15V18C19 19.1046 18.1046 20 17 20H6C4.89543 20 4 19.1046 4 18V7C4 5.89543 4.89543 5 6 5H9" stroke="#101010" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
                           </button>
-                        </div>
+                        </div>}
+
                       </div>
                     </div>
                   </div>
@@ -3238,9 +3638,7 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                     </div>
                     <div className="v3-form-fields">
                       {(() => {
-                        const allLocationIds = (activeBrand === 'keva-juice' && customerViewMode === 'returning')
-                          ? ['brookhaven', 'ansley-park', 'virginia-highland', 'north-main', 'augusta', 'alta-vista']
-                          : (brand.locations || []).map(loc => loc.id || loc.name.toLowerCase().replace(/\s+/g, '-'))
+                        const allLocationIds = (brand.locations || []).map(loc => loc.id || loc.name.toLowerCase().replace(/\s+/g, '-'))
                         const matchableLocations = allLocationIds
                           .filter(id => id !== locationDetailModal)
                           .map(id => ({ id, label: locationData[id]?.name || (brand.locations || []).find(l => (l.id || l.name.toLowerCase().replace(/\s+/g, '-')) === id)?.name || id }))
@@ -3362,10 +3760,7 @@ function BaseProfilePage({ activeBrand, onBrandChange, brandState, onBrandStateC
                     <span className="add-remove-locations-col-name">Location name</span>
                     <span className="add-remove-locations-col-address">Address</span>
                   </div>
-                  {(activeBrand === 'keva-juice' && customerViewMode === 'returning'
-                    ? ['brookhaven', 'ansley-park', 'virginia-highland', 'north-main', 'augusta', 'alta-vista']
-                    : (brand.locations || []).map(loc => loc.id || loc.name.toLowerCase().replace(/\s+/g, '-'))
-                  ).map((locId) => {
+                  {(brand.locations || []).map(loc => loc.id || loc.name.toLowerCase().replace(/\s+/g, '-')).map((locId) => {
                     const loc = locationData[locId] || (brand.locations || []).find(l => (l.id || l.name.toLowerCase().replace(/\s+/g, '-')) === locId)
                     const name = loc?.name || locId
                     let addressLine1 = ''

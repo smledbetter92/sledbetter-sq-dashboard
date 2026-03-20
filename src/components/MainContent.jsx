@@ -1,10 +1,11 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import FollowersSection from './FollowersSection'
 import MessagesCard from './MessagesCard'
 import RewardsCard from './RewardsCard'
 import NeighborhoodsGuides from './NeighborhoodsGuides'
 import ProfileLocationsPage from './ProfileLocationsPage'
 import BaseProfilePage from './BaseProfilePage'
+import ManageBusinessGroupsModal from './ManageBusinessGroupsModal'
 import CheckIcon from '../assets/Check.svg'
 import RecurringAutomaticIcon from '../assets/16/recurring-automatic.svg'
 import FormIcon from '../assets/Form.svg'
@@ -46,10 +47,8 @@ import SellerCardPinMain from '../assets/Seller-card-pin-main.svg'
 import SellerCardPin1 from '../assets/Seller-card-pin1.svg'
 import SellerCardPin2 from '../assets/Seller-card-pin2.svg'
 import SellerCardPin3 from '../assets/Seller-card-pin3.svg'
-import map1 from '../assets/map-1.png'
-import map2 from '../assets/map-2.png'
-import map3 from '../assets/map-3.png'
 import bigMap from '../assets/big-map.png'
+import { cloneSharedOrgLocations } from '../data/sharedOrgLocations'
 
 // Brand logos for small brand card
 import jbLogoLarge from '../assets/joy-bakeshop-logo.svg'
@@ -91,7 +90,6 @@ import PasskeyIcon from '../assets/Passkey.svg'
 import NewIcon from '../assets/new.svg'
 import ReturningIcon from '../assets/returningcustomer.svg'
 import SettingsIcon from '../assets/settings.svg'
-
 import './MainContent.css'
 import './BaseProfilePage.css'
 
@@ -126,69 +124,53 @@ const brandData = {
     handle: '$joybakeshop',
     about: "We're a small, butter-obsessed bakery making croissants, danishes, and morning buns the old-fashioned way: slow fermentation, real ingredients, and daily bakes. Saving by for flaky layers, seasonal fillings, and coffee that plays nice with pastry.",
     team: ['Vitaly', 'Brooke', 'Jane'],
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 },
-      { id: 'ansley-park', name: 'Ansley Park', address: '149 Peachtree Cir NE, Atlanta, GA 30309', phone: '(404) 555-0456', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map2 },
-      { id: 'virginia-highland', name: 'Virginia-Highland', address: '1034 N Highland Ave NE, Atlanta, GA 30306', phone: '(404) 555-0789', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map3 }
-    ]
+    locations: cloneSharedOrgLocations()
   },
   'brooklyn-french-bakers': { 
     name: 'Brooklyn French Bakers', 
     color: '#FF8C42', 
     handle: '$brooklynfrenchbakers',
     about: "This store delivers fresh pastries and bread every morning from our kitchen on Columbia Street, Waterfront. Brooklyn French Bakers is owned by French who are passionate about sharing French culture and products.",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 }
-    ]
+    locations: cloneSharedOrgLocations()
   },
   'keva-juice': { 
     name: 'Keva Juice', 
     color: '#FF6B35', 
     handle: '$kevasmoothie',
     about: "Keva Juice is Reno, Nevada and Colorado Springs' oldest smoothie, açaí, and juice bar, proudly serving our community for more than 20 years. As a family-owned business, our passion for providing the best smoothies, açaí bowls, and fresh juices has helped us become the go-to local spot for healthy and delicious drinks.",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 }
-    ]
+    locations: cloneSharedOrgLocations()
   },
   'spot-of-tea': { 
     name: 'Spot of Tea', 
     color: '#4A7C59', 
     handle: '$spotoftea',
     about: "A cozy tea house offering premium loose-leaf teas from around the world. We specialize in traditional brewing methods and pair our teas with house-made pastries.",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 }
-    ]
+    locations: cloneSharedOrgLocations()
   },
   'vanilla-cafe': { 
     name: 'Vanilla Cafe', 
     color: '#D4A574', 
     handle: '$vanillacafe',
     about: "Your neighborhood coffee shop serving artisanal espresso drinks and fresh-baked goods. We source our beans from local roasters and bake everything in-house daily.",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 }
-    ]
+    locations: cloneSharedOrgLocations()
   },
   'tea-monks': { 
     name: 'Tea Monks', 
     color: '#8B4513', 
     handle: '$teamonks',
     about: "Traditional tea ceremonies meet modern wellness. We offer rare teas, meditation sessions, and a peaceful retreat from the busy city.",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 }
-    ]
+    locations: cloneSharedOrgLocations()
   },
   'paper-son-coffee': { 
     name: 'Paper Son Coffee', 
     color: '#2F4F4F', 
     handle: '$papersoncoffee',
     about: "A specialty coffee roaster and café celebrating Asian-American heritage through unique flavor profiles and community events.",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 }
-    ]
+    locations: cloneSharedOrgLocations()
   }
 }
 
-function MainContent({ activeBrand, onBrandChange, pageState, onPageStateChange, activePage, onReloadBrand, brandState, onBrandStateChange, isNavigating, profileVersion, onProfileVersionChange, isPreviewVisible, onPreviewVisibilityChange, isSwitchBusinessModalOpen, isSwitchBusinessModalClosing, onSwitchBusinessModalOpen, onSwitchBusinessModalClose, onSelectBusiness, customerViewMode = 'returning', onCustomerViewModeChange, activeSettingsSection = 'business-profile', onSettingsSectionChange, theme, onThemeChange, onOpenOnboarding, onNavigationStart, onSidebarLevelChange, onAccountBladeOpen }) {
+function MainContent({ activeBrand, onBrandChange, pageState, onPageStateChange, activePage, onReloadBrand, brandState, onBrandStateChange, isNavigating, profileVersion, onProfileVersionChange, isPreviewVisible, onPreviewVisibilityChange, isSwitchBusinessModalOpen, isSwitchBusinessModalClosing, onSwitchBusinessModalOpen, onSwitchBusinessModalClose, onSelectBusiness, customerViewMode = 'returning', onCustomerViewModeChange, activeSettingsSection = 'business-profile', onSettingsSectionChange, theme, onThemeChange, onOpenOnboarding, onNavigationStart, onSidebarLevelChange, onAccountBladeOpen, orgBusinesses = [], brandGroups = [], onBrandGroupsChange = () => {}, mergedBrandData = {}, demoMode = 'franchise' }) {
   const brand = brandData[activeBrand] || brandData['joy-bakeshop']
   
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -213,7 +195,39 @@ function MainContent({ activeBrand, onBrandChange, pageState, onPageStateChange,
   const [bookingReservationsSection, setBookingReservationsSection] = useState('table')
   const [bookingAppointmentsSection, setBookingAppointmentsSection] = useState('services')
   const dropdownRef = useRef(null)
-  
+  const [manageBusinessGroupsModalOpen, setManageBusinessGroupsModalOpen] = useState(false)
+  const [mainToast, setMainToast] = useState(null)
+  const handleShowToast = useCallback((message) => {
+    setMainToast(message)
+    setTimeout(() => setMainToast(null), 3000)
+  }, [])
+  const [openFullScreenBusinessEditBrandId, setOpenFullScreenBusinessEditBrandId] = useState(null)
+  const [openBrandGroupBrandingGroupId, setOpenBrandGroupBrandingGroupId] = useState(null)
+  const [openManageGroupsToEditGroupId, setOpenManageGroupsToEditGroupId] = useState(null)
+
+  const handleOpenFullScreenBusinessEditConsumed = useCallback(() => {
+    setOpenFullScreenBusinessEditBrandId(null)
+  }, [])
+
+  const handleOpenBrandGroupBrandingConsumed = useCallback(() => {
+    setOpenBrandGroupBrandingGroupId(null)
+  }, [])
+
+  const handleEditGroupBrandingFromManage = useCallback(() => {}, [])
+
+  const handleOpenToEditGroupConsumed = useCallback(() => {
+    setOpenManageGroupsToEditGroupId(null)
+  }, [])
+
+  const handleRequestEditBrandGroupModal = useCallback((groupId) => {
+    if (!groupId) return
+    setManageBusinessGroupsModalOpen(true)
+    setOpenManageGroupsToEditGroupId(groupId)
+  }, [])
+
+  const [profilePageAddMenuOpen, setProfilePageAddMenuOpen] = useState(false)
+  const profilePageAddMenuRef = useRef(null)
+
   // Track map reveal animation - runs every time Neighborhoods page is entered
   const [mapRevealDone, setMapRevealDone] = useState(false)
   const [mapRevealKey, setMapRevealKey] = useState(0)
@@ -1111,6 +1125,92 @@ function MainContent({ activeBrand, onBrandChange, pageState, onPageStateChange,
     return () => clearTimeout(timer)
   }, [isV2WebsiteModalOpen, websitePreviewPage, websitePreviewBlockIndex])
 
+  useEffect(() => {
+    setManageBusinessGroupsModalOpen(false)
+    setOpenManageGroupsToEditGroupId(null)
+    setProfilePageAddMenuOpen(false)
+  }, [activePage, activeSettingsSection])
+
+  useEffect(() => {
+    if (!profilePageAddMenuOpen) return
+    const onDoc = (e) => {
+      if (profilePageAddMenuRef.current && !profilePageAddMenuRef.current.contains(e.target)) {
+        setProfilePageAddMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', onDoc)
+    return () => document.removeEventListener('mousedown', onDoc)
+  }, [profilePageAddMenuOpen])
+
+  useEffect(() => {
+    if (!profilePageAddMenuOpen) return
+    const onKey = (e) => {
+      if (e.key === 'Escape') setProfilePageAddMenuOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [profilePageAddMenuOpen])
+
+  const effectiveMergedForProfileDialogs =
+    mergedBrandData && typeof mergedBrandData === 'object' && Object.keys(mergedBrandData).length > 0
+      ? mergedBrandData
+      : brandData
+
+  const profileHeaderManageBusinessesDropdown = (
+    <div ref={profilePageAddMenuRef} className="v3-profile-page-add-toolbar page-title-add-toolbar">
+      <div className="v3-profile-page-add-dropdown">
+        <button
+          type="button"
+          className="v3-profile-page-add-trigger"
+          id="main-content-profile-add-trigger"
+          aria-expanded={profilePageAddMenuOpen}
+          aria-haspopup="menu"
+          aria-controls="main-content-profile-add-menu"
+          onClick={() => setProfilePageAddMenuOpen((o) => !o)}
+        >
+          <span>Manage businesses</span>
+          <img
+            src={CaretDownIcon}
+            alt=""
+            width={18}
+            height={18}
+            className={`v3-profile-page-add-trigger-chevron ${profilePageAddMenuOpen ? 'v3-profile-page-add-trigger-chevron--open' : ''}`}
+          />
+        </button>
+        {profilePageAddMenuOpen && (
+          <div
+            id="main-content-profile-add-menu"
+            className="v3-profile-page-add-panel"
+            role="menu"
+            aria-labelledby="main-content-profile-add-trigger"
+          >
+            <button
+              type="button"
+              role="menuitem"
+              className="v3-profile-page-add-option"
+              onClick={() => {
+                setProfilePageAddMenuOpen(false)
+              }}
+            >
+              Add business
+            </button>
+            <button
+              type="button"
+              role="menuitem"
+              className="v3-profile-page-add-option"
+              onClick={() => {
+                setProfilePageAddMenuOpen(false)
+                setManageBusinessGroupsModalOpen(true)
+              }}
+            >
+              Manage brand groups
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+
   return (
     <>
     <main className="main-content">
@@ -1139,10 +1239,17 @@ function MainContent({ activeBrand, onBrandChange, pageState, onPageStateChange,
           {/* Header actions per page */}
           {activePage === 'home' ? null
           : activePage === 'profile' ? (
-            <button className="switch-business-header-btn" onClick={onSwitchBusinessModalOpen}>
-              <img src={RecurringAutomaticIcon} alt="" width="16" height="16" className="switch-business-icon" />
-              <span>Switch business</span>
-            </button>
+            demoMode === 'franchise' ? (
+              <div className="page-title-profile-header-actions">
+                {profileHeaderManageBusinessesDropdown}
+                <button type="button" className="switch-business-header-btn" onClick={onSwitchBusinessModalOpen}>
+                  <img src={RecurringAutomaticIcon} alt="" width={16} height={16} className="switch-business-icon" />
+                  <span>Switch business</span>
+                </button>
+              </div>
+            ) : null
+          ) : activePage === 'settings' && activeSettingsSection === 'business-profile' ? (
+            demoMode === 'franchise' ? profileHeaderManageBusinessesDropdown : null
           ) : activePage === 'website' ? (
             profileVersion !== 'v2' ? (
               <div className="website-header-buttons">
@@ -1243,6 +1350,16 @@ function MainContent({ activeBrand, onBrandChange, pageState, onPageStateChange,
                   onSelectBusiness={onSelectBusiness}
                   onNavigationStart={onNavigationStart}
                   onSidebarLevelChange={onSidebarLevelChange}
+                  orgBusinesses={orgBusinesses}
+                  brandGroups={brandGroups}
+                  onBrandGroupsChange={onBrandGroupsChange}
+                  mergedBrandData={mergedBrandData}
+                  openFullScreenBusinessEditBrandId={openFullScreenBusinessEditBrandId}
+                  onOpenFullScreenBusinessEditConsumed={handleOpenFullScreenBusinessEditConsumed}
+                  openBrandGroupBrandingGroupId={openBrandGroupBrandingGroupId}
+                  onOpenBrandGroupBrandingConsumed={handleOpenBrandGroupBrandingConsumed}
+                  onRequestEditBrandGroupModal={handleRequestEditBrandGroupModal}
+                  demoMode={demoMode}
                 />
               </div>
             ) : activeSettingsSection === 'devices' ? (
@@ -1649,6 +1766,16 @@ function MainContent({ activeBrand, onBrandChange, pageState, onPageStateChange,
               onSelectBusiness={onSelectBusiness}
               onNavigationStart={onNavigationStart}
               onSidebarLevelChange={onSidebarLevelChange}
+              orgBusinesses={orgBusinesses}
+              brandGroups={brandGroups}
+              onBrandGroupsChange={onBrandGroupsChange}
+              mergedBrandData={mergedBrandData}
+              openFullScreenBusinessEditBrandId={openFullScreenBusinessEditBrandId}
+              onOpenFullScreenBusinessEditConsumed={handleOpenFullScreenBusinessEditConsumed}
+              openBrandGroupBrandingGroupId={openBrandGroupBrandingGroupId}
+              onOpenBrandGroupBrandingConsumed={handleOpenBrandGroupBrandingConsumed}
+              onRequestEditBrandGroupModal={handleRequestEditBrandGroupModal}
+              demoMode={demoMode}
             />
           </div>
         ) : activePage === 'website' ? (
@@ -3175,6 +3302,26 @@ function MainContent({ activeBrand, onBrandChange, pageState, onPageStateChange,
       </div>
     </main>
 
+    {demoMode === 'franchise' && manageBusinessGroupsModalOpen && (
+      <ManageBusinessGroupsModal
+        isOpen
+        onClose={() => {
+          setManageBusinessGroupsModalOpen(false)
+          setOpenManageGroupsToEditGroupId(null)
+        }}
+        brandGroups={brandGroups}
+        onBrandGroupsChange={onBrandGroupsChange}
+        orgBusinesses={orgBusinesses}
+        mergedBrandData={effectiveMergedForProfileDialogs}
+        brandLogos={brandLogos}
+        customerViewMode={customerViewMode}
+        onEditGroupBranding={handleEditGroupBrandingFromManage}
+        openToEditGroupId={openManageGroupsToEditGroupId}
+        onOpenToEditGroupConsumed={handleOpenToEditGroupConsumed}
+        onShowToast={handleShowToast}
+      />
+    )}
+
     {/* Booking: Reservations Edit Modal (same behavior as business edit – sidebar + sections) */}
     {(bookingReservationsModalOpen || bookingReservationsModalClosing) && (
       <div className={`modal-overlay ${bookingReservationsModalClosing ? 'closing' : ''}`} onClick={handleCloseBookingReservationsModal}>
@@ -3445,6 +3592,23 @@ function MainContent({ activeBrand, onBrandChange, pageState, onPageStateChange,
             <div className="location-modal-sidebar location-modal-sidebar-right"></div>
           </div>
         </div>
+      </div>
+    )}
+
+    {mainToast && (
+      <div className="toast">
+        <div className="toast-content">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.2584 9.1502L11.2584 16.1502C11.0684 16.3718 10.7915 16.4998 10.4996 16.4998C10.2078 16.4997 9.93077 16.3718 9.74083 16.1502L6.74083 12.6502L8.25841 11.3494L10.4996 13.9637L15.7408 7.84941L17.2584 9.1502Z" fill="#00B23B"/>
+            <path fillRule="evenodd" clipRule="evenodd" d="M4.92833 4.92852C8.8335 1.02335 15.1657 1.02349 19.0709 4.92852C22.9762 8.83376 22.9762 15.1659 19.0709 19.0711C15.1657 22.9763 8.83358 22.9763 4.92833 19.0711C1.02331 15.1658 1.02316 8.83369 4.92833 4.92852ZM17.6568 6.34258C14.5326 3.21861 9.46652 3.21846 6.3424 6.34258C3.21828 9.4667 3.21842 14.5328 6.3424 17.657C9.46659 20.7812 14.5327 20.7812 17.6568 17.657C20.781 14.5328 20.781 9.46677 17.6568 6.34258Z" fill="#00B23B"/>
+          </svg>
+          <span>{mainToast}</span>
+        </div>
+        <button className="toast-dismiss" onClick={() => setMainToast(null)}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.4 19L5 17.6L10.6 12L5 6.4L6.4 5L12 10.6L17.6 5L19 6.4L13.4 12L19 17.6L17.6 19L12 13.4L6.4 19Z" fill="#FFFFFF"/>
+          </svg>
+        </button>
       </div>
     )}
   </>

@@ -1,12 +1,10 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import Sidebar from './Sidebar'
 import MainContent from './MainContent'
 import OnboardingPage from './OnboardingPage'
 import CheckIcon from '../assets/Check.svg'
 import CheckSelectionIcon from '../assets/Check-selection.svg'
-import map1 from '../assets/map-1.png'
-import map2 from '../assets/map-2.png'
-import map3 from '../assets/map-3.png'
+import { cloneSharedOrgLocations } from '../data/sharedOrgLocations'
 import './Dashboard.css'
 import './BaseProfilePage.css'
 
@@ -31,12 +29,87 @@ const brandLogos = {
   'paper-son-coffee': paperSonCoffeeLogo
 }
 
-const businesses = [
-  { id: 'joy-bakeshop', name: 'Joy Bakeshop', handle: '$joybakeshop' },
-  { id: 'keva-juice', name: 'Keva Juice', handle: '$kevasmoothie' },
-  { id: 'spot-of-tea', name: 'Spot of Tea', handle: '$drinkspotoftea' },
-  { id: 'paper-son-coffee', name: 'Paper Son Coffee', handle: '$papersoncoffee' }
+const DEFAULT_ORG_BUSINESSES = [
+  { id: 'joy-bakeshop', name: 'Joy Bakeshop', handle: '$joybakeshop', enabled: true },
+  { id: 'keva-juice', name: 'Keva Juice', handle: '$kevasmoothie', enabled: true },
+  { id: 'spot-of-tea', name: 'Spot of Tea', handle: '$drinkspotoftea', enabled: true },
+  { id: 'paper-son-coffee', name: 'Paper Son Coffee', handle: '$papersoncoffee', enabled: true }
 ]
+
+const ORG_BUSINESSES_STORAGE_KEY = 'sq-proto-org-businesses'
+
+function loadOrgBusinessesFromStorage() {
+  try {
+    const raw = localStorage.getItem(ORG_BUSINESSES_STORAGE_KEY)
+    if (!raw) return DEFAULT_ORG_BUSINESSES
+    const parsed = JSON.parse(raw)
+    if (!Array.isArray(parsed) || parsed.length === 0) return DEFAULT_ORG_BUSINESSES
+    return parsed.map((row) => ({
+      id: row.id,
+      name: row.name,
+      handle: typeof row.handle === 'string' && row.handle.startsWith('$') ? row.handle : `$${String(row.handle || '').replace(/^\$/, '')}`,
+      enabled: row.enabled !== false
+    }))
+  } catch {
+    return DEFAULT_ORG_BUSINESSES
+  }
+}
+
+const BRAND_GROUPS_STORAGE_KEY = 'sq-proto-brand-groups'
+
+const BRAND_GROUP_COLORS = [
+  '#7C3AED', '#2563EB', '#0891B2', '#059669',
+  '#D97706', '#DC2626', '#DB2777', '#7C2D12',
+  '#4338CA', '#0D9488', '#CA8A04', '#9333EA'
+]
+
+const DEFAULT_BRAND_GROUPS = [
+  {
+    id: 'food-court-demo',
+    name: 'Food court',
+    businessIds: ['keva-juice', 'spot-of-tea', 'paper-son-coffee'],
+    color: '#7C3AED',
+    about: 'Shared dining hall branding — each vendor keeps their own business profile.'
+  }
+]
+
+function loadBrandGroupsFromStorage() {
+  try {
+    const raw = localStorage.getItem(BRAND_GROUPS_STORAGE_KEY)
+    if (!raw) return DEFAULT_BRAND_GROUPS
+    const parsed = JSON.parse(raw)
+    if (!Array.isArray(parsed)) return DEFAULT_BRAND_GROUPS
+    const mapped = parsed
+      .map((g) => {
+        let name = typeof g.name === 'string' ? g.name.trim() : ''
+        // Legacy placeholder from an older dialog — treat as unnamed (blank)
+        if (/^untitled group$/i.test(name)) name = ''
+        return {
+          id: String(g.id || ''),
+          name,
+          businessIds: Array.isArray(g.businessIds) ? g.businessIds.map(String) : [],
+          color: typeof g.color === 'string' && g.color ? g.color : '#7C3AED',
+          about: typeof g.about === 'string' ? g.about : ''
+        }
+      })
+      .filter((g) => g.id)
+    const byId = new Map()
+    for (const g of mapped) {
+      if (!byId.has(g.id)) byId.set(g.id, g)
+    }
+    const groups = Array.from(byId.values())
+    const usedColors = new Set()
+    for (const g of groups) {
+      if (usedColors.has(g.color)) {
+        g.color = BRAND_GROUP_COLORS.find((c) => !usedColors.has(c)) || BRAND_GROUP_COLORS[usedColors.size % BRAND_GROUP_COLORS.length]
+      }
+      usedColors.add(g.color)
+    }
+    return groups
+  } catch {
+    return DEFAULT_BRAND_GROUPS
+  }
+}
 
 function getMonogram(name) {
   const words = name.split(' ')
@@ -44,83 +117,55 @@ function getMonogram(name) {
   return name.substring(0, 2).toUpperCase()
 }
 
-const brandData = {
+const STATIC_BRAND_DATA = {
   'joy-bakeshop': { 
     name: 'Joy Bakeshop', 
     color: '#0000FF', 
     handle: '$joybakeshop',
     about: "We're a small, butter-obsessed bakery making croissants, danishes, and morning buns the old-fashioned way: slow fermentation, real ingredients, and daily bakes. Saving by for flaky layers, seasonal fillings, and coffee that plays nice with pastry.",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 },
-      { id: 'ansley-park', name: 'Ansley Park', address: '149 Peachtree Cir NE, Atlanta, GA 30309', phone: '(404) 555-0456', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map2 },
-      { id: 'virginia-highland', name: 'Virginia-Highland', address: '1034 N Highland Ave NE, Atlanta, GA 30306', phone: '(404) 555-0789', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map3 }
-    ]
+    locations: cloneSharedOrgLocations()
   },
   'brooklyn-french-bakers': { 
     name: 'Brooklyn French Bakers', 
     color: '#FF8C42', 
     handle: '$brooklynfrenchbakers',
     about: "This store delivers fresh pastries and bread every morning from our kitchen on Columbia Street, Waterfront. Brooklyn French Bakers is owned by French who are passionate about sharing French culture and products.",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 },
-      { id: 'ansley-park', name: 'Ansley Park', address: '149 Peachtree Cir NE, Atlanta, GA 30309', phone: '(404) 555-0456', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map2 },
-      { id: 'virginia-highland', name: 'Virginia-Highland', address: '1034 N Highland Ave NE, Atlanta, GA 30306', phone: '(404) 555-0789', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map3 }
-    ]
+    locations: cloneSharedOrgLocations()
   },
   'keva-juice': { 
     name: 'Keva Juice', 
     color: '#FF6B35', 
     handle: '$kevasmoothie',
     about: "Keva Juice is Reno, Nevada and Colorado Springs' oldest smoothie, açaí, and juice bar, proudly serving our community for more than 20 years. As a family-owned business, our passion for providing the best smoothies, açaí bowls, and fresh juices has helped us become the go-to local spot for healthy and delicious drinks.",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 },
-      { id: 'ansley-park', name: 'Ansley Park', address: '149 Peachtree Cir NE, Atlanta, GA 30309', phone: '(404) 555-0456', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map2 },
-      { id: 'virginia-highland', name: 'Virginia-Highland', address: '1034 N Highland Ave NE, Atlanta, GA 30306', phone: '(404) 555-0789', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map3 }
-    ]
+    locations: cloneSharedOrgLocations()
   },
   'spot-of-tea': { 
     name: 'Spot of Tea', 
     color: '#2A67B0', 
     handle: '$drinkspotoftea',
     about: "Spot of Tea is a neighborhood tea house, started right here in DC. Whenever you walk through our door, our mission is to make sure you leave feeling refreshed, every time!",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 },
-      { id: 'ansley-park', name: 'Ansley Park', address: '149 Peachtree Cir NE, Atlanta, GA 30309', phone: '(404) 555-0456', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map2 },
-      { id: 'virginia-highland', name: 'Virginia-Highland', address: '1034 N Highland Ave NE, Atlanta, GA 30306', phone: '(404) 555-0789', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map3 }
-    ]
+    locations: cloneSharedOrgLocations()
   },
   'vanilla-cafe': { 
     name: 'Vanilla Cafe', 
     color: '#4D6242', 
     handle: '$vanillacafemia',
     about: "Vanilla – coffee & patisserie. Offering specialty coffee, non-alcoholic cocktails, all-day breakfast, lunch, and signature desserts. Discover the best of Slavic comfort food, croissants, and elegant sweets.",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 },
-      { id: 'ansley-park', name: 'Ansley Park', address: '149 Peachtree Cir NE, Atlanta, GA 30309', phone: '(404) 555-0456', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map2 },
-      { id: 'virginia-highland', name: 'Virginia-Highland', address: '1034 N Highland Ave NE, Atlanta, GA 30306', phone: '(404) 555-0789', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map3 }
-    ]
+    locations: cloneSharedOrgLocations()
   },
   'tea-monks': { 
     name: 'Tea Monks', 
     color: '#A66800', 
     handle: '$teamonks',
     about: "Tea Monks has been crafting delicious freshly brewed Boba Tea drinks made with premium all-natural high-quality ingredients like tea leaves, creamers and toppings etc imported from Taiwan.",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 },
-      { id: 'ansley-park', name: 'Ansley Park', address: '149 Peachtree Cir NE, Atlanta, GA 30309', phone: '(404) 555-0456', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map2 },
-      { id: 'virginia-highland', name: 'Virginia-Highland', address: '1034 N Highland Ave NE, Atlanta, GA 30306', phone: '(404) 555-0789', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map3 }
-    ]
+    locations: cloneSharedOrgLocations()
   },
   'paper-son-coffee': { 
     name: 'Paper Son Coffee', 
     color: '#2B6058', 
     handle: '$papersoncoffee',
     about: "Classic and Asian American inspired multi roaster coffee stand in the Dogpatch SF!",
-    locations: [
-      { id: 'brookhaven', name: 'Brookhaven', address: '3100 Lanier Dr NE, Atlanta, GA 30319', phone: '(404) 555-0123', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map1 },
-      { id: 'ansley-park', name: 'Ansley Park', address: '149 Peachtree Cir NE, Atlanta, GA 30309', phone: '(404) 555-0456', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map2 },
-      { id: 'virginia-highland', name: 'Virginia-Highland', address: '1034 N Highland Ave NE, Atlanta, GA 30306', phone: '(404) 555-0789', hours: 'Mon-Fri 8am-8pm, Sat-Sun 9am-6pm', map: map3 }
-    ]
+    locations: cloneSharedOrgLocations()
   }
 }
 
@@ -142,7 +187,68 @@ function Dashboard() {
   const [switchingToBusiness, setSwitchingToBusiness] = useState(null) // Track which business is being switched to
   const [hasEnteredDashboard, setHasEnteredDashboard] = useState(true) // Skip onboarding; start on v3 home dashboard
   const [customerViewMode, setCustomerViewMode] = useState('new-2') // 'new-1' | 'new-2' | 'returning' - drives Banner + v3 copy
-  
+  const [demoMode, setDemoMode] = useState(() => {
+    try { return localStorage.getItem('sq-proto-demo-mode') || 'franchise' } catch { return 'franchise' }
+  }) // 'business' | 'franchise'
+
+  useEffect(() => {
+    try { localStorage.setItem('sq-proto-demo-mode', demoMode) } catch (_) {}
+  }, [demoMode])
+
+  const [orgBusinesses] = useState(loadOrgBusinessesFromStorage)
+  const [brandGroups, setBrandGroups] = useState(loadBrandGroupsFromStorage)
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(ORG_BUSINESSES_STORAGE_KEY, JSON.stringify(orgBusinesses))
+    } catch (_) {}
+  }, [orgBusinesses])
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(BRAND_GROUPS_STORAGE_KEY, JSON.stringify(brandGroups))
+    } catch (_) {}
+  }, [brandGroups])
+
+  const mergedBrandData = useMemo(() => {
+    const extra = {}
+    orgBusinesses.forEach((ob) => {
+      if (!STATIC_BRAND_DATA[ob.id]) {
+        const handle = ob.handle.startsWith('$') ? ob.handle : `$${ob.handle.replace(/^\$/, '')}`
+        extra[ob.id] = {
+          name: ob.name,
+          color: '#6B7280',
+          handle,
+          about: `${ob.name} — add a short description for customers.`,
+          locations: cloneSharedOrgLocations()
+        }
+      }
+    })
+    return { ...STATIC_BRAND_DATA, ...extra }
+  }, [orgBusinesses])
+
+  const enabledSidebarBusinesses = useMemo(() => {
+    return orgBusinesses
+      .filter((b) => b.enabled)
+      .map((b) => ({
+        id: b.id,
+        name: b.name,
+        handle: b.handle.startsWith('$') ? b.handle : `$${b.handle.replace(/^\$/, '')}`,
+        logo: brandLogos[b.id] || multiBrandIcon,
+        color: mergedBrandData[b.id]?.color || '#6B7280'
+      }))
+  }, [orgBusinesses, mergedBrandData])
+
+  const enabledBusinessCount = enabledSidebarBusinesses.length
+
+  useEffect(() => {
+    const activeOk = orgBusinesses.some((b) => b.id === activeBrand && b.enabled)
+    if (!activeOk) {
+      const first = orgBusinesses.find((b) => b.enabled)
+      if (first) setActiveBrand(first.id)
+    }
+  }, [orgBusinesses, activeBrand])
+
   // Theme: light / dark, persisted to localStorage
   const [theme, setTheme] = useState(() => {
     if (typeof window === 'undefined') return 'light'
@@ -200,7 +306,7 @@ function Dashboard() {
     // Each brand will have: { brandConfigured: false, configuredLocations: [] }
   })
   
-  const brand = brandData[activeBrand] || brandData['joy-bakeshop']
+  const brand = mergedBrandData[activeBrand] || mergedBrandData['joy-bakeshop']
   
   // Get current brand's state
   const currentBrandState = brandStates[activeBrand] || { brandConfigured: false, configuredLocations: [] }
@@ -740,7 +846,7 @@ function Dashboard() {
     return (
       <div className="dashboard dashboard--onboarding">
         <OnboardingPage
-          brand={brandData[activeBrand] || brandData['joy-bakeshop']}
+          brand={mergedBrandData[activeBrand] || mergedBrandData['joy-bakeshop']}
           onEnterDashboard={() => {
             setHasEnteredDashboard(true)
             setActivePage('home')
@@ -753,6 +859,7 @@ function Dashboard() {
   return (
     <div className="dashboard">
       <Sidebar 
+        businesses={enabledSidebarBusinesses}
         activeBrand={activeBrand} 
         onBrandChange={setActiveBrand}
         onResetToDefaultState={(state) => setPageState(state || 'day-one')}
@@ -780,8 +887,14 @@ function Dashboard() {
         onCustomerViewModeChange={setCustomerViewMode}
         activeSettingsSection={activeSettingsSection}
         onSettingsSectionChange={setActiveSettingsSection}
+        demoMode={demoMode}
+        onDemoModeChange={setDemoMode}
       />
       <MainContent
+        orgBusinesses={orgBusinesses}
+        brandGroups={brandGroups}
+        onBrandGroupsChange={setBrandGroups}
+        mergedBrandData={mergedBrandData}
         activeSettingsSection={activeSettingsSection}
         onSettingsSectionChange={setActiveSettingsSection}
         activeBrand={activeBrand} 
@@ -810,6 +923,7 @@ function Dashboard() {
         onNavigationStart={handleNavigationStart}
         onSidebarLevelChange={setSidebarLevel}
         onAccountBladeOpen={handleOpenAccountBlade}
+        demoMode={demoMode}
       />
 
       {/* Account Blade */}
@@ -823,7 +937,7 @@ function Dashboard() {
                   <path d="M18 6L6 18M6 6L18 18" stroke="#101010" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </button>
-              {profileVersion === 'v2' && (
+              {profileVersion === 'v2' && demoMode === 'franchise' && (
                 <button type="button" className="card-action card-action--tertiary blade-add-business-btn">
                   <span>Add business</span>
                   <img src={CaretDownIcon} alt="" width="16" height="16" />
@@ -888,8 +1002,8 @@ function Dashboard() {
               </>
             )}
 
-            {/* Brand selector - My businesses, right under button list */}
-            <div className="account-blade-brand-container">
+            {/* Brand selector - My businesses (franchise mode only) */}
+            {demoMode === 'franchise' && <div className="account-blade-brand-container">
               {profileVersion !== 'v2' && (
                 <div className="account-blade-brand-title-wrap">
                   <h3 className="account-blade-brand-title">My businesses</h3>
@@ -907,11 +1021,11 @@ function Dashboard() {
                   </div>
                   <div className="switch-business-item-info">
                     <span className="switch-business-item-name">All businesses</span>
-                    <span className="switch-business-item-handle">4 businesses · 12 locations</span>
+                    <span className="switch-business-item-handle">{enabledBusinessCount} {enabledBusinessCount === 1 ? 'business' : 'businesses'} · 12 locations</span>
                   </div>
                 </button>
-                {businesses.map((business) => {
-                  const businessBrand = brandData[business.id] || brandData['joy-bakeshop']
+                {enabledSidebarBusinesses.map((business) => {
+                  const businessBrand = mergedBrandData[business.id] || mergedBrandData['joy-bakeshop']
                   return (
                     <button
                       key={business.id}
@@ -948,14 +1062,14 @@ function Dashboard() {
                   )
                 })}
               </div>
-            </div>
+            </div>}
 
           </div>
         </div>
       )}
 
-      {/* Switch Business Modal - rendered at Dashboard level so it appears on any page */}
-      {isSwitchBusinessModalOpen && (
+      {/* Switch Business Modal - franchise mode only */}
+      {demoMode === 'franchise' && isSwitchBusinessModalOpen && (
         <div className={`switch-business-modal-overlay ${isSwitchBusinessModalClosing ? 'closing' : ''}`} onClick={handleCloseSwitchBusinessModal}>
           <div className={`switch-business-modal ${isSwitchBusinessModalClosing ? 'closing' : ''}`} onClick={(e) => e.stopPropagation()}>
             <button className="switch-business-modal-close" onClick={handleCloseSwitchBusinessModal}>
@@ -968,8 +1082,8 @@ function Dashboard() {
               <p className="switch-business-modal-subtitle">Select another business tied to Vitaly Odemchuk's account</p>
             </div>
             <div className="switch-business-modal-list">
-              {businesses.map((business) => {
-                const businessBrand = brandData[business.id] || brandData['joy-bakeshop']
+              {enabledSidebarBusinesses.map((business) => {
+                const businessBrand = mergedBrandData[business.id] || mergedBrandData['joy-bakeshop']
                 return (
                 <button
                   key={business.id}

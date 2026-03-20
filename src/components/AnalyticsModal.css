@@ -32,21 +32,25 @@
   }
 }
 
-/* Modal Container */
+/* Modal Container — 24px from top of viewport (website editor stays full-bleed below) */
 .modal-container {
   position: fixed;
-  top: 0;
+  top: 24px;
   left: 0;
   right: 0;
-  bottom: 0;
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 24px);
   background: #FFFFFF;
   overflow: hidden;
   transform: translateY(100vh);
   animation: slideUpFromBottom 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   display: flex;
   flex-direction: column;
+}
+
+.modal-container.website-modal {
+  top: 0;
+  height: 100vh;
 }
 
 .modal-overlay.closing .modal-container {

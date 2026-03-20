@@ -34,7 +34,7 @@ import PasskeyIcon from '../assets/Passkey.svg'
 import NewIcon from '../assets/new.svg'
 import ReturningIcon from '../assets/returningcustomer.svg'
 
-const businesses = [
+const FALLBACK_BUSINESSES = [
   { id: 'joy-bakeshop', name: 'Joy Bakeshop', handle: '$joybakeshop', logo: joyBakeshopLogo, color: '#0000FF' },
   { id: 'keva-juice', name: 'Keva Juice', handle: '$kevasmoothie', logo: kjLogo, color: '#FF6B35' },
   { id: 'spot-of-tea', name: 'Spot of Tea', handle: '$drinkspotoftea', logo: spotOfTeaLogo, color: '#2A67B0' },
@@ -47,7 +47,8 @@ function getMonogram(name) {
   return name.substring(0, 2).toUpperCase()
 }
 
-function Sidebar({ activeBrand, onBrandChange, onResetToDefaultState, activePage, onPageChange, sidebarLevel, onSidebarLevelChange, onNavigationStart, profileVersion, onProfileVersionChange, onAccountBladeOpen, isAccountBladeOpen, onBrandHeaderClick, theme = 'light', onThemeChange, onOpenOnboarding, customerViewMode, onCustomerViewModeChange, activeSettingsSection, onSettingsSectionChange }) {
+function Sidebar({ businesses: businessesProp, activeBrand, onBrandChange, onResetToDefaultState, activePage, onPageChange, sidebarLevel, onSidebarLevelChange, onNavigationStart, profileVersion, onProfileVersionChange, onAccountBladeOpen, isAccountBladeOpen, onBrandHeaderClick, theme = 'light', onThemeChange, onOpenOnboarding, customerViewMode, onCustomerViewModeChange, activeSettingsSection, onSettingsSectionChange, demoMode = 'franchise', onDemoModeChange }) {
+  const businesses = businessesProp?.length ? businessesProp : FALLBACK_BUSINESSES
   const [activeBusinessIndex, setActiveBusinessIndex] = useState(0)
   const [isFlipped, setIsFlipped] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -55,16 +56,18 @@ function Sidebar({ activeBrand, onBrandChange, onResetToDefaultState, activePage
   const [animatingFromLevel, setAnimatingFromLevel] = useState(null) // Track which level we're animating from
   const [animatingToLevel, setAnimatingToLevel] = useState(null) // Track which level we're animating to
   
-  const currentBusiness = businesses[activeBusinessIndex]
-  const nextBusiness = businesses[(activeBusinessIndex + 1) % businesses.length]
+  const currentBusiness = businesses[activeBusinessIndex] || businesses[0]
+  const nextBusiness = businesses.length > 0 ? businesses[(activeBusinessIndex + 1) % businesses.length] : currentBusiness
   
-  // Sync activeBusinessIndex when activeBrand changes from external source (e.g., BaseProfilePage)
+  // Sync activeBusinessIndex when activeBrand or business list changes
   useEffect(() => {
     const newIndex = businesses.findIndex(b => b.id === activeBrand)
-    if (newIndex !== -1 && newIndex !== activeBusinessIndex) {
+    if (newIndex !== -1) {
       setActiveBusinessIndex(newIndex)
+    } else if (businesses.length > 0) {
+      setActiveBusinessIndex(0)
     }
-  }, [activeBrand])
+  }, [activeBrand, businesses])
 
   const handlePageClick = (e, pageName) => {
     e.preventDefault()
@@ -194,7 +197,7 @@ function Sidebar({ activeBrand, onBrandChange, onResetToDefaultState, activePage
               <p className="brand-handle">{currentBusiness.handle}</p>
               <p className="brand-handle-hover">
                 {profileVersion === 'v2' ? (
-                  <>Change business</>
+                  demoMode === 'franchise' ? <>Change business</> : <>Account settings</>
                 ) : (
                   <>
                     <span className="brand-handle-hover-dot" aria-hidden />
@@ -420,6 +423,27 @@ function Sidebar({ activeBrand, onBrandChange, onResetToDefaultState, activePage
             </div>
           </div>
         </button>
+
+        {/* Demo mode toggle — Business vs Franchise */}
+        <div className="sidebar-demo-mode-toggle">
+          <span className="sidebar-demo-mode-label">Mode</span>
+          <div className="sidebar-demo-mode-pills">
+            <button
+              type="button"
+              className={`sidebar-demo-mode-pill${demoMode === 'business' ? ' active' : ''}`}
+              onClick={() => onDemoModeChange?.('business')}
+            >
+              Business
+            </button>
+            <button
+              type="button"
+              className={`sidebar-demo-mode-pill${demoMode === 'franchise' ? ' active' : ''}`}
+              onClick={() => onDemoModeChange?.('franchise')}
+            >
+              Franchise
+            </button>
+          </div>
+        </div>
 
         <div className="sidebar-footer">
           {/* 1. Version Toggle */}
